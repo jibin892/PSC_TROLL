@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "213537725725",
+    "firebase_url": "https://fbtroll-22e0b.firebaseio.com",
+    "project_id": "fbtroll-22e0b",
+    "storage_bucket": "fbtroll-22e0b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213537725725:android:128f1a22c5fe94263d55f4",
+        "android_client_info": {
+          "package_name": "techsayas.in.psctrolls.psctroll"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213537725725-hanvo4pv6t3l6shkcrton5pv8ep9km4v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmpzC6OrgClhFwZ7bfuWpN_l-kb2EFFvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213537725725-hanvo4pv6t3l6shkcrton5pv8ep9km4v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
