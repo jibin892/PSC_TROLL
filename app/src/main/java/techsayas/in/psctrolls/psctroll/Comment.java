@@ -73,7 +73,14 @@ public class Comment extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageReference;
     // request code
+    private final static int GALLERY_PICK_CODE = 2;
+
     DatabaseReference reference;
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +96,10 @@ public class Comment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //
-                Intent a = new Intent(getApplicationContext(), Userchatimage.class);
-                startActivity(a);
+                Intent galleryIntent = new Intent().setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, GALLERY_PICK_CODE);
+
             }
         });
         listOfMessages = (ListView) findViewById(R.id.list_of_comment);
@@ -149,7 +158,6 @@ public class Comment extends AppCompatActivity {
                     map.put("messageTime", currentTime);
                     namesRef.updateChildren(map);
                     rootRef.child("COMMENT");
-                    load();
                     input.getText().clear();
                     rootRef.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -157,6 +165,7 @@ public class Comment extends AppCompatActivity {
 
                             // Log.d(TAG, "This: "+dataSnapshot.getValue());
                             //Toast.makeText(getActivity(),"gfdg",Toast.LENGTH_LONG).show();
+                            load();
 
                         }
 
@@ -172,6 +181,8 @@ public class Comment extends AppCompatActivity {
 
 
         });
+
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -201,7 +212,7 @@ public class Comment extends AppCompatActivity {
         adapter = new FirebaseListAdapter<Commentview>(Comment.this, Commentview.class,
                 R.layout.message,
 
-                reference =   FirebaseDatabase.getInstance().getReference().child("COMMENT")) {
+                reference =   FirebaseDatabase.getInstance().getReference().child("MSG")) {
             @Override
             protected void populateView(View v, final Commentview model, int position) {
                 // Get references to the views of message.xml
@@ -210,6 +221,8 @@ public class Comment extends AppCompatActivity {
                 final TextView messageUser = (TextView)v.findViewById(R.id.message_usert);
                 TextView messageTime = (TextView)v.findViewById(R.id.message_timet);
                 ImageView image_message_profile=v.findViewById(R.id.image_message_profilet);
+
+
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
