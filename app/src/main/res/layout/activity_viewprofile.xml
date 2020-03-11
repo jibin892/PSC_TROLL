@@ -116,6 +116,45 @@
                             android:textColor="@color/color_third_text"
                             android:textSize="16sp" />
 
+
+
+                        <LinearLayout
+                            android:layout_width="291dp"
+                            android:layout_height="45dp"
+                            android:orientation="horizontal"
+                            android:layout_marginLeft="70dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.547"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.608">
+
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/facebook1"
+                                android:layout_width="72dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="20dp"
+                                android:src="@drawable/facebook" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/google1"
+                                android:layout_width="69dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="20dp"
+                                android:src="@drawable/twitter" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/instagaram1"
+                                android:layout_width="69dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="20dp"
+                                android:src="@drawable/instagram" />
+
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
 
@@ -132,6 +171,9 @@
 
 
         </LinearLayout>
+
+
+
     </ScrollView>
 
 

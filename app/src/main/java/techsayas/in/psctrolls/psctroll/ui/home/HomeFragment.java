@@ -61,6 +61,7 @@ import java.util.concurrent.TimeUnit;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import techsayas.in.psctrolls.psctroll.ChatMessage;
+import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.Homeview;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.R;
@@ -75,7 +76,6 @@ public class HomeFragment extends Fragment {
     FirebaseListAdapter<Homeview> adapter;
     FloatingActionButton fab,cam;
     SweetAlertDialog pDialog;
-    // ShimmerLayout shimmerText;
     ListView listOfMessages;
     CircleImageView img;
     ImageView  download,share;
@@ -169,6 +169,8 @@ somthing.setOnClickListener(new View.OnClickListener() {
                 final TextView messageText = (TextView)v.findViewById(R.id.userdis);
                 TextView messageUser = (TextView)v.findViewById(R.id.username);
                 TextView messageTime = (TextView)v.findViewById(R.id.uploadtime);
+                ImageButton comment = (ImageButton)v.findViewById(R.id.comment);
+
                 ImageView image_message_profile=v.findViewById(R.id.userimg1);
                 mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
                 textView=v.findViewById(R.id.yu);
@@ -182,7 +184,16 @@ somthing.setOnClickListener(new View.OnClickListener() {
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
               Picasso.get().load(model.getPhoto1()).resize(900, 550).centerCrop().into(postimg);
 
+comment.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
 
+Intent ash=new Intent(getActivity(), Comment.class);
+startActivity(ash);
+
+
+    }
+});
                messageTime.setText(model.getMessageTime());
                 postimg.setOnClickListener(new View.OnClickListener() {
                     @Override

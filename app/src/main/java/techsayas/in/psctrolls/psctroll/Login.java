@@ -114,7 +114,14 @@ pDialog.cancel();
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
+
             startActivity(new Intent(Login.this, Homepage.class));
+        }
+       else{
+
+            Toast.makeText(Login.this, "Login", Toast.LENGTH_LONG).show();
+
+
         }
         super.onStart();
     }

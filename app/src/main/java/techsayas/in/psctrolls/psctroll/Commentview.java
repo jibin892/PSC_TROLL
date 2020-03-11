@@ -1,8 +1,6 @@
 package techsayas.in.psctrolls.psctroll;
 
-import java.util.Date;
-
-public class ChatMessage {
+public class Commentview {
 
     private String messageText;
     private String messageUser;
@@ -14,7 +12,7 @@ public class ChatMessage {
 
     private  String s;
 
-    public ChatMessage(String messageText, String messageUser,String photo,String photo1,String s,String id) {
+    public Commentview(String messageText, String messageUser, String photo, String photo1, String s, String id) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
@@ -29,7 +27,7 @@ this.photo1=photo1;
 
 
 
-    public ChatMessage() {
+    public Commentview() {
     }
     public String s()
     {

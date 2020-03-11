@@ -9,19 +9,26 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.Layout;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.text.style.AlignmentSpan;
 import android.util.Base64;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -78,9 +85,11 @@ public class MessageFragment extends Fragment {
    // ShimmerLayout shimmerText;
     ListView listOfMessages;
     CircleImageView img;
+    View view;
     ImageView image_message_profile;
     Uri personPhoto;
     GoogleSignInClient mGoogleSignInClient;
+ EditText input;
     String personName;
     String personId;
     String personEmail;
@@ -117,7 +126,7 @@ public class MessageFragment extends Fragment {
             }
         });
         listOfMessages = (ListView) root.findViewById(R.id.list_of_messages);
-        final EditText input = (EditText) root.findViewById(R.id.input);
+       input = (EditText) root.findViewById(R.id.input);
         input.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -172,13 +181,14 @@ public class MessageFragment extends Fragment {
                     map.put("messageTime", currentTime);
                     namesRef.updateChildren(map);
                     rootRef.child("MSG");
+                    input.getText().clear();
                     rootRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             // Log.d(TAG, "This: "+dataSnapshot.getValue());
                             //Toast.makeText(getActivity(),"gfdg",Toast.LENGTH_LONG).show();
-                            input.getText().clear();
+
                         }
 
                         @Override
@@ -215,7 +225,7 @@ public class MessageFragment extends Fragment {
 
         }
 
-        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+       mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
         return root;
     }
     @Override
@@ -233,7 +243,7 @@ public class MessageFragment extends Fragment {
     private void displayChatMessages() {
 
         adapter = new FirebaseListAdapter<ChatMessage>(getActivity(), ChatMessage.class,
-                R.layout.message,
+                R.layout.item_in_message,
 
                 reference =   FirebaseDatabase.getInstance().getReference().child("MSG")) {
             @Override
@@ -244,19 +254,17 @@ public class MessageFragment extends Fragment {
                 final TextView messageUser = (TextView)v.findViewById(R.id.message_user);
                 TextView messageTime = (TextView)v.findViewById(R.id.message_time);
                ImageView image_message_profile=v.findViewById(R.id.image_message_profile);
-
-                    messageText.setText(model.getMessageText());
-                    messageUser.setText(model.getMessageUser());
-                    Picasso.get().load(model.getPhoto()).into(image_message_profile);
-                    Picasso.get().load(model.getPhoto1()).resize(700, 700).centerCrop().into(postimg);
-                    // Format the date before showing it
-
-                    messageTime.setText(model.getMessageTime());
+                messageText.setText(model.getMessageText());
+                messageUser.setText(model.getMessageUser());
+                Picasso.get().load(model.getPhoto()).into(image_message_profile);
+                Picasso.get().load(model.getPhoto1()).resize(700, 700).centerCrop().into(postimg);
+                messageTime.setText(model.getMessageTime());
 
 
 
 
-                    image_message_profile.setOnClickListener(new View.OnClickListener() {
+
+                image_message_profile.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
@@ -273,6 +281,7 @@ public class MessageFragment extends Fragment {
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                         mShimmerViewContainer.stopShimmerAnimation();
                         mShimmerViewContainer.setVisibility(View.GONE);
                      //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
@@ -294,6 +303,35 @@ public class MessageFragment extends Fragment {
                });
 
             }
+            @Override
+            public View getView(int position, View view, ViewGroup viewGroup) {
+                ChatMessage chatMessage = getItem(position);
+                if (chatMessage.getId().equals(personId)) {
+                    view = getActivity().getLayoutInflater().inflate(R.layout.item_out_message, viewGroup, false);
+
+                }
+                else {
+                    view = getActivity().getLayoutInflater().inflate(R.layout.item_in_message, viewGroup, false);
+                }
+//generating view}
+                populateView(view, chatMessage, position);
+
+                return view;
+            }
+
+            @Override
+            public int getViewTypeCount() {
+// return the total number of view types. this value should never change
+// at runtime
+                return 2;
+            }
+
+            @Override
+            public int getItemViewType(int position) {
+// return a value between 0 and (getViewTypeCount - 1)
+                return position % 2;
+            }
+
         };
 
         listOfMessages.setAdapter(adapter);
@@ -302,7 +340,6 @@ adapter.notifyDataSetChanged();
     }
 
     }
-
 
 
 
