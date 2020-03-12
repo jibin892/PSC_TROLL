@@ -109,7 +109,6 @@ public class Upload extends AppCompatActivity {
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-
         nameTV = findViewById(R.id.name1);
         emailTV = findViewById(R.id.email1);
 //        idTV = root.findViewById(R.id.id);
