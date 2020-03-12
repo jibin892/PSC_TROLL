@@ -5,7 +5,11 @@
         android:id="@+id/navigation_home"
         android:icon="@drawable/home"
         android:title="@string/title_home" />
-     <item
+    <item
+        android:id="@+id/trollr"
+        android:icon="@drawable/request"
+        android:title="Troll_Request" />
+    <item
     android:id="@+id/navigation_message"
     android:icon="@drawable/msg"
     android:title="@string/title_message" />
