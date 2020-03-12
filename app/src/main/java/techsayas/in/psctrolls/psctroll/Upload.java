@@ -67,6 +67,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.SimpleTimeZone;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import techsayas.in.psctrolls.psctroll.ui.notifications.NotificationsFragment;
@@ -120,7 +121,7 @@ public class Upload extends AppCompatActivity {
         video = findViewById(R.id.vdio);
         post = findViewById(R.id.post);
 
-        caption.setVisibility(View.INVISIBLE);
+     //   caption.setVisibility(View.INVISIBLE);
      //   imgview.setVisibility(View.INVISIBLE);
 
 //
@@ -189,8 +190,6 @@ public class Upload extends AppCompatActivity {
 
 lc();
 
-
-
             }
         });
 
@@ -244,18 +243,6 @@ lc();
 
 
 
-    private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(Upload.this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(),"Successfully signed out",Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), Login.class));
-
-                    }
-                });
-
-    }
 
 
     @Override
@@ -280,7 +267,7 @@ lc();
 //                "Plz Wait", true);
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference namesRef = rootRef.child("POST").push();
+        DatabaseReference namesRef = rootRef.child("POSTSENTADMIN").push();
         Map<String, Object> map = new HashMap<>();
         map.put("post", write.getText().toString());
         map.put("name", String.valueOf(personPhoto));
@@ -288,9 +275,29 @@ lc();
         map.put("photo", personEmail);
         String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
         map.put("time", currentTime);
+        String mGroupId = rootRef.push().getKey();
+        map.put("idd", mGroupId);
+        String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+        map.put("stamp", timeStamp);
         namesRef.updateChildren(map);
-        rootRef.child("POST").child(personId);
+        rootRef.child("POSTSENTADMIN").child(personId);
+        write.getText().clear();
+        rootRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                //Log.d(TAG, "This: "+dataSnapshot.getValue());
+                Toast.makeText(getApplicationContext(),"gfdg",Toast.LENGTH_LONG).show();
+                Intent n=new Intent(getApplicationContext(),Homepage.class);
+                startActivity(n);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 }

@@ -150,8 +150,8 @@ post.setOnClickListener(new View.OnClickListener() {
 progress.dismiss();
                                     // Log.d(TAG, "This: "+dataSnapshot.getValue());
                                     //Toast.makeText(getActivity(),"gfdg",Toast.LENGTH_LONG).show();
-//                                  Intent ab=new Intent(getApplicationContext(),Homepage.class);
-//                                  startActivity(ab);
+                                  Intent ab=new Intent(getApplicationContext(),Homepage.class);
+                                  startActivity(ab);
                                 }
 
                                 @Override

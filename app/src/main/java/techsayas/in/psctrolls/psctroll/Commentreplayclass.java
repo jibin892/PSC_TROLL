@@ -1,8 +1,6 @@
 package techsayas.in.psctrolls.psctroll;
 
-import java.util.Date;
-
-public class ChatMessage {
+public class Commentreplayclass {
 
     private String messageText;
     private String messageUser;
@@ -11,45 +9,40 @@ public class ChatMessage {
     private  String photo1;
     private  String photo;
     private  String id;
-    private  String idd;
-    private  String stamp;
+        private  String cament;
+
     private  String s;
 
-    public ChatMessage(String messageText, String messageUser,String photo,String photo1,String s,String id,String idd, String stamp) {
+    public Commentreplayclass(String messageText, String messageUser, String photo, String photo1, String s, String id,String cament) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
      this.photo=photo;
+        this.cament=cament;
 
         // Initialize to current time
        this. messageTime = messageTime;
         this.s=s;
         this.id=id;
-        this.idd=idd;
-        this.stamp=stamp;
 
     }
 
 
 
-    public ChatMessage() {
+    public Commentreplayclass() {
     }
     public String s()
     {
         return  s;
     }
-    public String getStamp()
+    public String getCament()
     {
-        return  stamp;
+        return  cament;
     }
 
     public String getId()
     {
         return  id;
-    }
-    public String getIdd()
-    {
-        return  idd;
     }
 
     public String getPhoto()

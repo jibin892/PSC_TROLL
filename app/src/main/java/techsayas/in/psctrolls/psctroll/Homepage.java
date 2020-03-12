@@ -17,6 +17,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class Homepage extends AppCompatActivity {
     boolean b;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

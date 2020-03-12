@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,16 +24,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-import techsayas.in.psctrolls.psctroll.Homeview;
+import techsayas.in.psctrolls.psctroll.FirebaseHelper;
 import techsayas.in.psctrolls.psctroll.Login;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.Upload;
@@ -46,9 +49,11 @@ public class NotificationsFragment extends Fragment {
     ImageView photo, photo1;
     ImageView facebbok, google, instagram;
     EditText write;
-    ListView listOfMessages;
+    GridView listOfMessages;
     View root;
-   // FirebaseListAdapter<Homeview> adapter;
+
+
+    // FirebaseListAdapter<Homeview> adapter;
     private NotificationsViewModel notificationsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -56,6 +61,8 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
          root = inflater.inflate(R.layout.fragment_notifications, container, false);
+
+
 
 
         sign_out = root.findViewById(R.id.log_out);

@@ -3,27 +3,19 @@ package techsayas.in.psctrolls.psctroll;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.brouding.doubletaplikeview.DoubleTapLikeView;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -39,10 +31,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,8 +44,11 @@ import techsayas.in.psctrolls.psctroll.ui.message.MessageViewModel;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-public class Comment extends AppCompatActivity {
-    FirebaseListAdapter<Commentview> adapter;
+public class Commentreplay extends AppCompatActivity {
+ImageView cmimg;
+TextView replay,user,time;
+Intent a;
+    FirebaseListAdapter<Commentreplayclass> adapter;
     FloatingActionButton fab, cam;
     SweetAlertDialog pDialog;
     // ShimmerLayout shimmerText;
@@ -77,33 +68,35 @@ public class Comment extends AppCompatActivity {
     // request code
     TextView messageTime;
     DatabaseReference reference;
-    DatabaseReference a;
+
     TextView messageUser;
     private final int PICK_IMAGE_REQUEST = 71;
     private MessageViewModel messageViewModel;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comment);
+        setContentView(R.layout.activity_commentreplay);
+        a=getIntent();
+        cmimg=findViewById(R.id.cimg);
+        user=findViewById(R.id.cuser);
+        time=findViewById(R.id.ctime);
+
+        replay=findViewById(R.id.ctxt);
+        replay.setText( a.getStringExtra("d"));
+        user.setText( a.getStringExtra("a"));
+        time.setText( a.getStringExtra("c"));
+        Picasso.get().load(a.getStringExtra("b")).into(cmimg);
 
 
-        fab = (FloatingActionButton)findViewById(R.id.fab2);
-        cam = (FloatingActionButton)findViewById(R.id.cam2);
-        fab.setVisibility(View.INVISIBLE);
+        fab = (FloatingActionButton)findViewById(R.id.fab3);
+        cam = (FloatingActionButton)findViewById(R.id.cam3);
+       fab.setVisibility(View.INVISIBLE);
         // fab.setEnabled(false);
 
-        cam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//
-                Intent a = new Intent(getApplicationContext(), Userchatimage.class);
-                startActivity(a);
-            }
-        });
-        listOfMessages = (ListView)  findViewById(R.id.list_of_messages2);
-        input = (EditText)  findViewById(R.id.input2);
+
+        listOfMessages = (ListView)  findViewById(R.id.list_of_messages3);
+        input = (EditText)  findViewById(R.id.input3);
         input.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -147,13 +140,16 @@ public class Comment extends AppCompatActivity {
                 else {
 
                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                    DatabaseReference namesRef = rootRef.child("COMMENT").push();
+                    DatabaseReference namesRef = rootRef.child("COMMENTREPLAY").push();
                     Map<String, Object> map = new HashMap<>();
                     map.put("messageText", input.getText().toString());
                     map.put("photo", String.valueOf(personPhoto));
                     map.put("messageUser", personName);
                     map.put("email", personEmail);
                     map.put("id", personId);
+                    map.put("cament", a.getStringExtra("a"));
+
+
                     String mGroupId = rootRef.push().getKey();
                     map.put("idd", mGroupId);
                     String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
@@ -162,7 +158,7 @@ public class Comment extends AppCompatActivity {
                     String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
                     map.put("messageTime", currentTime);
                     namesRef.updateChildren(map);
-                    rootRef.child("COMMENT");
+                    rootRef.child("COMMENTREPLAY");
                     input.getText().clear();
                     rootRef.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -213,20 +209,20 @@ public class Comment extends AppCompatActivity {
 
     private void displayChatMessages() {
 
-        adapter = new FirebaseListAdapter<Commentview>(Comment.this, Commentview.class,
-                R.layout.message,
+        adapter = new FirebaseListAdapter<Commentreplayclass>(Commentreplay.this, Commentreplayclass.class,
+                R.layout.commentreplys,
 
-                reference = FirebaseDatabase.getInstance().getReference().child("COMMENT")) {
+                reference = FirebaseDatabase.getInstance().getReference().child("COMMENTREPLAY")) {
             @Override
-            protected void populateView(View v, final Commentview model, int position) {
+            protected void populateView(View v, final Commentreplayclass model, int position) {
                 // Get references to the views of message.xml
-                ImageView postimg = v.findViewById(R.id.postimg123t);
-                TextView messageText = (TextView) v.findViewById(R.id.message_textt);
-                messageUser = (TextView) v.findViewById(R.id.message_usert);
-                TextView replay = (TextView) v.findViewById(R.id.message_reply);
+                ImageView postimg = v.findViewById(R.id.postimg123t1);
+                TextView messageText = (TextView) v.findViewById(R.id.message_textt1);
+                messageUser = (TextView) v.findViewById(R.id.message_usert1);
+                TextView replay = (TextView) v.findViewById(R.id.message_reply1);
 
-                messageTime = (TextView) v.findViewById(R.id.message_timet);
-                ImageView image_message_profile = v.findViewById(R.id.image_message_profilet);
+                messageTime = (TextView) v.findViewById(R.id.message_timet1);
+                ImageView image_message_profile = v.findViewById(R.id.image_message_profilet1);
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
@@ -290,12 +286,12 @@ public class Comment extends AppCompatActivity {
 
             @Override
             public View getView(int position, View view, ViewGroup viewGroup) {
-                Commentview chatMessage = getItem(position);
+                Commentreplayclass chatMessage = getItem(position);
                 if (chatMessage.getId().equals(personId)) {
-                    view = Comment.this.getLayoutInflater().inflate(R.layout.message, viewGroup, false);
+                    view = Commentreplay.this.getLayoutInflater().inflate(R.layout.commentreplys, viewGroup, false);
 
                 } else {
-                    view = Comment.this.getLayoutInflater().inflate(R.layout.messageone, viewGroup, false);
+                    view = Commentreplay.this.getLayoutInflater().inflate(R.layout.commentreplys1, viewGroup, false);
                 }
 //generating view}
                 populateView(view, chatMessage, position);

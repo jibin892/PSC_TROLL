@@ -1,6 +1,8 @@
 package techsayas.in.psctrolls.psctroll.ui.message;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -16,6 +18,7 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.text.style.AlignmentSpan;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +51,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -64,6 +68,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -77,19 +82,20 @@ import techsayas.in.psctrolls.psctroll.ui.profile.ProfileViewModel;
 
 import static android.app.Activity.RESULT_OK;
 import static android.widget.Toast.LENGTH_LONG;
+import static com.facebook.share.internal.DeviceShareDialogFragment.TAG;
 
 public class MessageFragment extends Fragment {
     FirebaseListAdapter<ChatMessage> adapter;
-    FloatingActionButton fab,cam;
+    FloatingActionButton fab, cam;
     SweetAlertDialog pDialog;
-   // ShimmerLayout shimmerText;
+    // ShimmerLayout shimmerText;
     ListView listOfMessages;
     CircleImageView img;
     View view;
     ImageView image_message_profile;
     Uri personPhoto;
     GoogleSignInClient mGoogleSignInClient;
- EditText input;
+    EditText input;
     String personName;
     String personId;
     String personEmail;
@@ -97,12 +103,14 @@ public class MessageFragment extends Fragment {
     FirebaseStorage storage;
     StorageReference storageReference;
     // request code
+    TextView messageTime;
     DatabaseReference reference;
-
+    DatabaseReference a;
+    TextView messageUser;
     private final int PICK_IMAGE_REQUEST = 71;
-    private  MessageViewModel messageViewModel;
+    private MessageViewModel messageViewModel;
     View root;
-
+public  static boolean isInFront;
     private ShimmerFrameLayout mShimmerViewContainer;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -126,7 +134,7 @@ public class MessageFragment extends Fragment {
             }
         });
         listOfMessages = (ListView) root.findViewById(R.id.list_of_messages);
-       input = (EditText) root.findViewById(R.id.input);
+        input = (EditText) root.findViewById(R.id.input);
         input.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -177,6 +185,12 @@ public class MessageFragment extends Fragment {
                     map.put("messageUser", personName);
                     map.put("email", personEmail);
                     map.put("id", personId);
+                    String mGroupId = rootRef.push().getKey();
+
+                    map.put("idd", mGroupId);
+                    String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                    map.put("stamp", timeStamp);
+
                     String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
                     map.put("messageTime", currentTime);
                     namesRef.updateChildren(map);
@@ -206,7 +220,6 @@ public class MessageFragment extends Fragment {
         displayChatMessages();
 
 
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -225,35 +238,25 @@ public class MessageFragment extends Fragment {
 
         }
 
-       mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
         return root;
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        mShimmerViewContainer.startShimmerAnimation();
-    }
 
-    @Override
-    public void onPause() {
-        mShimmerViewContainer.stopShimmerAnimation();
-        super.onPause();
 
-    }
     private void displayChatMessages() {
 
         adapter = new FirebaseListAdapter<ChatMessage>(getActivity(), ChatMessage.class,
                 R.layout.item_in_message,
 
-                reference =   FirebaseDatabase.getInstance().getReference().child("MSG")) {
+                reference = FirebaseDatabase.getInstance().getReference().child("MSG")) {
             @Override
             protected void populateView(View v, final ChatMessage model, int position) {
                 // Get references to the views of message.xml
-             ImageView postimg= v.findViewById(R.id.postimg123);
-                TextView messageText = (TextView)v.findViewById(R.id.message_text);
-                final TextView messageUser = (TextView)v.findViewById(R.id.message_user);
-                TextView messageTime = (TextView)v.findViewById(R.id.message_time);
-               ImageView image_message_profile=v.findViewById(R.id.image_message_profile);
+                ImageView postimg = v.findViewById(R.id.postimg123);
+                TextView messageText = (TextView) v.findViewById(R.id.message_text);
+                messageUser = (TextView) v.findViewById(R.id.message_user);
+                messageTime = (TextView) v.findViewById(R.id.message_time);
+                ImageView image_message_profile = v.findViewById(R.id.image_message_profile);
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
@@ -261,21 +264,129 @@ public class MessageFragment extends Fragment {
                 messageTime.setText(model.getMessageTime());
 
 
+                messageText.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+
+                        AlertDialog.Builder builder
+                                = new AlertDialog
+                                .Builder(getActivity());
+
+                        builder.setMessage("Do you want to delet ?");
+
+                        builder.setTitle("Alert !");
+
+                        builder.setCancelable(false);
 
 
+                        builder
+                                .setPositiveButton(
+                                        "Yes",
+                                        new DialogInterface
+                                                .OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog,
+                                                                int which) {
+
+
+
+
+
+
+
+                                                delet();
+                                            }
+                                        });
+
+                        builder
+                                .setNegativeButton(
+                                        "No",
+                                        new DialogInterface
+                                                .OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog,
+                                                                int which) {
+
+
+                                                dialog.cancel();
+                                            }
+                                        });
+
+// Create the Alert dialog
+                        AlertDialog alertDialog = builder.create();
+
+// Show the Alert Dialog box
+                        alertDialog.show();
+
+
+                        return false;
+                    }
+
+                    private void delet() {
+
+
+                        if (model.getId() == personId) {
+
+
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                            Query applesQuery = ref.child("MSG").orderByChild("id").equalTo(personId);
+
+                            if (applesQuery != null) {
+
+                                Query applesQuery1 = ref.child("MSG").orderByChild("stamp").equalTo(model.getStamp());
+                                if (applesQuery1 == null) {
+
+                                    Toast.makeText(getActivity(), "gkfjgud", LENGTH_LONG).show();
+
+                                } else {
+
+
+                                    applesQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                                appleSnapshot.getRef().removeValue();
+                                                //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            // Log.e(TAG, "onCancelled", databaseError.toException());
+                                        }
+                                    });
+                                }
+
+
+                            }
+
+
+                        } else {
+
+
+                            Toast.makeText(getActivity(), "Not delet", LENGTH_LONG).show();
+
+                        }
+
+
+                    }
+                });
 
                 image_message_profile.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    @Override
+                    public void onClick(View v) {
 
 
-                            Intent as =new Intent( getActivity(), Viewprofile.class);
-                            as.putExtra("a", model.getMessageUser());
-                            as.putExtra("b", model.getPhoto());
-                            //as.putExtra("c", model.getMessageUser());
-                            startActivity(as);
-                        }
-                    });
+                        Intent as = new Intent(getActivity(), Viewprofile.class);
+                        as.putExtra("a", model.getMessageUser());
+                        as.putExtra("b", model.getPhoto());
+                        //as.putExtra("c", model.getMessageUser());
+                        startActivity(as);
+                    }
+                });
 
 
                 reference.addValueEventListener(new ValueEventListener() {
@@ -284,33 +395,34 @@ public class MessageFragment extends Fragment {
 
                         mShimmerViewContainer.stopShimmerAnimation();
                         mShimmerViewContainer.setVisibility(View.GONE);
-                     //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+                        //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }});
+                    }
+                });
 
-              //  }
+                //  }
 
-               postimg.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       new PhotoFullPopupWindow(getActivity(), R.layout.popup_photo_full, v, model.getPhoto1(), null);
+                postimg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new PhotoFullPopupWindow(getActivity(), R.layout.popup_photo_full, v, model.getPhoto1(), null);
 
-                   }
-               });
+                    }
+                });
 
             }
+
             @Override
             public View getView(int position, View view, ViewGroup viewGroup) {
                 ChatMessage chatMessage = getItem(position);
                 if (chatMessage.getId().equals(personId)) {
                     view = getActivity().getLayoutInflater().inflate(R.layout.item_out_message, viewGroup, false);
 
-                }
-                else {
+                } else {
                     view = getActivity().getLayoutInflater().inflate(R.layout.item_in_message, viewGroup, false);
                 }
 //generating view}
@@ -334,10 +446,25 @@ public class MessageFragment extends Fragment {
 
         };
 
+
         listOfMessages.setAdapter(adapter);
-adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
 
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mShimmerViewContainer.startShimmerAnimation();
+    }
+
+    @Override
+    public void onPause() {
+        mShimmerViewContainer.stopShimmerAnimation();
+        super.onPause();
+
+    }
+
 
     }
 
