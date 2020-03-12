@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,12 +13,14 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -110,13 +113,27 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-user=root.findViewById(R.id.photos123);
+
+
+
+        user=root.findViewById(R.id.photos123);
         somthing=root.findViewById(R.id.write123);
-        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+     //   mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+
+
+
+
 
         listOfMessages = (ListView) root.findViewById(R.id.list_of_view);
 
+        listOfMessages.post(new Runnable() {
+            @Override
+            public void run() {
 
+                adapter.notifyDataSetChanged();
+                listOfMessages.smoothScrollToPosition(0);
+            }
+        });
 
 
         final GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -161,7 +178,7 @@ somthing.setOnClickListener(new View.OnClickListener() {
         adapter = new FirebaseListAdapter<Homeview>(getActivity(), Homeview.class,
                 R.layout.hompageview,
 
-                reference =   FirebaseDatabase.getInstance().getReference().child("ADMIN")) {
+                reference =   FirebaseDatabase.getInstance().getReference().child("POST")) {
             @Override
             protected void populateView(View v, final Homeview model, int position) {
                 // Get references to the views of message.xml
@@ -183,18 +200,21 @@ somthing.setOnClickListener(new View.OnClickListener() {
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
               Picasso.get().load(model.getPhoto1()).resize(900, 550).centerCrop().into(postimg);
+                messageTime.setText(model.getMessageTime());
 
 comment.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
 
 Intent ash=new Intent(getActivity(), Comment.class);
+ash.putExtra("a",model.getIdd());
+
 startActivity(ash);
 
 
     }
 });
-               messageTime.setText(model.getMessageTime());
+
                 postimg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -311,28 +331,39 @@ download.setOnClickListener(new View.OnClickListener() {
 });
 
 
-
-
-
-                reference.addValueEventListener(new ValueEventListener() {
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        mShimmerViewContainer.stopShimmerAnimation();
-                        mShimmerViewContainer.setVisibility(View.GONE);
-                         // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        mShimmerViewContainer.stopShimmerAnimation();
+//                        mShimmerViewContainer.setVisibility(View.GONE);
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Log.e(TAG, "onCancelled", databaseError.toException());
                     }
-
-
-
-
-
-
                 });
+
+
+//                reference.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        mShimmerViewContainer.stopShimmerAnimation();
+//                        mShimmerViewContainer.setVisibility(View.GONE);
+//                         // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//
+//
+//
+//
+//
+//
+//                });
 
                 //  }
 
@@ -354,18 +385,18 @@ download.setOnClickListener(new View.OnClickListener() {
 
         return root;
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        mShimmerViewContainer.startShimmerAnimation();
-    }
-
-    @Override
-    public void onPause() {
-        mShimmerViewContainer.stopShimmerAnimation();
-        super.onPause();
-
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mShimmerViewContainer.startShimmerAnimation();
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        mShimmerViewContainer.stopShimmerAnimation();
+//        super.onPause();
+//
+//    }
 
     private void saveState(boolean isFavourite) {
         SharedPreferences aSharedPreferences = getActivity().getSharedPreferences(

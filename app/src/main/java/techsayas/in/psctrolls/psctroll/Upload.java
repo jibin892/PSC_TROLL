@@ -101,6 +101,7 @@ public class Upload extends AppCompatActivity {
     private String selectedPath;
     MediaController mediac;
     private NotificationsViewModel notificationsViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,99 +115,14 @@ public class Upload extends AppCompatActivity {
         emailTV = findViewById(R.id.email1);
 //        idTV = root.findViewById(R.id.id);
         photo = findViewById(R.id.photos2);
-        write = findViewById(R.id.text);
+        write = findViewById(R.id.text1);
         galary = findViewById(R.id.selectimg);
         imgview = findViewById(R.id.img);
         caption = findViewById(R.id.text1);
         video = findViewById(R.id.vdio);
         post = findViewById(R.id.post);
 
-     //   caption.setVisibility(View.INVISIBLE);
-     //   imgview.setVisibility(View.INVISIBLE);
 
-//
-
-
-        video.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select a Video "), SELECT_VIDEO);
-            }
-        });
-        //Drawable oldDrawable = imgview.getDrawable();
-
-//        else{
-//
-//
-//
-//        }
-
-      //  caption.setVisibility(View.GONE);
-       // caption.setVisibility(ImageView.GONE);
-
-//        Animation center_reveal_anim = AnimationUtils.loadAnimation(getActivity(),R.anim.center_reveal_anim);
-//        facebbok.startAnimation(center_reveal_anim);
-//        google.startAnimation(center_reveal_anim);
-//        instagram.startAnimation(center_reveal_anim);
-
-        galary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-//                Intent inten = new Intent();
-//                inten.setType("image/*");
-//                inten.setAction(Intent.ACTION_GET_CONTENT);
-//                startActivityForResult(Intent.createChooser(inten, "Select Picture"), 1);
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-//                if (imgview.getDrawable() == null) {
-//                    write.setVisibility(View.VISIBLE);
-//                    caption.setVisibility(View.GONE);
-//                } else {
-//                    caption.setVisibility(View.VISIBLE);
-//
-//                }
-
-            }
-
-
-//                Intent intent = new Intent(Intent.ACTION_PICK);
-//                intent.setType("image/*");
-//                startActivityForResult(intent,IMAGE_PICK_CODE);
-
-        });
-
-
-
-        post.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-lc();
-
-            }
-        });
-
-
-//        if (imgview.getDrawable()==null){
-//            caption.setVisibility(View.GONE);
-//Toast.makeText(getApplicationContext(),"dsgfg",Toast.LENGTH_LONG).show();
-//        }
-//        else {
-//            Toast.makeText(getApplicationContext(),"dsgfg",Toast.LENGTH_LONG).show();
-//
-//            caption.setVisibility(View.VISIBLE);
-//        } VideoView videov;
-
-
-//         Configure sign-in to request the user's ID, email address, and basic
-//         profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -219,32 +135,110 @@ lc();
             personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
             String personFamilyName = acct.getFamilyName();
-         personEmail = acct.getEmail();
-           personId = acct.getId();
+            personEmail = acct.getEmail();
+            personId = acct.getId();
             personPhoto = acct.getPhotoUrl();
 
             nameTV.setText(personName);
-           emailTV.setText(personEmail);
+            emailTV.setText(personEmail);
 //            idTV.setText("ID: "+personGivenName);
-           // Picasso.get().load(personPhoto).into(photo1);
+            // Picasso.get().load(personPhoto).into(photo1);
             Picasso.get().load(personPhoto).into(photo);
 
 
         }
 
-//        sign_out.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                signOut();
-//            }
-//        });
-//
+
+
+        galary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
+
+            }
+        });
+        post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Toast.makeText(Userchatimage.this, String.valueOf(bitmap), Toast.LENGTH_SHORT).show();
+                storage = FirebaseStorage.getInstance();
+                storageReference = storage.getReference();
+
+
+                if(filePath != null) {
+                    final ProgressDialog progressDialog = new ProgressDialog(Upload.this);
+                    progressDialog.setTitle("Uploading...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
+                    StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+
+                    ref.putFile(filePath)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    String image = taskSnapshot.getDownloadUrl().toString();
+                                    //  Toast.makeText(Userchatimage.this, image, Toast.LENGTH_SHORT).show();
+                                    progress = ProgressDialog.show(Upload.this, "Loading...",
+                                            "Plz Wait", true);
+                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                                    DatabaseReference namesRef = rootRef.child("POSTADMIN").push();
+                                    Map<String, Object> map = new HashMap<>();
+                                    map.put("messageText", write.getText().toString());
+                                    map.put("photo", String.valueOf(personPhoto));
+                                    map.put("messageUser", personName);
+                                    map.put("email", personEmail);
+                                    map.put("id", personId);
+                                    map.put("photo1", image);
+                                    String mGroupId = rootRef.push().getKey();
+                                    map.put("idd", mGroupId);
+                                    String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                                    map.put("stamp", timeStamp);
+                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+                                    map.put("messageTime", currentTime);
+                                    namesRef.updateChildren(map);
+                                    rootRef.child("POSTADMIN");
+                                    rootRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            progress.dismiss();
+                                            // Log.d(TAG, "This: "+dataSnapshot.getValue());
+                                            //Toast.makeText(getActivity(),"gfdg",Toast.LENGTH_LONG).show();
+                                            Intent ab=new Intent(getApplicationContext(),Homepage.class);
+                                            startActivity(ab);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(Upload.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                                            .getTotalByteCount());
+                                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                                }
+                            });
+                }
+
+
+            }
+        });
     }
-
-
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -253,7 +247,7 @@ lc();
         {
             filePath = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imgview.setImageBitmap(bitmap);
             }
             catch (IOException e)
@@ -262,44 +256,4 @@ lc();
             }
         }
     }
-    public void lc() {
-//        progress = ProgressDialog.show(Upload.this, "Loading...",
-//                "Plz Wait", true);
-
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference namesRef = rootRef.child("POSTSENTADMIN").push();
-        Map<String, Object> map = new HashMap<>();
-        map.put("post", write.getText().toString());
-        map.put("name", String.valueOf(personPhoto));
-        map.put("email", personName);
-        map.put("photo", personEmail);
-        String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-        map.put("time", currentTime);
-        String mGroupId = rootRef.push().getKey();
-        map.put("idd", mGroupId);
-        String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
-        map.put("stamp", timeStamp);
-        namesRef.updateChildren(map);
-        rootRef.child("POSTSENTADMIN").child(personId);
-        write.getText().clear();
-        rootRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                //Log.d(TAG, "This: "+dataSnapshot.getValue());
-                Toast.makeText(getApplicationContext(),"gfdg",Toast.LENGTH_LONG).show();
-                Intent n=new Intent(getApplicationContext(),Homepage.class);
-                startActivity(n);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
 }
-
-
