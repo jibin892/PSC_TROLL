@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -67,7 +68,7 @@ Intent a;
     StorageReference storageReference;
     // request code
     TextView messageTime;
-    DatabaseReference reference;
+    Query reference;
 
     TextView messageUser;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -148,13 +149,11 @@ Intent a;
                     map.put("email", personEmail);
                     map.put("id", personId);
                     map.put("cament", a.getStringExtra("a"));
-
-
                     String mGroupId = rootRef.push().getKey();
                     map.put("idd", mGroupId);
+                    map.put("comentid", a.getStringExtra("re"));
                     String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
                     map.put("stamp", timeStamp);
-
                     String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
                     map.put("messageTime", currentTime);
                     namesRef.updateChildren(map);
@@ -212,7 +211,7 @@ Intent a;
         adapter = new FirebaseListAdapter<Commentreplayclass>(Commentreplay.this, Commentreplayclass.class,
                 R.layout.commentreplys,
 
-                reference = FirebaseDatabase.getInstance().getReference().child("COMMENTREPLAY")) {
+                reference=  FirebaseDatabase.getInstance().getReference("COMMENTREPLAY").orderByChild("comentid").equalTo(a.getStringExtra("re"))) {
             @Override
             protected void populateView(View v, final Commentreplayclass model, int position) {
                 // Get references to the views of message.xml

@@ -327,52 +327,37 @@ public  static boolean isInFront;
                     private void delet() {
 
 
-                        if (model.getId() == personId) {
+                       if(model.getId()==personId){
+
+                           DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                           Query applesQuery = ref.child("MSG").orderByChild("idd").equalTo(model.getIdd());
 
 
-                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                            Query applesQuery = ref.child("MSG").orderByChild("id").equalTo(personId);
 
-                            if (applesQuery != null) {
+                           applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                               @Override
+                               public void onDataChange(DataSnapshot dataSnapshot) {
+                                   for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                       appleSnapshot.getRef().removeValue();
+                                       //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
 
-                                Query applesQuery1 = ref.child("MSG").orderByChild("stamp").equalTo(model.getStamp());
-                                if (applesQuery1 == null) {
+                                   }
+                               }
 
-                                    Toast.makeText(getActivity(), "gkfjgud", LENGTH_LONG).show();
+                               @Override
+                               public void onCancelled(DatabaseError databaseError) {
+                                   // Log.e(TAG, "onCancelled", databaseError.toException());
+                               }
+                           });
 
-                                } else {
+                       }
 
+                       else {
 
-                                    applesQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
-                                                appleSnapshot.getRef().removeValue();
-                                                //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
-
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-                                            // Log.e(TAG, "onCancelled", databaseError.toException());
-                                        }
-                                    });
-                                }
-
-
-                            }
-
-
-                        } else {
-
-
-                            Toast.makeText(getActivity(), "Not delet", LENGTH_LONG).show();
-
-                        }
-
-
+                           Toast.makeText(getActivity(),"no ",LENGTH_LONG).show();
+                       }
                     }
+
                 });
 
                 image_message_profile.setOnClickListener(new View.OnClickListener() {
@@ -420,7 +405,12 @@ public  static boolean isInFront;
             public View getView(int position, View view, ViewGroup viewGroup) {
                 ChatMessage chatMessage = getItem(position);
                 if (chatMessage.getId().equals(personId)) {
-                    view = getActivity().getLayoutInflater().inflate(R.layout.item_out_message, viewGroup, false);
+
+                    
+                        view = getActivity().getLayoutInflater().inflate(R.layout.item_out_message, viewGroup, false);
+
+
+
 
                 } else {
                     view = getActivity().getLayoutInflater().inflate(R.layout.item_in_message, viewGroup, false);

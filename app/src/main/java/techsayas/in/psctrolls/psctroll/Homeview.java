@@ -8,11 +8,11 @@ public class Homeview {
    // private  String photo;
     private  String photo1;
     private  String photo;
-   // private  String time;
+    private  String idd;
 
     private  String s;
 
-    public Homeview(String messageText, String messageUser, String photo, String photo1, String s) {
+    public Homeview(String messageText, String messageUser, String photo, String photo1, String s,String idd) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
@@ -21,6 +21,8 @@ this.photo1=photo1;
         // Initialize to current time
        this. messageTime = messageTime;
         this.s=s;
+        this.idd=idd;
+
 
     }
 
@@ -32,7 +34,10 @@ this.photo1=photo1;
     {
         return  s;
     }
-
+    public String getIdd()
+    {
+        return  idd;
+    }
 
     public String getPhoto()
 {

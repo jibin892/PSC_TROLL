@@ -30,10 +30,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -64,6 +67,7 @@ public class Comment extends AppCompatActivity {
     ListView listOfMessages;
     CircleImageView img;
     View view;
+    String as;
     ImageView image_message_profile;
     Uri personPhoto;
     GoogleSignInClient mGoogleSignInClient;
@@ -72,23 +76,26 @@ public class Comment extends AppCompatActivity {
     String personId;
     String personEmail;
     private Uri filePath;
+    Intent ash;
     FirebaseStorage storage;
     StorageReference storageReference;
     // request code
     TextView messageTime;
-    DatabaseReference reference;
+    Query reference;
     DatabaseReference a;
     TextView messageUser;
     private final int PICK_IMAGE_REQUEST = 71;
     private MessageViewModel messageViewModel;
-
-
+    TextView replay;
+    TextView messageText;
+    ImageView postimg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
 
-
+ash=getIntent();
+as=ash.getStringExtra("a");
         fab = (FloatingActionButton)findViewById(R.id.fab2);
         cam = (FloatingActionButton)findViewById(R.id.cam2);
         fab.setVisibility(View.INVISIBLE);
@@ -153,6 +160,7 @@ public class Comment extends AppCompatActivity {
                     map.put("photo", String.valueOf(personPhoto));
                     map.put("messageUser", personName);
                     map.put("email", personEmail);
+                    map.put("postid", ash.getStringExtra("a"));
                     map.put("id", personId);
                     String mGroupId = rootRef.push().getKey();
                     map.put("idd", mGroupId);
@@ -216,22 +224,31 @@ public class Comment extends AppCompatActivity {
         adapter = new FirebaseListAdapter<Commentview>(Comment.this, Commentview.class,
                 R.layout.message,
 
-                reference = FirebaseDatabase.getInstance().getReference().child("COMMENT")) {
+                reference=  FirebaseDatabase.getInstance().getReference("COMMENT").orderByChild("postid").equalTo(as)
+        )
+
+ {
             @Override
             protected void populateView(View v, final Commentview model, int position) {
+
+
+
                 // Get references to the views of message.xml
-                ImageView postimg = v.findViewById(R.id.postimg123t);
-                TextView messageText = (TextView) v.findViewById(R.id.message_textt);
+                 postimg = v.findViewById(R.id.postimg123t);
+                messageText = (TextView) v.findViewById(R.id.message_textt);
                 messageUser = (TextView) v.findViewById(R.id.message_usert);
-                TextView replay = (TextView) v.findViewById(R.id.message_reply);
+                 replay = (TextView) v.findViewById(R.id.message_reply);
 
                 messageTime = (TextView) v.findViewById(R.id.message_timet);
-                ImageView image_message_profile = v.findViewById(R.id.image_message_profilet);
+                  image_message_profile = v.findViewById(R.id.image_message_profilet);
+
+
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
                 Picasso.get().load(model.getPhoto1()).resize(700, 700).centerCrop().into(postimg);
                 messageTime.setText(model.getMessageTime());
+
 
                 replay.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -243,6 +260,8 @@ public class Comment extends AppCompatActivity {
                         a.putExtra("b", model.getPhoto());
                         a.putExtra("c", model.getMessageTime());
                         a.putExtra("d", model.getMessageText());
+                        a.putExtra("re", model.getIdd());
+
                         startActivity(a);
                     }
                 });
@@ -263,11 +282,19 @@ public class Comment extends AppCompatActivity {
 
 
                 reference.addValueEventListener(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
-                        //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+
+
+
+                       // Toast.makeText(getApplicationContext(),as,LENGTH_LONG).show();
+
+
+
+
                     }
 
                     @Override
@@ -314,6 +341,7 @@ public class Comment extends AppCompatActivity {
             public int getItemViewType(int position) {
 // return a value between 0 and (getViewTypeCount - 1)
                 return position % 2;
+
             }
 
         };

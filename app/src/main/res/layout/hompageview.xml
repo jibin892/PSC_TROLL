@@ -140,7 +140,7 @@
             android:layout_marginLeft="145dp"
             android:layout_marginTop="350dp"
             android:backgroundTint="#FFFFFF"
-            android:src="@drawable/down" />
+            android:src="@drawable/downloade" />
 
         <ImageButton
             android:id="@+id/share"
