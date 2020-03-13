@@ -45,6 +45,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -99,7 +100,8 @@ public class HomeFragment extends Fragment {
     ImageButton bookmark;
     DoubleTapLikeView mDoubleTapLikeView;
     DatabaseReference reference;
-
+    Query reference1;
+String like;
     private ShimmerFrameLayout mShimmerViewContainer;
     int j=0;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -254,9 +256,40 @@ startActivity(ash);
                     @Override
                     public void onDoubleTap(View view) {
 // Toast.makeText(MainActivity.this, "Double TAPPED !", Toast.LENGTH_SHORT).show();
+                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference namesRef = rootRef.child("LIKE").push();
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("Like", 1);
+                        map.put("photo", String.valueOf(personPhoto));
+                        map.put("messageUser", personName);
+                        map.put("email", personEmail);
+                        map.put("id", personId);
+                        String mGroupId = rootRef.push().getKey();
 
-                        j=j+1;
-                     textView.setText(j+"Likes");
+                        map.put("idd", mGroupId);
+                        String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                        map.put("stamp", timeStamp);
+                        map.put("postid", model.getIdd());
+                        String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+                        map.put("messageTime", currentTime);
+                        namesRef.updateChildren(map);
+                        rootRef.child("LIKE");
+                        rootRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                reference1 =   FirebaseDatabase.getInstance().getReference("LIKE").orderByChild("postid").equalTo(model.getIdd());
+// Log.d(TAG, "This: "+dataSnapshot.getValue());
+//Toast.makeText(getActivity(),"gfdg",Toast.LENGTH_LONG).show();
+                                textView.setText(reference1.toString()+"Likes");
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
 
                     }
 
