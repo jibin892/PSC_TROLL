@@ -1,6 +1,8 @@
 package techsayas.in.psctrolls.psctroll;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,10 @@ public class Viewprofile extends AppCompatActivity {
 ImageView photo,facebook,instagaram;
 TextView  name ,email;
 Intent as;
+    ScaleAnimation shrinkAnim;
+
+    private TextView tvNoMovies;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
