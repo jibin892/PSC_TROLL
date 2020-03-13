@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -29,6 +33,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,18 +45,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -58,10 +70,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import techsayas.in.psctrolls.psctroll.ui.message.MessageViewModel;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static techsayas.in.psctrolls.psctroll.ui.home.HomeFragment.currentDate;
 
 public class Comment extends AppCompatActivity {
     FirebaseListAdapter<Commentview> adapter;
-    FloatingActionButton fab, cam;
+    FloatingActionButton fab,fab4, cam;
     SweetAlertDialog pDialog;
     // ShimmerLayout shimmerText;
     ListView listOfMessages;
@@ -74,19 +87,24 @@ public class Comment extends AppCompatActivity {
     EditText input;
     String personName;
     String personId;
+    ProgressDialog progress;
+
     String personEmail;
     private Uri filePath;
     Intent ash;
     FirebaseStorage storage;
     StorageReference storageReference;
     // request code
+    ImageView imgview1;
     TextView messageTime;
-    Query reference;
+    Query reference, reference1;
+    Bitmap bitmap;
     DatabaseReference a;
     TextView messageUser;
     private final int PICK_IMAGE_REQUEST = 71;
     private MessageViewModel messageViewModel;
     TextView replay;
+    ImageView like;
     TextView messageText;
     ImageView postimg;
     @Override
@@ -97,16 +115,20 @@ public class Comment extends AppCompatActivity {
 ash=getIntent();
 as=ash.getStringExtra("a");
         fab = (FloatingActionButton)findViewById(R.id.fab2);
+        fab4 = (FloatingActionButton)findViewById(R.id.fab4);
+
         cam = (FloatingActionButton)findViewById(R.id.cam2);
+        imgview1=findViewById(R.id.imgcomment);
         fab.setVisibility(View.INVISIBLE);
-        // fab.setEnabled(false);
+      //  fab.setEnabled(false);
 
         cam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //
-                Intent a = new Intent(getApplicationContext(), Userchatimage.class);
-                startActivity(a);
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
             }
         });
         listOfMessages = (ListView)  findViewById(R.id.list_of_messages2);
@@ -118,8 +140,12 @@ as=ash.getStringExtra("a");
 
                 if (s.toString().trim().length() == 0) {
                     fab.setVisibility(View.INVISIBLE);
+                    fab4.setVisibility(View.VISIBLE);
+
                 } else {
                     fab.setVisibility(View.VISIBLE);
+                    fab4.setVisibility(View.INVISIBLE);
+
                 }
             }
 
@@ -135,7 +161,84 @@ as=ash.getStringExtra("a");
             }
         });
 
+fab4.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+
+        if(filePath != null) {
+            final ProgressDialog progressDialog = new ProgressDialog(Comment.this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            String image = taskSnapshot.getDownloadUrl().toString();
+                            //  Toast.makeText(Userchatimage.this, image, Toast.LENGTH_SHORT).show();
+                            progress = ProgressDialog.show(Comment.this, "Loading...",
+                                    "Plz Wait", true);
+                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                            DatabaseReference namesRef = rootRef.child("COMMENT").push();
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("photo1", image);
+                            map.put("photo", String.valueOf(personPhoto));
+                            map.put("messageUser", personName);
+                            map.put("email", personEmail);
+                            map.put("postid", ash.getStringExtra("a"));
+                            map.put("id", personId);
+                            String mGroupId = rootRef.push().getKey();
+                            map.put("idd", mGroupId);
+                            String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                            map.put("stamp", timeStamp);
+                            String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+                            map.put("messageTime", currentTime);
+                            namesRef.updateChildren(map);
+                            rootRef.child("COMMENT");
+                            rootRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    progress.dismiss();
+                                    progressDialog.dismiss();
+                                    imgview1.setImageDrawable(null);
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(Comment.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                        }
+                    });
+
+        }
+
+
+    }
+});
         //   img=root.findViewById(R.id.img);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,6 +342,9 @@ as=ash.getStringExtra("a");
                 messageUser = (TextView) v.findViewById(R.id.message_usert);
                  replay = (TextView) v.findViewById(R.id.message_reply);
 
+                   TextView     like1 = (TextView) v.findViewById(R.id.message_like);
+                    //  like = (ImageView) v.findViewById(R.id.commentlikett);
+
                 messageTime = (TextView) v.findViewById(R.id.message_timet);
                   image_message_profile = v.findViewById(R.id.image_message_profilet);
 
@@ -246,8 +352,81 @@ as=ash.getStringExtra("a");
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
-                Picasso.get().load(model.getPhoto1()).resize(700, 700).centerCrop().into(postimg);
-                messageTime.setText(model.getMessageTime());
+                Picasso.get().load(model.getPhoto1()).resize(400, 300).centerCrop().into(postimg);
+
+
+
+                Calendar cal = Calendar.getInstance();
+                TimeZone tz = cal.getTimeZone();//get your local time zone.
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+                sdf.setTimeZone(tz);//set time zone.
+                String localTime = sdf.format(new Date(Long.parseLong(model.getStamp() )* 1000));
+                Date date = new Date();
+                try {
+                    date = sdf.parse(localTime);//get local date
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if(date == null) {
+                    //  return null;
+                }
+
+                long time = date.getTime();
+
+                Date curDate = currentDate();
+                long now = curDate.getTime();
+                if (time > now || time <= 0) {
+                    //  return null;
+                }
+
+                float timeDIM = getTimeDistanceInMinutes(time);
+
+                String timeAgo = null;
+
+                if (timeDIM == 0) {
+                    timeAgo = "just now";
+                } else if (timeDIM == 1) {
+                    //  return  "1 minute";
+                    timeAgo="1 minute ago";
+                } else if (timeDIM >= 2 && timeDIM <= 44) {
+                    timeAgo = timeDIM + " minutes ago";
+                } else if (timeDIM >= 45 && timeDIM <= 89) {
+                    timeAgo = "1 hour ago";
+                } else if (timeDIM >= 90 && timeDIM <= 1439) {
+                    timeAgo =  (Math.round(timeDIM / 60)) + " hours ago";
+                } else if (timeDIM >= 1440 && timeDIM <= 2519) {
+                    timeAgo = "1 day ago";
+                } else if (timeDIM >= 2520 && timeDIM <= 43199) {
+                    timeAgo = (Math.round(timeDIM / 1440)) + " days";
+                } else if (timeDIM >= 43200 && timeDIM <= 86399) {
+                    timeAgo = "about a month ago";
+                } else if (timeDIM >= 86400 && timeDIM <= 525599) {
+                    timeAgo = (Math.round(timeDIM / 43200)) + " months";
+                } else if (timeDIM >= 525600 && timeDIM <= 655199) {
+                    timeAgo = "about a year ago";
+                } else if (timeDIM >= 655200 && timeDIM <= 914399) {
+                    timeAgo = "over a year ago";
+                } else if (timeDIM >= 914400 && timeDIM <= 1051199) {
+                    timeAgo = "almost 2 years ago";
+                } else {
+                    timeAgo = "about " + (Math.round(timeDIM / 525600)) + " years";
+                }
+
+                // return timeAgo + " ago";
+
+                messageTime.setText(timeAgo);
+
+
+//                if(readState())
+//                {
+//                    like.setImageDrawable(getResources().getDrawable(R.drawable.vector_heart_red));
+//                }
+//                else
+//                {
+//                    like.setImageDrawable(getResources().getDrawable(R.drawable.vector_heart_red));
+//                }
+
 
 
                 replay.setOnClickListener(new View.OnClickListener() {
@@ -354,6 +533,45 @@ as=ash.getStringExtra("a");
 
 
 
+
+
+    public static Date currentDate() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.getTime();
+    }
+
+    private static int getTimeDistanceInMinutes(long time) {
+        long timeDistance = currentDate().getTime() - time;
+        return Math.round((Math.abs(timeDistance) / 1000) / 60);
+    }
+    private void saveState(boolean isFavourite) {
+        SharedPreferences aSharedPreferences = getApplicationContext().getSharedPreferences(
+                "Favourite", Context.MODE_PRIVATE);
+        SharedPreferences.Editor aSharedPreferencesEdit = aSharedPreferences
+                .edit();
+        aSharedPreferencesEdit.putBoolean("State", isFavourite);
+        aSharedPreferencesEdit.apply();
+    }
+    private boolean readState() {
+        SharedPreferences aSharedPreferences = getApplicationContext().getSharedPreferences(
+                "Favourite", Context.MODE_PRIVATE);
+        return aSharedPreferences.getBoolean("State", true);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imgview1.setImageBitmap(bitmap);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }}
 }
 
 

@@ -1,6 +1,6 @@
 package techsayas.in.psctrolls.psctroll;
 
-public class Commentview {
+public class Profileview {
 
     private String messageText;
     private String messageUser;
@@ -8,12 +8,11 @@ public class Commentview {
    // private  String photo;
     private  String photo1;
     private  String photo;
-    private  String id;
     private  String idd;
     private  String stamp;
     private  String s;
 
-    public Commentview(String messageText, String messageUser, String photo, String photo1, String s, String id, String idd, String stamp) {
+    public Profileview(String messageText, String messageUser, String photo, String photo1, String s, String idd, String stamp) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
@@ -22,32 +21,27 @@ this.photo1=photo1;
         // Initialize to current time
        this. messageTime = messageTime;
         this.s=s;
-        this.id=id;
         this.idd=idd;
         this.stamp=stamp;
+
 
     }
 
 
 
-    public Commentview() {
+    public Profileview() {
     }
     public String s()
     {
         return  s;
     }
-    public String getStamp()
-    {
-        return  stamp;
-    }
-
-    public String getId()
-    {
-        return  id;
-    }
     public String getIdd()
     {
         return  idd;
+    }
+    public String getStamp()
+    {
+        return  stamp;
     }
 
     public String getPhoto()

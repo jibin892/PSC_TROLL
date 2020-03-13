@@ -61,18 +61,22 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import techsayas.in.psctrolls.psctroll.ChatMessage;
+import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.Homepage;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.R;
@@ -86,7 +90,7 @@ import static com.facebook.share.internal.DeviceShareDialogFragment.TAG;
 
 public class MessageFragment extends Fragment {
     FirebaseListAdapter<ChatMessage> adapter;
-    FloatingActionButton fab, cam;
+    FloatingActionButton fab,fab6, cam;
     SweetAlertDialog pDialog;
     // ShimmerLayout shimmerText;
     ListView listOfMessages;
@@ -101,8 +105,11 @@ public class MessageFragment extends Fragment {
     String personEmail;
     private Uri filePath;
     FirebaseStorage storage;
+    Bitmap bitmap;
     StorageReference storageReference;
     // request code
+    ProgressDialog progress;
+ImageView imgmsg;
     TextView messageTime;
     DatabaseReference reference;
     DatabaseReference a;
@@ -119,18 +126,21 @@ public  static boolean isInFront;
                 ViewModelProviders.of(this).get(MessageViewModel.class);
         root = inflater.inflate(R.layout.fragment_message, container, false);
 
+        fab6 = (FloatingActionButton) root.findViewById(R.id.fab6);
 
         fab = (FloatingActionButton) root.findViewById(R.id.fab);
         cam = (FloatingActionButton) root.findViewById(R.id.cam);
         fab.setVisibility(View.INVISIBLE);
         // fab.setEnabled(false);
+        imgmsg = (ImageView) root.findViewById(R.id.imgmsg);
 
         cam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //
-                Intent a = new Intent(getActivity(), Userchatimage.class);
-                startActivity(a);
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
             }
         });
         listOfMessages = (ListView) root.findViewById(R.id.list_of_messages);
@@ -142,8 +152,12 @@ public  static boolean isInFront;
 
                 if (s.toString().trim().length() == 0) {
                     fab.setVisibility(View.INVISIBLE);
+                    fab6.setVisibility(View.VISIBLE);
+
                 } else {
                     fab.setVisibility(View.VISIBLE);
+                    fab6.setVisibility(View.INVISIBLE);
+
                 }
             }
 
@@ -159,7 +173,83 @@ public  static boolean isInFront;
             }
         });
 
+        fab6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                storage = FirebaseStorage.getInstance();
+                storageReference = storage.getReference();
+
+
+                if(filePath != null) {
+                    final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                    progressDialog.setTitle("Uploading...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
+                    StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+
+                    ref.putFile(filePath)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    String image = taskSnapshot.getDownloadUrl().toString();
+                                    //  Toast.makeText(Userchatimage.this, image, Toast.LENGTH_SHORT).show();
+                                    progress = ProgressDialog.show(getActivity(), "Loading...",
+                                            "Plz Wait", true);
+                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                                    DatabaseReference namesRef = rootRef.child("MSG").push();
+                                    Map<String, Object> map = new HashMap<>();
+                                    map.put("photo1", image);
+                                    map.put("photo", String.valueOf(personPhoto));
+                                    map.put("messageUser", personName);
+                                    map.put("email", personEmail);
+                                    map.put("id", personId);
+                                    String mGroupId = rootRef.push().getKey();
+                                    map.put("idd", mGroupId);
+                                    String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                                    map.put("stamp", timeStamp);
+                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+                                    map.put("messageTime", currentTime);
+                                    namesRef.updateChildren(map);
+                                    rootRef.child("MSG");
+                                    rootRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            progress.dismiss();
+                                            progressDialog.dismiss();
+                                            imgmsg.setImageDrawable(null);
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                                            .getTotalByteCount());
+                                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                                }
+                            });
+
+                }
+
+
+            }
+        });
         //   img=root.findViewById(R.id.img);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,18 +315,6 @@ public  static boolean isInFront;
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
-        if (acct != null) {
-            personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            personEmail = acct.getEmail();
-            personId = acct.getId();
-            personPhoto = acct.getPhotoUrl();
-
-        }
 
         mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
         return root;
@@ -261,7 +339,68 @@ public  static boolean isInFront;
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
                 Picasso.get().load(model.getPhoto1()).resize(700, 700).centerCrop().into(postimg);
-                messageTime.setText(model.getMessageTime());
+//Toast.makeText(getActivity(),model.getStamp(),LENGTH_LONG).show();
+
+                Calendar cal = Calendar.getInstance();
+                TimeZone tz = cal.getTimeZone();//get your local time zone.
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+                sdf.setTimeZone(tz);//set time zone.
+                String localTime = sdf.format(new Date(Long.parseLong(model.getStamp() )* 1000));
+                Date date = new Date();
+                try {
+                    date = sdf.parse(localTime);//get local date
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if(date == null) {
+                    //  return null;
+                }
+
+                long time = date.getTime();
+
+                Date curDate = currentDate();
+                long now = curDate.getTime();
+                if (time > now || time <= 0) {
+                    //  return null;
+                }
+
+                float timeDIM = getTimeDistanceInMinutes(time);
+
+                String timeAgo = null;
+
+                if (timeDIM == 0) {
+                    timeAgo = "just now";
+                } else if (timeDIM == 1) {
+                    //  return  "1 minute";
+                    timeAgo="1 minute ago";
+                } else if (timeDIM >= 2 && timeDIM <= 44) {
+                    timeAgo = timeDIM + " minutes ago";
+                } else if (timeDIM >= 45 && timeDIM <= 89) {
+                    timeAgo = " 1 hour ago";
+                } else if (timeDIM >= 90 && timeDIM <= 1439) {
+                    timeAgo =  (Math.round(timeDIM / 60)) + " hours ago";
+                } else if (timeDIM >= 1440 && timeDIM <= 2519) {
+                    timeAgo = "1 day ago";
+                } else if (timeDIM >= 2520 && timeDIM <= 43199) {
+                    timeAgo = (Math.round(timeDIM / 1440)) + " days";
+                } else if (timeDIM >= 43200 && timeDIM <= 86399) {
+                    timeAgo = "about a month ago";
+                } else if (timeDIM >= 86400 && timeDIM <= 525599) {
+                    timeAgo = (Math.round(timeDIM / 43200)) + " months";
+                } else if (timeDIM >= 525600 && timeDIM <= 655199) {
+                    timeAgo = "about a year ago";
+                } else if (timeDIM >= 655200 && timeDIM <= 914399) {
+                    timeAgo = "over a year ago";
+                } else if (timeDIM >= 914400 && timeDIM <= 1051199) {
+                    timeAgo = "almost 2 years ago";
+                } else {
+                    timeAgo = "about " + (Math.round(timeDIM / 525600)) + " years";
+                }
+
+              messageTime.setText(timeAgo);
+
+
 
 
                 messageText.setOnLongClickListener(new View.OnLongClickListener() {
@@ -406,7 +545,7 @@ public  static boolean isInFront;
                 ChatMessage chatMessage = getItem(position);
                 if (chatMessage.getId().equals(personId)) {
 
-                    
+
                         view = getActivity().getLayoutInflater().inflate(R.layout.item_out_message, viewGroup, false);
 
 
@@ -454,7 +593,30 @@ public  static boolean isInFront;
         super.onPause();
 
     }
+    public static Date currentDate() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.getTime();
+    }
 
+    private static int getTimeDistanceInMinutes(long time) {
+        long timeDistance = currentDate().getTime() - time;
+        return Math.round((Math.abs(timeDistance) / 1000) / 60);
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+                imgmsg.setImageBitmap(bitmap);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }}
 
     }
 

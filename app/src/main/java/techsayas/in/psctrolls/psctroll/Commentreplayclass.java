@@ -10,12 +10,13 @@ public class Commentreplayclass {
     private  String photo;
     private  String id;
     private  String idd;
+    private  String stamp;
 
     private  String cament;
 
     private  String s;
 
-    public Commentreplayclass(String messageText, String messageUser, String photo, String photo1, String s, String id,String cament,String idd) {
+    public Commentreplayclass(String messageText, String messageUser, String photo, String photo1, String s, String id,String cament,String idd,String stamp) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
@@ -27,6 +28,7 @@ this.photo1=photo1;
         this.s=s;
         this.id=id;
         this.idd=idd;
+        this.stamp=stamp;
 
     }
 
@@ -41,6 +43,10 @@ this.photo1=photo1;
     public String getCament()
     {
         return  cament;
+    }
+    public String getStamp()
+    {
+        return  stamp;
     }
 
     public String getId()

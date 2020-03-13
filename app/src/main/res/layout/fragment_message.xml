@@ -38,87 +38,76 @@
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
+
     <ListView
         android:id="@+id/list_of_messages"
-        android:layout_width="wrap_content"
-        android:layout_height="635dp"
-        android:layout_above="@id/fab"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="16dp"
-        android:padding="10dp"
-        android:transcriptMode="alwaysScroll"
-        android:stackFromBottom="true">
-
-    </ListView>
-
-
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="@dimen/padding_10"
-        android:orientation="horizontal">
+        android:layout_height="651dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"></ListView>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="285dp"
+
+    <RelativeLayout
+        android:id="@+id/relLayout3"
+        android:layout_width="370dp"
+        android:layout_height="73dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/whiteroundcorner">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@drawable/send"
+            android:tint="@android:color/white"
+            app:fabSize="mini" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab6"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@drawable/send"
+            android:tint="@android:color/white"
+            app:fabSize="mini" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/cam"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="280dp"
+            android:clickable="true"
+            android:src="@drawable/photo"
+            android:tint="@android:color/white"
+            app:fabSize="mini" />
+
+
+        <ImageView
+            android:id="@+id/imgmsg"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@id/fab">
+            app:srcCompat="@drawable/bg_parent_rounded_corner" />
 
-            <EditText
-                android:id="@+id/input"
-                android:layout_width="272dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="@dimen/padding_10"
-                android:background="@drawable/roundcorner"
-                android:hint="Enter your message"
-                android:padding="12dp" />
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="344dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="50dp"
+     android:background="@drawable/whiteroundcorner"
+            android:hint="enter your message..."
+            android:padding="2dp"
+            android:textSize="14sp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
 
-
-        <LinearLayout
-            android:layout_width="116dp"
-            android:layout_height="79dp"
-
-            android:orientation="horizontal">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/cam"
-                android:layout_width="56dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="0dp"
-                android:clickable="true"
-                android:src="@drawable/photo"
-                android:tint="@android:color/white"
-                app:fabSize="mini"
-
-                />
-
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="56dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="40dp"
-                android:clickable="true"
-                android:layout_marginLeft="@dimen/padding_10"
-                android:src="@drawable/send"
-                android:tint="@android:color/white"
-                app:fabSize="mini" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
 
 </LinearLayout>

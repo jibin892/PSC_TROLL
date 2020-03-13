@@ -21,7 +21,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:id="@+id/userimg1"
+                    android:id="@+id/myimage"
                     android:layout_marginTop="20dp"
                     app:civ_border_color="@color/black"
                     app:civ_border_width="0.5dp"
@@ -34,10 +34,10 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:text="mitch.tabian"
-                    android:layout_toRightOf="@+id/userimg1"
+                    android:layout_toRightOf="@+id/myimage"
                     android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
-                    android:id="@+id/username"
+                    android:id="@+id/myname"
                     android:textColor="@color/black"
                     />
 
@@ -49,14 +49,14 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
-                    android:id="@+id/ivEllipses"/>
+                    android:id="@+id/ivEllipses1"/>
 
             </RelativeLayout>
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:id="@+id/post1"
+                android:id="@+id/mypost"
                 android:layout_below="@id/relLayout1"
                 android:scaleType="centerCrop"/>
 
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:id="@+id/relLayout2"
-                android:layout_below="@+id/post1"
+                android:layout_below="@+id/mypost"
                 android:background="@color/white">
 
                 <RelativeLayout
@@ -80,47 +80,29 @@
                         android:id="@+id/image_heart_red"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="20dp"
-                        android:src="@drawable/vector_heart_white"
+                        android:src="@drawable/ic_heart_red"
                         android:visibility="invisible"/>
 
                     <ImageView
-                        android:id="@+id/image_heart"
                         android:layout_width="wrap_content"
                         android:layout_height="43dp"
-                        android:layout_centerVertical="true"
+                        android:id="@+id/image_heart"
+                        android:layout_centerInParent="true"
                         android:layout_marginLeft="20dp"
                         android:src="@drawable/vector_heart_white"
-                        android:visibility="visible" />
+                        android:visibility="visible"/>
 
                 </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="43dp"
+                    android:layout_width="64dp"
+                    android:layout_height="26dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/heartLayout"
                     android:src="@drawable/comment"
                     android:visibility="visible" />
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:id="@+id/bookmark"
-                    android:layout_toRightOf="@+id/heartLayout"
-                    android:layout_marginLeft="290dp"
-                    android:src="@drawable/favi"
-                    android:visibility="visible"
-                    android:layout_centerVertical="true"/>
-
-                <TextView
-                    android:layout_width="55dp"
-                    android:layout_height="35dp"
-                    android:id="@+id/yu"
-                    android:layout_toRightOf="@+id/heartLayout"
-                    android:layout_marginLeft="200dp"
-                    android:text="1 Likes"
-                    android:layout_centerVertical="true"/>
 
             </RelativeLayout>
 
@@ -139,7 +121,7 @@
                     android:text="Liked by Mitch, Tom, Mohammed and 30 others"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:id="@+id/userdis"/>
+                    android:id="@+id/mydis1"/>
 
 
 
@@ -149,7 +131,7 @@
                     android:text="View all 3 comments"
                     android:textColor="@color/grey"
                     android:textSize="18sp"
-                    android:layout_below="@+id/userdis"
+                    android:layout_below="@+id/mydis1"
                     android:id="@+id/image_comments_link"
                     android:layout_marginTop="15dp"/>
 
@@ -160,7 +142,7 @@
                     android:textColor="@color/grey"
                     android:textSize="18sp"
                     android:layout_below="@+id/image_comments_link"
-                    android:id="@+id/uploadtime"
+                    android:id="@+id/mytime"
                     android:layout_marginTop="15dp"/>
 
 
