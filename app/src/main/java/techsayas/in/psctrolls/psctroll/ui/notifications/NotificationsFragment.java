@@ -79,22 +79,20 @@ public class NotificationsFragment extends Fragment {
         //using staggered grid pattern in recyclerview
         mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-
         //Say Hello to our new Firebase UI Element, i.e., FirebaseRecyclerAdapter
         final FirebaseRecyclerAdapter<Movie,MovieViewHolder> adapter = new FirebaseRecyclerAdapter<Movie, MovieViewHolder>(
                 Movie.class,
                 R.layout.movie_board_item,
                 MovieViewHolder.class,
                 //referencing the node where we want the database to store the data from our Object
-                mDatabaseReference.child("").child("").child("movies").getRef()
+                mDatabaseReference.child("POST").getRef()
         ) {
             @Override
             protected void populateViewHolder(MovieViewHolder viewHolder, Movie model, int position) {
 
 
               //  Picasso.with(getActivity()).load(model.getMoviePoster()).into(viewHolder.ivMoviePoster);
-                Picasso.get().load(model.getMoviePoster()).into(viewHolder.ivMoviePoster);
+                Picasso.get().load(model.photo1).into(viewHolder.ivMoviePoster);
             }
         };
 

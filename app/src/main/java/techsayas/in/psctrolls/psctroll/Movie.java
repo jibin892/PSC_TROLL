@@ -6,25 +6,25 @@ package techsayas.in.psctrolls.psctroll;
 
 public class Movie {
 
-    public String movieName;
+    public String photo1;
     public String moviePoster;
     public float movieRating;
 
     public Movie(){
 
     }
-    public Movie(String movieName, String moviePoster, float movieRating){
-        this.movieName = movieName;
+    public Movie(String photo1, String moviePoster, float movieRating){
+        this.photo1 = photo1;
         this.moviePoster = moviePoster;
         this.movieRating  = movieRating;
     }
 
-    public String getMovieName() {
-        return movieName;
+    public String getPhoto1() {
+        return photo1;
     }
 
     public void setMovieName(String movieName) {
-        this.movieName = movieName;
+        this.photo1 = movieName;
     }
 
     public String getMoviePoster() {
