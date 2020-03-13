@@ -348,7 +348,7 @@ Intent a;
                     //  return null;
                 }
 
-                int timeDIM = getTimeDistanceInMinutes(time);
+                float timeDIM = getTimeDistanceInMinutes(time);
 
                 String timeAgo = null;
 
@@ -362,7 +362,7 @@ Intent a;
                 } else if (timeDIM >= 45 && timeDIM <= 89) {
                     timeAgo = " hour ago";
                 } else if (timeDIM >= 90 && timeDIM <= 1439) {
-                    timeAgo = "about " + (Math.round(timeDIM / 60)) + " hours";
+                    timeAgo =  (Math.round(timeDIM / 60)) + " hours ago";
                 } else if (timeDIM >= 1440 && timeDIM <= 2519) {
                     timeAgo = "1 day ago";
                 } else if (timeDIM >= 2520 && timeDIM <= 43199) {

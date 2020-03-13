@@ -315,18 +315,6 @@ public  static boolean isInFront;
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
-        if (acct != null) {
-            personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            personEmail = acct.getEmail();
-            personId = acct.getId();
-            personPhoto = acct.getPhotoUrl();
-
-        }
 
         mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
         return root;
@@ -356,7 +344,7 @@ public  static boolean isInFront;
                 Calendar cal = Calendar.getInstance();
                 TimeZone tz = cal.getTimeZone();//get your local time zone.
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
-                sdf.setTimeZone(tz);
+                sdf.setTimeZone(tz);//set time zone.
                 String localTime = sdf.format(new Date(Long.parseLong(model.getStamp() )* 1000));
                 Date date = new Date();
                 try {
@@ -389,9 +377,9 @@ public  static boolean isInFront;
                 } else if (timeDIM >= 2 && timeDIM <= 44) {
                     timeAgo = timeDIM + " minutes ago";
                 } else if (timeDIM >= 45 && timeDIM <= 89) {
-                    timeAgo = " an hour ago";
+                    timeAgo = " 1 hour ago";
                 } else if (timeDIM >= 90 && timeDIM <= 1439) {
-                    timeAgo = "about " + (Math.round(timeDIM / 60)) + " hours";
+                    timeAgo =  (Math.round(timeDIM / 60)) + " hours ago";
                 } else if (timeDIM >= 1440 && timeDIM <= 2519) {
                     timeAgo = "1 day ago";
                 } else if (timeDIM >= 2520 && timeDIM <= 43199) {
@@ -410,9 +398,7 @@ public  static boolean isInFront;
                     timeAgo = "about " + (Math.round(timeDIM / 525600)) + " years";
                 }
 
-                // return timeAgo + " ago";
-
-                messageTime.setText(timeAgo);
+              messageTime.setText(timeAgo);
 
 
 

@@ -2,7 +2,9 @@ package techsayas.in.psctrolls.psctroll.ui.home;
 
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -87,7 +89,7 @@ public class HomeFragment extends Fragment {
     SweetAlertDialog pDialog;
     ListView listOfMessages;
     CircleImageView img;
-    ImageView  download,share;
+    ImageView  download,share,ivEllipses;
     Uri personPhoto;
     SwipeRefreshLayout swipe;
 
@@ -102,6 +104,7 @@ public class HomeFragment extends Fragment {
     // request code
 //    ImageView user;
 //    EditText somthing;
+    ImageView  bookmark;
     TextView textView;
     //ImageButton bookmark;
     DoubleTapLikeView mDoubleTapLikeView;
@@ -188,19 +191,22 @@ public class HomeFragment extends Fragment {
                 reference =   FirebaseDatabase.getInstance().getReference().child("POST")) {
             @Override
             protected void populateView(View v, final Homeview model, int position) {
+
+
+
+
                 // Get references to the views of message.xml
                final ImageView postimg= v.findViewById(R.id.post1);
                 final TextView messageText = (TextView)v.findViewById(R.id.userdis);
                 TextView messageUser = (TextView)v.findViewById(R.id.username);
                messageTime = (TextView)v.findViewById(R.id.uploadtime);
                 ImageView comment = (ImageView) v.findViewById(R.id.comment);
+                ImageView ivEllipses=v.findViewById(R.id.ivEllipses);
 
                 ImageView image_message_profile=v.findViewById(R.id.userimg1);
                 //mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
                 textView=v.findViewById(R.id.yu);
-                final ImageView  bookmark=v.findViewById(R.id.bookmark);
-            download = (ImageView) v.findViewById(R.id.download);
-                share = (ImageView) v.findViewById(R.id.share);
+                   bookmark=v.findViewById(R.id.bookmark);
 
 
                 messageText.setText(model.getMessageText());
@@ -268,100 +274,198 @@ public class HomeFragment extends Fragment {
                // return timeAgo + " ago";
 
                 messageTime.setText(timeAgo);
-                if(readState())
-                {
-                    bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmark));
-                }
-                else
-                {
-                    bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmarked));
-                }
-
-                bookmark.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isFavourite = readState();
-
-                        if (isFavourite) {
-                            bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmarked));
-                            isFavourite = false;
-                            saveState(isFavourite);
-
-                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                            Query applesQuery = ref.child("LIKE").orderByChild("postid").equalTo(model.getIdd());
 
 
-
-                            applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
-                                        appleSnapshot.getRef().removeValue();
-                                        //Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+bookmark.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
 
 
-                                    }
-                                }
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query applesQueryw = ref.child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    // Log.e(TAG, "onCancelled", databaseError.toException());
-                                }
-                            });
+        applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                    if(dataSnapshot.child("postid").equals(model.getIdd())){
+                        Toast.makeText(getActivity(),"alrady exist",LENGTH_LONG).show();
 
-
-                            Toast.makeText(getActivity(),"Favourite Troll Removed",Toast.LENGTH_LONG).show();
-
-
-                        } else {
-                            bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmark));
-                            isFavourite = true;
-                            saveState(isFavourite);
-                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                            DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
-                            Map<String, Object> map = new HashMap<>();
-                            map.put("Like", 1);
-                            map.put("photo", String.valueOf(personPhoto));
-                            map.put("messageUser", personName);
-                            map.put("email", personEmail);
-                            map.put("id", personId);
-                            map.put("photo1", model.getPhoto1());
-                            map.put("user", model.getMessageUser());
-                            map.put("txt", model.getMessageText());
-                            map.put("tim", model.getMessageTime());
-                            map.put("pho", model.getPhoto());
-                            String mGroupId = rootRef.push().getKey();
-                            map.put("idd", mGroupId);
-                            String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
-                            map.put("stamp", timeStamp);
-                            map.put("postid", model.getIdd());
-                            String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-                            map.put("messageTime", currentTime);
-                            namesRef.updateChildren(map);
-                            rootRef.child("BOOKMARK");
+                    } else {
 
 
-                            rootRef.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    reference1 = FirebaseDatabase.getInstance().getReference().child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
+                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("Like", 1);
+                        map.put("photo", String.valueOf(personPhoto));
+                        map.put("messageUser", personName);
+                        map.put("email", personEmail);
+                        map.put("id", personId);
+                        map.put("photo1", model.getPhoto1());
+                        map.put("user", model.getMessageUser());
+                        String mGroupId = rootRef.push().getKey();
+                        map.put("idd", mGroupId);
+                        map.put("stamp", model.getStamp());
+                        map.put("postid", model.getIdd());
+                        String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+                        map.put("messageTime", currentTime);
+                        namesRef.updateChildren(map);
+                        rootRef.child("BOOKMARK");
+
+
+                        rootRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                reference1 = FirebaseDatabase.getInstance().getReference().child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
 // Log.d(TAG, "This: "+dataSnapshot.getValue());
 ///Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
 
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
+                        Toast.makeText(getActivity(),"no",LENGTH_LONG).show();
+                    }
+                }
+                   // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+                    //  bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
+
+
+
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+
+        });
+
+
+    }
+});
+
+
+
+
+                ivEllipses.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+
+
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+// add a li
+                        String[] animals = {"Share", "Download"};
+                        builder.setItems(animals, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0: {
+
+                                        Bitmap bm = ((android.graphics.drawable.BitmapDrawable) postimg.getDrawable()).getBitmap();
+                                        try {
+                                            java.io.File file = new java.io.File(getActivity().getExternalCacheDir() + "/image.jpg");
+                                            java.io.OutputStream out = new java.io.FileOutputStream(file);
+                                            bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                                            out.flush();
+                                            out.close();
+                                        } catch (Exception e) { e.toString(); }
+                                        Intent iten = new Intent(android.content.Intent.ACTION_SEND);
+                                        iten.setType("*/*");
+                                        iten.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new java.io.File(getActivity().getExternalCacheDir() + "/image.jpg")));
+                                        iten.putExtra(android.content.Intent.EXTRA_TEXT, model.getMessageText());
+                                        getActivity().startActivity(Intent.createChooser(iten, "Share Troll"));
+
+
+
+
+
+                                    }
+                                    break;
+                                    case 1:
+                                    {
+
+                                        BitmapDrawable draw = (BitmapDrawable) postimg.getDrawable();
+                                        Bitmap bitmap = draw.getBitmap();
+
+
+                                        File sdCard = Environment.getExternalStorageDirectory().getAbsoluteFile();
+                                        File dir = new File(sdCard.getAbsolutePath() + "/Psctrolls");
+                                        dir.mkdirs();
+                                        String fileName = String.format("%d.jpg", System.currentTimeMillis());
+                                        File outFile = new File(dir, fileName);
+                                        FileOutputStream outStream = null;
+                                        Toast.makeText(getActivity(),"Troll Downloaded",Toast.LENGTH_LONG).show();
+                                        try {
+                                            outStream = new FileOutputStream(outFile);
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        }
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                                        try {
+                                            outStream.flush();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            outStream.close();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                        intent.setData(Uri.fromFile(outFile));
+                                        getActivity().sendBroadcast(intent);
+
+
+
+                                    }break;
+
+
                                 }
+                            }
+                        });
+// create and show the alert dialog
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
 
-                            Toast.makeText(getActivity(),"Favourite Troll Added",Toast.LENGTH_LONG).show();
 
-                        }
+
+
+
+
+
+
+
+
+
+
+
                     }
                 });
+
+
+               /* if(readState())
+                {
+                    bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.fav));
+                }
+                else
+                {
+                    bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
+                }*/
+
+
 
 
 
@@ -441,63 +545,16 @@ startActivity(ash);
 
 
 
-             share.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Bitmap bm = ((android.graphics.drawable.BitmapDrawable) postimg.getDrawable()).getBitmap();
-                        try {
-                            java.io.File file = new java.io.File(getActivity().getExternalCacheDir() + "/image.jpg");
-                            java.io.OutputStream out = new java.io.FileOutputStream(file);
-                            bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                            out.flush();
-                            out.close();
-                        } catch (Exception e) { e.toString(); }
-                        Intent iten = new Intent(android.content.Intent.ACTION_SEND);
-                        iten.setType("*/*");
-                        iten.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new java.io.File(getActivity().getExternalCacheDir() + "/image.jpg")));
-                        iten.putExtra(android.content.Intent.EXTRA_TEXT, model.getMessageText());
-                        getActivity().startActivity(Intent.createChooser(iten, "Share Troll"));
-                    }
-                });
+//             share.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                    }
+//                });
 
 
 
 
-download.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        BitmapDrawable draw = (BitmapDrawable) postimg.getDrawable();
-        Bitmap bitmap = draw.getBitmap();
-
-
-        File sdCard = Environment.getExternalStorageDirectory().getAbsoluteFile();
-        File dir = new File(sdCard.getAbsolutePath() + "/Psctrolls");
-        dir.mkdirs();
-        String fileName = String.format("%d.jpg", System.currentTimeMillis());
-        File outFile = new File(dir, fileName);
-        FileOutputStream outStream = null;
-        Toast.makeText(getActivity(),"Troll Downloaded",Toast.LENGTH_LONG).show();
-        try {
-            outStream = new FileOutputStream(outFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-        try {
-            outStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            outStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        intent.setData(Uri.fromFile(outFile));
-        getActivity().sendBroadcast(intent);
-    }
-});
 
 
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -505,6 +562,11 @@ download.setOnClickListener(new View.OnClickListener() {
                     public void onDataChange(DataSnapshot dataSnapshot) {
 //                        mShimmerViewContainer.stopShimmerAnimation();
 //                        mShimmerViewContainer.setVisibility(View.GONE);
+
+
+
+
+
                     }
 
                     @Override

@@ -343,120 +343,8 @@ fab4.setOnClickListener(new View.OnClickListener() {
                  replay = (TextView) v.findViewById(R.id.message_reply);
 
                    TextView     like1 = (TextView) v.findViewById(R.id.message_like);
-                      like = (ImageView) v.findViewById(R.id.commentlikett);
-               like1.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
+                    //  like = (ImageView) v.findViewById(R.id.commentlikett);
 
-
-                       new SweetAlertDialog(Comment.this, SweetAlertDialog.WARNING_TYPE)
-                               .setTitleText("Are you sure?")
-                               .setContentText("You won't be able to recover this file!")
-                               .setConfirmText("LIKE!")
-                               .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                   @Override
-                                   public void onClick(SweetAlertDialog sDialog) {
-                                       sDialog.dismissWithAnimation();
-
-                                       like.setImageDrawable(getResources().getDrawable(R.drawable.vector_heart_red));
-
-                                       DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                                       DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
-                                       Map<String, Object> map = new HashMap<>();
-                                       map.put("Like", 1);
-                                       map.put("photo", String.valueOf(personPhoto));
-                                       map.put("messageUser", personName);
-                                       map.put("email", personEmail);
-                                       map.put("id", personId);
-                                       map.put("photo1", model.getPhoto1());
-                                       map.put("user", model.getMessageUser());
-                                       map.put("txt", model.getMessageText());
-                                       map.put("tim", model.getMessageTime());
-                                       map.put("pho", model.getPhoto());
-                                       String mGroupId = rootRef.push().getKey();
-                                       map.put("idd", mGroupId);
-                                       String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
-                                       map.put("stamp", timeStamp);
-                                       map.put("postid", model.getIdd());
-                                       String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-                                       map.put("messageTime", currentTime);
-                                       namesRef.updateChildren(map);
-                                       rootRef.child("BOOKMARK");
-
-
-                                       rootRef.addValueEventListener(new ValueEventListener() {
-                                           @Override
-                                           public void onDataChange(DataSnapshot dataSnapshot) {
-                                               reference1 = FirebaseDatabase.getInstance().getReference().child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
-// Log.d(TAG, "This: "+dataSnapshot.getValue());
-///Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
-
-                                           }
-
-                                           @Override
-                                           public void onCancelled(DatabaseError databaseError) {
-
-                                           }
-                                       });
-
-                                       Toast.makeText(getApplicationContext(),"Favourite Troll Added",Toast.LENGTH_LONG).show();
-
-
-
-
-
-
-
-                                   }
-                               })
-                               .setCancelButton("DISLIKE", new SweetAlertDialog.OnSweetClickListener() {
-                                   @Override
-                                   public void onClick(SweetAlertDialog sDialog) {
-                                       sDialog.dismissWithAnimation();
-
-
-                                       like.setImageDrawable(getResources().getDrawable(R.drawable.vector_heart_white));
-
-                                       DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                                       Query applesQuery = ref.child("LIKE").orderByChild("postid").equalTo(model.getIdd());
-
-
-
-                                       applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                           @Override
-                                           public void onDataChange(DataSnapshot dataSnapshot) {
-                                               for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
-                                                   appleSnapshot.getRef().removeValue();
-                                                   //Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
-
-
-                                               }
-                                           }
-
-                                           @Override
-                                           public void onCancelled(DatabaseError databaseError) {
-                                               // Log.e(TAG, "onCancelled", databaseError.toException());
-                                           }
-                                       });
-
-
-
-                                       Toast.makeText(getApplicationContext(),"Favourite Troll Removed",Toast.LENGTH_LONG).show();
-
-
-                                   }
-
-
-
-
-
-
-                               })
-                               .show();
-
-
-                   }
-               });
                 messageTime = (TextView) v.findViewById(R.id.message_timet);
                   image_message_profile = v.findViewById(R.id.image_message_profilet);
 
@@ -492,7 +380,7 @@ fab4.setOnClickListener(new View.OnClickListener() {
                     //  return null;
                 }
 
-                int timeDIM = getTimeDistanceInMinutes(time);
+                float timeDIM = getTimeDistanceInMinutes(time);
 
                 String timeAgo = null;
 
@@ -504,9 +392,9 @@ fab4.setOnClickListener(new View.OnClickListener() {
                 } else if (timeDIM >= 2 && timeDIM <= 44) {
                     timeAgo = timeDIM + " minutes ago";
                 } else if (timeDIM >= 45 && timeDIM <= 89) {
-                    timeAgo = " hour ago";
+                    timeAgo = "1 hour ago";
                 } else if (timeDIM >= 90 && timeDIM <= 1439) {
-                    timeAgo = "about " + (Math.round(timeDIM / 60)) + " hours";
+                    timeAgo =  (Math.round(timeDIM / 60)) + " hours ago";
                 } else if (timeDIM >= 1440 && timeDIM <= 2519) {
                     timeAgo = "1 day ago";
                 } else if (timeDIM >= 2520 && timeDIM <= 43199) {
@@ -530,14 +418,14 @@ fab4.setOnClickListener(new View.OnClickListener() {
                 messageTime.setText(timeAgo);
 
 
-                if(readState())
-                {
-                    like.setImageDrawable(getResources().getDrawable(R.drawable.vector_heart_red));
-                }
-                else
-                {
-                    like.setImageDrawable(getResources().getDrawable(R.drawable.vector_heart_red));
-                }
+//                if(readState())
+//                {
+//                    like.setImageDrawable(getResources().getDrawable(R.drawable.vector_heart_red));
+//                }
+//                else
+//                {
+//                    like.setImageDrawable(getResources().getDrawable(R.drawable.vector_heart_red));
+//                }
 
 
 

@@ -110,7 +110,7 @@
             android:layout_height="match_parent"
             android:id="@+id/list_of_messages3"
             android:transcriptMode="alwaysScroll"
-            android:stackFromBottom="true"></ListView>
+            android:stackFromBottom="false"></ListView>
 
 
     </RelativeLayout>
