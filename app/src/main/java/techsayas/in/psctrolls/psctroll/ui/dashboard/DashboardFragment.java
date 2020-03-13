@@ -128,6 +128,7 @@ public class DashboardFragment extends Fragment {
         dashboardViewModel =
                 ViewModelProviders.of(this).get(DashboardViewModel.class);
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        Toast.makeText(getActivity(),"dfsaf",Toast.LENGTH_LONG).show();
         listOfMessages = (ListView) root.findViewById(R.id.bookmarkv);
 
         listOfMessages.post(new Runnable() {

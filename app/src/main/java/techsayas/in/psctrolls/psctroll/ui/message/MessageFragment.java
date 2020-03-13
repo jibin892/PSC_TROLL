@@ -315,8 +315,20 @@ public  static boolean isInFront;
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
-        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        if (acct != null) {
+            personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            personEmail = acct.getEmail();
+            personId = acct.getId();
+            personPhoto = acct.getPhotoUrl();
+
+        }
+
+      //  mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
         return root;
     }
 
@@ -379,7 +391,7 @@ public  static boolean isInFront;
                 } else if (timeDIM >= 45 && timeDIM <= 89) {
                     timeAgo = " 1 hour ago";
                 } else if (timeDIM >= 90 && timeDIM <= 1439) {
-                    timeAgo =  (Math.round(timeDIM / 60)) + " hours ago";
+                    timeAgo = "about " + (Math.round(timeDIM / 60)) + " hours";
                 } else if (timeDIM >= 1440 && timeDIM <= 2519) {
                     timeAgo = "1 day ago";
                 } else if (timeDIM >= 2520 && timeDIM <= 43199) {
@@ -398,7 +410,9 @@ public  static boolean isInFront;
                     timeAgo = "about " + (Math.round(timeDIM / 525600)) + " years";
                 }
 
-              messageTime.setText(timeAgo);
+                // return timeAgo + " ago";
+
+                messageTime.setText(timeAgo);
 
 
 
@@ -517,9 +531,9 @@ public  static boolean isInFront;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        mShimmerViewContainer.stopShimmerAnimation();
-                        mShimmerViewContainer.setVisibility(View.GONE);
-                        //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+//                        mShimmerViewContainer.stopShimmerAnimation();
+//                        mShimmerViewContainer.setVisibility(View.GONE);
+//                        //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
                     }
 
                     @Override
@@ -580,19 +594,19 @@ public  static boolean isInFront;
         adapter.notifyDataSetChanged();
 
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        mShimmerViewContainer.startShimmerAnimation();
-    }
-
-    @Override
-    public void onPause() {
-        mShimmerViewContainer.stopShimmerAnimation();
-        super.onPause();
-
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        mShimmerViewContainer.startShimmerAnimation();
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        mShimmerViewContainer.stopShimmerAnimation();
+//        super.onPause();
+//
+//    }
     public static Date currentDate() {
         Calendar calendar = Calendar.getInstance();
         return calendar.getTime();

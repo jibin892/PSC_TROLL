@@ -4,189 +4,203 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<RelativeLayout
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/white">
-<LinearLayout
-    android:id="@+id/linLayout2"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_marginTop="12dp"
-    android:background="@drawable/whiteroundcorner"
-    android:orientation="vertical"
-   >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:layout_marginLeft="@dimen/_50sdp"
-
-        android:orientation="horizontal">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/photos"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerVertical="true"
-            app:civ_border_color="@color/black"
-            app:civ_border_width="0.5dp" />
-
-        <TextView
-            android:id="@+id/log_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="200dp"
-            android:textSize="15dp"
-            android:fontFamily="@font/roboto_bold"
-          android:textColor="@color/black"
-            android:layout_marginTop="10dp"
-            android:text="LOGOUT" />
-
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mitch"
-        android:background="@color/white"
-        android:padding="5dp"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-
-
-    <TextView
-        android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:text="https://codingwithmitch.com"
-        android:padding="5dp"
-
-        android:textColor="@color/link_blue"
-        android:textSize="16sp" />
-    <TextView
-        android:layout_width="170dp"
-        android:layout_height="31dp"
-        android:fontFamily="@font/roboto_bold"
-        android:text="FOLLOW US"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="17dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_width="291dp"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        android:layout_gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.547"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.608">
-
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/facebook"
-            android:layout_width="72dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/facebook" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/google"
-            android:layout_width="69dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/twitter" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/instagaram"
-            android:layout_width="69dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/instagram" />
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/_50sdp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.542"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.776">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/photos12"
-            android:layout_width="67dp"
-            android:layout_height="80dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/psc" />
-
-        <EditText
-            android:id="@+id/write"
-            android:layout_width="277dp"
-            android:layout_height="59dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="29dp"
-            android:background="@drawable/spin"
-            android:focusable="false"
-            android:fontFamily="@font/roboto_bold"
-            android:hint=" Write Somthing"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="17dp" />
-    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
-
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/linLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/whiteroundcorner"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:layout_marginLeft="@dimen/_50sdp"
+
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/photos"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerVertical="true"
+                    app:civ_border_color="@color/black"
+                    app:civ_border_width="0.5dp" />
+
+                <TextView
+                    android:id="@+id/log_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="200dp"
+                    android:textSize="15dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="10dp"
+                    android:text="LOGOUT" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mitch"
+                android:background="@color/white"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="https://codingwithmitch.com"
+                android:padding="5dp"
+
+                android:textColor="@color/link_blue"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="170dp"
+                android:layout_height="31dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="FOLLOW US"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="291dp"
+                android:layout_height="45dp"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.547"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.608">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/facebook"
+                    android:layout_width="72dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/facebook" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/google"
+                    android:layout_width="69dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/twitter" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/instagaram"
+                    android:layout_width="69dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/instagram" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/_50sdp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.542"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.776">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/photos12"
+                    android:layout_width="67dp"
+                    android:layout_height="80dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/psc" />
+
+                <EditText
+                    android:id="@+id/write"
+                    android:layout_width="277dp"
+                    android:layout_height="59dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="29dp"
+                    android:background="@drawable/spin"
+                    android:focusable="false"
+                    android:fontFamily="@font/roboto_bold"
+                    android:hint=" Write Somthing"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="17dp" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/relLayout1">
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/relLayout1">
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+                <FrameLayout
+                    android:id="@+id/frame_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/my_recycler_view"
+                        android:scrollbars="vertical"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"/>
+
+                </FrameLayout>
 
             </RelativeLayout>
 
-
-        </RelativeLayout>
+        </LinearLayout>
 
 
     </RelativeLayout>
-
-</LinearLayout>
-
-
-</RelativeLayout>
 </RelativeLayout>
 
 

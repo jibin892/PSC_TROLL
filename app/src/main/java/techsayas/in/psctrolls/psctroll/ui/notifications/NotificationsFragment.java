@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import techsayas.in.psctrolls.psctroll.Login;
@@ -54,9 +55,9 @@ public class NotificationsFragment extends Fragment {
     EditText write;
     GridView listOfMessages;
     View root;
-
+    String personId;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference mDatabaseReference = database.getReference();
+    Query mDatabaseReference ;
     private RecyclerView mRecyclerView;
     private StaggeredGridLayoutManager mLayoutManager;
     // FirebaseListAdapter<Homeview> adapter;
@@ -69,34 +70,7 @@ public class NotificationsFragment extends Fragment {
          root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
 
-        mRecyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
 
-
-        if (mRecyclerView != null) {
-            //to enable optimization of recyclerview
-            mRecyclerView.setHasFixedSize(true);
-        }
-        //using staggered grid pattern in recyclerview
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        //Say Hello to our new Firebase UI Element, i.e., FirebaseRecyclerAdapter
-        final FirebaseRecyclerAdapter<Movie,MovieViewHolder> adapter = new FirebaseRecyclerAdapter<Movie, MovieViewHolder>(
-                Movie.class,
-                R.layout.movie_board_item,
-                MovieViewHolder.class,
-                //referencing the node where we want the database to store the data from our Object
-                mDatabaseReference.child("POST").getRef()
-        ) {
-            @Override
-            protected void populateViewHolder(MovieViewHolder viewHolder, Movie model, int position) {
-
-
-              //  Picasso.with(getActivity()).load(model.getMoviePoster()).into(viewHolder.ivMoviePoster);
-                Picasso.get().load(model.photo1).into(viewHolder.ivMoviePoster);
-            }
-        };
-
-        mRecyclerView.setAdapter(adapter);
         sign_out = root.findViewById(R.id.log_out);
         nameTV = root.findViewById(R.id.name);
         emailTV = root.findViewById(R.id.email);
@@ -113,6 +87,59 @@ public class NotificationsFragment extends Fragment {
         facebbok.startAnimation(center_reveal_anim);
         google.startAnimation(center_reveal_anim);
         instagram.startAnimation(center_reveal_anim);
+
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+
+            nameTV.setText(personName);
+            emailTV.setText(personEmail);
+//            idTV.setText("ID: "+personGivenName);
+            Picasso.get().load(personPhoto).into(photo1);
+            Picasso.get().load(personPhoto).into(photo);
+
+
+        }
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
+
+
+        if (mRecyclerView != null) {
+            //to enable optimization of recyclerview
+            mRecyclerView.setHasFixedSize(true);
+        }
+        //using staggered grid pattern in recyclerview
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        //Say Hello to our new Firebase UI Element, i.e., FirebaseRecyclerAdapter
+        final FirebaseRecyclerAdapter<Movie,MovieViewHolder> adapter = new FirebaseRecyclerAdapter<Movie, MovieViewHolder>(
+                Movie.class,
+                R.layout.movie_board_item,
+                MovieViewHolder.class,
+                //referencing the node where we want the database to store the data from our Object
+                mDatabaseReference=  FirebaseDatabase.getInstance().getReference("POST").orderByChild("id").equalTo(acct.getId())        ) {
+            @Override
+            protected void populateViewHolder(MovieViewHolder viewHolder, Movie model, int position) {
+
+
+                //  Picasso.with(getActivity()).load(model.getMoviePoster()).into(viewHolder.ivMoviePoster);
+                Picasso.get().load(model.photo1).resize(600, 600).centerCrop().into(viewHolder.ivMoviePoster);
+            }
+        };
+
+        mRecyclerView.setAdapter(adapter);
 
         write.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,31 +206,7 @@ public class NotificationsFragment extends Fragment {
             }
         });
 //         Configure sign-in to request the user's ID, email address, and basic
-//         profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
-        if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
-
-            nameTV.setText(personName);
-            emailTV.setText(personEmail);
-//            idTV.setText("ID: "+personGivenName);
-            Picasso.get().load(personPhoto).into(photo1);
-            Picasso.get().load(personPhoto).into(photo);
-
-
-        }
+//
 
         sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
