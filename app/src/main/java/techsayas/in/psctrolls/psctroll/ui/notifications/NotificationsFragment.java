@@ -5,6 +5,7 @@ package techsayas.in.psctrolls.psctroll.ui.notifications;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,22 +16,29 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import techsayas.in.psctrolls.psctroll.Login;
+import techsayas.in.psctrolls.psctroll.Movie;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.Upload;
 
@@ -47,7 +55,10 @@ public class NotificationsFragment extends Fragment {
     GridView listOfMessages;
     View root;
 
-
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference mDatabaseReference = database.getReference();
+    private RecyclerView mRecyclerView;
+    private StaggeredGridLayoutManager mLayoutManager;
     // FirebaseListAdapter<Homeview> adapter;
     private NotificationsViewModel notificationsViewModel;
 
@@ -58,8 +69,36 @@ public class NotificationsFragment extends Fragment {
          root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
 
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
 
 
+        if (mRecyclerView != null) {
+            //to enable optimization of recyclerview
+            mRecyclerView.setHasFixedSize(true);
+        }
+        //using staggered grid pattern in recyclerview
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+
+        //Say Hello to our new Firebase UI Element, i.e., FirebaseRecyclerAdapter
+        final FirebaseRecyclerAdapter<Movie,MovieViewHolder> adapter = new FirebaseRecyclerAdapter<Movie, MovieViewHolder>(
+                Movie.class,
+                R.layout.movie_board_item,
+                MovieViewHolder.class,
+                //referencing the node where we want the database to store the data from our Object
+                mDatabaseReference.child("").child("").child("movies").getRef()
+        ) {
+            @Override
+            protected void populateViewHolder(MovieViewHolder viewHolder, Movie model, int position) {
+
+
+              //  Picasso.with(getActivity()).load(model.getMoviePoster()).into(viewHolder.ivMoviePoster);
+                Picasso.get().load(model.getMoviePoster()).into(viewHolder.ivMoviePoster);
+            }
+        };
+
+        mRecyclerView.setAdapter(adapter);
         sign_out = root.findViewById(R.id.log_out);
         nameTV = root.findViewById(R.id.name);
         emailTV = root.findViewById(R.id.email);
@@ -191,6 +230,17 @@ public class NotificationsFragment extends Fragment {
                     }
                 });
 
+    }
+    public static class MovieViewHolder extends RecyclerView.ViewHolder{
+
+        TextView tvMovieName;
+        RatingBar ratingBar;
+        ImageView ivMoviePoster;
+
+        public MovieViewHolder(View v) {
+            super(v);
+            ivMoviePoster = (ImageView) v.findViewById(R.id.iv_movie_poster);
+        }
     }
 }
 
