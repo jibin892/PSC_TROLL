@@ -1,203 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
 
-    <LinearLayout
-        android:layout_width="410dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="0dp"
-        android:orientation="vertical"
-        android:paddingBottom="10dp">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/comment_profile_imageq"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="0.5dp"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relLayout1"
+        android:layout_toRightOf="@+id/comment_profile_imageq"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/grey_border_bottom">
 
-
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="75dp"
-            android:orientation="horizontal">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/cimg"
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                />
-
-            <LinearLayout
-                android:layout_width="334dp"
-                android:layout_height="88dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/cuser"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="John Doe"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toRightOf="@+id/image_message_profile"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/ctxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="5dp"
-                    android:lineSpacingExtra="5dp"
-                    android:maxWidth="240dp"
-                    android:paddingLeft="12dp"
-                    android:paddingTop="8dp"
-                    android:paddingRight="12dp"
-                    android:paddingBottom="8dp"
-                    android:text="hi man, how are you?"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    app:layout_constraintLeft_toRightOf="@+id/image_message_profile"
-                    app:layout_constraintTop_toBottomOf="@+id/message_user" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="75dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/ctime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="11:40"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/message_text"
-                        app:layout_constraintLeft_toRightOf="@+id/message_text" />
-
-                    <TextView
-                        android:id="@+id/message_like"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text="Like"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/message_text"
-                        app:layout_constraintLeft_toRightOf="@+id/message_text" />
-
-                    <TextView
-                        android:id="@+id/message_reply"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text="Reply"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/message_text"
-                        app:layout_constraintLeft_toRightOf="@+id/message_text" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_10"
-            android:orientation="horizontal">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="285dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
-                android:layout_toLeftOf="@id/fab2">
-
-                <EditText
-                    android:id="@+id/input3"
-                    android:layout_width="272dp"
-                    android:layout_height="48dp"
-                    android:layout_marginLeft="@dimen/padding_10"
-                    android:background="@drawable/roundcorner"
-                    android:hint="Enter your message"
-                    android:padding="12dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginRight="60dp"
+            android:layout_marginBottom="20dp">
 
 
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="62dp"
+                android:layout_height="wrap_content"
+                android:text="mitch.tabian"
+                android:id="@+id/comment_usernameq"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
-                android:orientation="horizontal">
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/cam3"
-                    android:layout_width="56dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="0dp"
-                    android:clickable="true"
-                    android:src="@drawable/photo"
-                    android:tint="@android:color/white"
-                    app:fabSize="mini"
-
-                    />
-
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab3"
-                    android:layout_width="56dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="@dimen/padding_10"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="40dp"
-                    android:clickable="true"
-                    android:src="@drawable/send"
-                    android:tint="@android:color/white"
-                    app:fabSize="mini" />
-
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="this is a comment"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:layout_toRightOf="@+id/comment_usernameq"
+                android:id="@+id/comment"/>
 
 
-        </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3 d"
+                android:textColor="@color/grey"
+                android:textSize="14sp"
+                android:id="@+id/comment_time_posted"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_below="@+id/comment"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20 likes"
+                android:textStyle="bold"
+                android:textColor="@color/grey"
+                android:textSize="14sp"
+                android:id="@+id/comment_likes"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_below="@+id/comment"
+                android:layout_toRightOf="@+id/comment_time_posted"/>
+
+
+        </RelativeLayout>
 
         <ImageView
-            android:id="@+id/postimg123t"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.824" />
-        />
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/comment_like"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_heart_white"
+            android:layout_centerVertical="true"/>
 
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relLayoujt1">
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relLayout2"
+        android:layout_below="@+id/relLayout1"
+        android:layout_marginBottom="60dp">
 
         <ListView
-            android:id="@+id/list_of_messages3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/fab"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="16dp"
-            android:padding="10dp"
-            android:stackFromBottom="true"
-            android:transcriptMode="alwaysScroll">
-
-        </ListView>
+            android:id="@+id/list_of_messages3"
+            android:transcriptMode="alwaysScroll"
+            android:stackFromBottom="true"></ListView>
 
 
-    </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/relLayout3"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/roundcorner">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/fab3"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:src="@drawable/send"
+            android:tint="@android:color/white"
+            app:fabSize="mini"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/fab5"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:src="@drawable/send"
+            android:tint="@android:color/white"
+            app:fabSize="mini"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/cam3"
+            android:layout_marginLeft="300dp"
+            android:clickable="true"
+            android:src="@drawable/photo"
+            android:tint="@android:color/white"
+            app:fabSize="mini"/>
+
+
+
+        <ImageView
+            android:id="@+id/imgcomment1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/bg_parent_rounded_corner" />
+
+        <EditText
+            android:id="@+id/input3"
+            android:layout_width="344dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="50dp"
+            android:backgroundTint="@color/white"
+            android:hint="Add a comment..."
+            android:padding="2dp"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package techsayas.in.psctrolls.psctroll.ui.home;
 
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,6 +47,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -54,11 +57,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -91,14 +97,16 @@ public class HomeFragment extends Fragment {
     String personEmail;
     private Uri filePath;
     FirebaseStorage storage;
+    TextView messageTime;
     StorageReference storageReference;
     // request code
-    ImageView user;
-    EditText somthing;
+//    ImageView user;
+//    EditText somthing;
     TextView textView;
-    ImageButton bookmark;
+    //ImageButton bookmark;
     DoubleTapLikeView mDoubleTapLikeView;
     DatabaseReference reference;
+    Query reference1;
 
     private ShimmerFrameLayout mShimmerViewContainer;
     int j=0;
@@ -114,10 +122,8 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-
-
-        user=root.findViewById(R.id.photos123);
-        somthing=root.findViewById(R.id.write123);
+//        user=root.findViewById(R.id.photos123);
+//        somthing=root.findViewById(R.id.write123);
      //   mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
 
 
@@ -156,19 +162,20 @@ public class HomeFragment extends Fragment {
 //            emailTV.setText(personEmail);
 //           idTV.setText("ID: "+personGivenName);
             // Picasso.get().load(personPhoto).into(photo1);
-            Picasso.get().load(personPhoto).into(user);
+           // Picasso.get().load(personPhoto).into(user);
 
 
         }
-somthing.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
 
-
-        Intent a=new Intent(getActivity(), Upload.class);
-        startActivity(a);
-    }
-});
+//somthing.setOnClickListener(new View.OnClickListener() {
+//    @Override
+//    public void onClick(View v) {
+//
+//
+//        Intent a=new Intent(getActivity(), Upload.class);
+//        startActivity(a);
+//    }
+//});
 
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -185,13 +192,13 @@ somthing.setOnClickListener(new View.OnClickListener() {
                final ImageView postimg= v.findViewById(R.id.post1);
                 final TextView messageText = (TextView)v.findViewById(R.id.userdis);
                 TextView messageUser = (TextView)v.findViewById(R.id.username);
-                TextView messageTime = (TextView)v.findViewById(R.id.uploadtime);
-                ImageButton comment = (ImageButton)v.findViewById(R.id.comment);
+               messageTime = (TextView)v.findViewById(R.id.uploadtime);
+                ImageView comment = (ImageView) v.findViewById(R.id.comment);
 
                 ImageView image_message_profile=v.findViewById(R.id.userimg1);
-                mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
+                //mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
                 textView=v.findViewById(R.id.yu);
-                bookmark=v.findViewById(R.id.bookmark);
+                final ImageView  bookmark=v.findViewById(R.id.bookmark);
             download = (ImageView) v.findViewById(R.id.download);
                 share = (ImageView) v.findViewById(R.id.share);
 
@@ -199,8 +206,164 @@ somthing.setOnClickListener(new View.OnClickListener() {
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
-              Picasso.get().load(model.getPhoto1()).resize(900, 550).centerCrop().into(postimg);
-                messageTime.setText(model.getMessageTime());
+              Picasso.get().load(model.getPhoto1()).into(postimg);
+               //
+                Calendar cal = Calendar.getInstance();
+                TimeZone tz = cal.getTimeZone();//get your local time zone.
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+                sdf.setTimeZone(tz);//set time zone.
+                String localTime = sdf.format(new Date(Long.parseLong(model.getStamp() )* 1000));
+                Date date = new Date();
+                try {
+                    date = sdf.parse(localTime);//get local date
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if(date == null) {
+                  //  return null;
+                }
+
+                long time = date.getTime();
+
+                Date curDate = currentDate();
+                long now = curDate.getTime();
+                if (time > now || time <= 0) {
+                  //  return null;
+                }
+
+                float timeDIM = getTimeDistanceInMinutes(time);
+
+                String timeAgo;
+
+                if (timeDIM == 0) {
+                    timeAgo = "just now";
+                } else if (timeDIM == 1) {
+                  //  return  "1 minute";
+                    timeAgo="1 minute ago";
+                } else if (timeDIM >= 2 && timeDIM <= 44) {
+                    timeAgo = timeDIM + " minutes ago";
+                } else if (timeDIM >= 45 && timeDIM <= 89) {
+                    timeAgo = "1 hour ago";
+                } else if (timeDIM >= 90 && timeDIM <= 1439) {
+                    timeAgo =  + (Math.round(timeDIM / 60)) + " hours ago";
+                } else if (timeDIM >= 1440 && timeDIM <= 2519) {
+                    timeAgo = "1 day ago";
+                } else if (timeDIM >= 2520 && timeDIM <= 43199) {
+                    timeAgo = (Math.round(timeDIM / 1440)) + " days ago";
+                } else if (timeDIM >= 43200 && timeDIM <= 86399) {
+                    timeAgo = " 1 month ago";
+                } else if (timeDIM >= 86400 && timeDIM <= 525599) {
+                    timeAgo = (Math.round(timeDIM / 43200)) + " months ago";
+                } else if (timeDIM >= 525600 && timeDIM <= 655199) {
+                    timeAgo = " year ago";
+                } else if (timeDIM >= 655200 && timeDIM <= 914399) {
+                    timeAgo = "year ago";
+                } else if (timeDIM >= 914400 && timeDIM <= 1051199) {
+                    timeAgo = "2 years ago";
+                } else {
+                    timeAgo = "about " + (Math.round(timeDIM / 525600)) + " years ago";
+                }
+
+               // return timeAgo + " ago";
+
+                messageTime.setText(timeAgo);
+                if(readState())
+                {
+                    bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmark));
+                }
+                else
+                {
+                    bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmarked));
+                }
+
+                bookmark.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean isFavourite = readState();
+
+                        if (isFavourite) {
+                            bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmarked));
+                            isFavourite = false;
+                            saveState(isFavourite);
+
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                            Query applesQuery = ref.child("LIKE").orderByChild("postid").equalTo(model.getIdd());
+
+
+
+                            applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                        appleSnapshot.getRef().removeValue();
+                                        //Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    // Log.e(TAG, "onCancelled", databaseError.toException());
+                                }
+                            });
+
+
+
+                            Toast.makeText(getActivity(),"Favourite Troll Removed",Toast.LENGTH_LONG).show();
+
+
+                        } else {
+                            bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmark));
+                            isFavourite = true;
+                            saveState(isFavourite);
+                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                            DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("Like", 1);
+                            map.put("photo", String.valueOf(personPhoto));
+                            map.put("messageUser", personName);
+                            map.put("email", personEmail);
+                            map.put("id", personId);
+                            map.put("photo1", model.getPhoto1());
+                            map.put("user", model.getMessageUser());
+                            map.put("txt", model.getMessageText());
+                            map.put("tim", model.getMessageTime());
+                            map.put("pho", model.getPhoto());
+                            String mGroupId = rootRef.push().getKey();
+                            map.put("idd", mGroupId);
+                            String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+                            map.put("stamp", timeStamp);
+                            map.put("postid", model.getIdd());
+                            String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+                            map.put("messageTime", currentTime);
+                            namesRef.updateChildren(map);
+                            rootRef.child("BOOKMARK");
+
+
+                            rootRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    reference1 = FirebaseDatabase.getInstance().getReference().child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
+// Log.d(TAG, "This: "+dataSnapshot.getValue());
+///Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            Toast.makeText(getActivity(),"Favourite Troll Added",Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                });
+
+
 
 comment.setOnClickListener(new View.OnClickListener() {
     @Override
@@ -222,52 +385,58 @@ startActivity(ash);
 
                     }
                 });
-                if(readState())
-                {
-                   bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmark));
-                }
-                else
-                {
-                   bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmarked));
-                }
-             bookmark.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isFavourite = readState();
 
-                        if (isFavourite) {
-                         bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmarked));
-                            isFavourite = false;
-                            saveState(isFavourite);
-                            Toast.makeText(getActivity(),"Favourite Troll Removed",Toast.LENGTH_LONG).show();
-
-                        } else {
-                     bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.bookmark));
-                            isFavourite = true;
-                            saveState(isFavourite);
-                            Toast.makeText(getActivity(),"Favourite Troll Added",Toast.LENGTH_LONG).show();
-
-                        }
-                    }
-                });
-               mDoubleTapLikeView.setOnTapListener(new DoubleTapLikeView.OnTapListener() {
-                    @Override
-                    public void onDoubleTap(View view) {
-// Toast.makeText(MainActivity.this, "Double TAPPED !", Toast.LENGTH_SHORT).show();
-
-                        j=j+1;
-                     textView.setText(j+"Likes");
-
-                    }
-
-                    @Override
-                    public void onTap() {
-// This method will be called if user didn't tap again after PRESS_TIME_TERM (default is 200)
-// So keep PRESS_TIME_GAP short ( 200~400 )^.
-// Due to Thread for single Tap, if you want to change UI through "onTap()", you should use Activity.runOnUiThread()
-
-                    }
-                });
+//
+//                mDoubleTapLikeView.setOnTapListener(new DoubleTapLikeView.OnTapListener() {
+//                    @Override
+//                    public void onDoubleTap(View view) {
+//// Toast.makeText(MainActivity.this, "Double TAPPED !", Toast.LENGTH_SHORT).show();
+//                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+//                        DatabaseReference namesRef = rootRef.child("LIKE").push();
+//                        Map<String, Object> map = new HashMap<>();
+//                        map.put("Like", 1);
+//                        map.put("photo", String.valueOf(personPhoto));
+//                        map.put("messageUser", personName);
+//                        map.put("email", personEmail);
+//                        map.put("id", personId);
+//                        String mGroupId = rootRef.push().getKey();
+//
+//                        map.put("idd", mGroupId);
+//                        String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+//                        map.put("stamp", timeStamp);
+//                        map.put("postid", model.getIdd());
+//                        String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+//                        map.put("messageTime", currentTime);
+//                        namesRef.updateChildren(map);
+//                        rootRef.child("LIKE");
+//
+//
+//                        rootRef.addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                reference1 = FirebaseDatabase.getInstance().getReference().child("LIKE").orderByChild("postid").equalTo(model.getIdd());
+//// Log.d(TAG, "This: "+dataSnapshot.getValue());
+/////Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
+//                                textView.setText("Likeserd");
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//
+//
+//
+//                    }
+//                    @Override
+//                    public void onTap() {
+//// This method will be called if user didn't tap again after PRESS_TIME_TERM (default is 200)
+//// So keep PRESS_TIME_GAP short ( 200~400 )^.
+//// Due to Thread for single Tap, if you want to change UI through "onTap()", you should use Activity.runOnUiThread()
+//
+//                    }
+//                });
 
 
 
@@ -412,6 +581,16 @@ download.setOnClickListener(new View.OnClickListener() {
         return aSharedPreferences.getBoolean("State", true);
     }
 
+
+    public static Date currentDate() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.getTime();
+    }
+
+    private static int getTimeDistanceInMinutes(long time) {
+        long timeDistance = currentDate().getTime() - time;
+        return Math.round((Math.abs(timeDistance) / 1000) / 60);
+    }
 
             }
 

@@ -10,10 +10,10 @@ public class Commentview {
     private  String photo;
     private  String id;
     private  String idd;
-
+    private  String stamp;
     private  String s;
 
-    public Commentview(String messageText, String messageUser, String photo, String photo1, String s, String id, String idd) {
+    public Commentview(String messageText, String messageUser, String photo, String photo1, String s, String id, String idd, String stamp) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
@@ -24,6 +24,7 @@ this.photo1=photo1;
         this.s=s;
         this.id=id;
         this.idd=idd;
+        this.stamp=stamp;
 
     }
 
@@ -34,6 +35,10 @@ this.photo1=photo1;
     public String s()
     {
         return  s;
+    }
+    public String getStamp()
+    {
+        return  stamp;
     }
 
     public String getId()
