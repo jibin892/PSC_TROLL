@@ -9,18 +9,24 @@ public class Otherptofilevisit {
     public String photo1;
     public String moviePoster;
     public float movieRating;
+    public String id;
 
     public Otherptofilevisit(){
 
     }
-    public Otherptofilevisit(String photo1, String moviePoster, float movieRating){
+    public Otherptofilevisit(String photo1, String moviePoster, float movieRating,String id){
         this.photo1 = photo1;
         this.moviePoster = moviePoster;
         this.movieRating  = movieRating;
+        this.id = id;
+
     }
 
     public String getPhoto1() {
         return photo1;
+    }
+    public String getId() {
+        return id;
     }
 
     public void setMovieName(String movieName) {

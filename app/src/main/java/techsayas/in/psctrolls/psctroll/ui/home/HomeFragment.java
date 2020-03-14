@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.airbnb.lottie.L;
 import com.brouding.doubletaplikeview.DoubleTapLikeView;
 import com.facebook.share.internal.LikeButton;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -66,6 +67,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -117,7 +119,7 @@ ImageView imgh,imgnh;
     TextView textView;
     //ImageButton bookmark;
     DoubleTapLikeView mDoubleTapLikeView;
-    DatabaseReference reference;
+    Query reference;
     Query reference1;
 
     private ShimmerFrameLayout mShimmerViewContainer;
@@ -201,7 +203,7 @@ ImageView imgh,imgnh;
         adapter = new FirebaseListAdapter<Homeview>(getActivity(), Homeview.class,
                 R.layout.hompageview,
 
-                reference =   FirebaseDatabase.getInstance().getReference().child("POST")) {
+                reference =   FirebaseDatabase.getInstance().getReference().child("POST").orderByChild("stamp").limitToLast(15)) {
             @Override
             protected void populateView(View v, final Homeview model, int position) {
 
@@ -230,14 +232,16 @@ ImageView imgh,imgnh;
              Picasso.get().load(model.getPhoto1()).into(postimg);
 
                //
+               String s=String.valueOf(model.getStamp());
+               s=s.substring(1);
                 Calendar cal = Calendar.getInstance();
                 TimeZone tz = cal.getTimeZone();//get your local time zone.
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
                 sdf.setTimeZone(tz);//set time zone.
-                String localTime = sdf.format(new Date(Long.parseLong(model.getStamp() )* 1000));
+                String localTime =sdf.format(new Date(Long.parseLong(String.valueOf(s))* 1000));
                 Date date = new Date();
                 try {
-                    date = sdf.parse(localTime);//get local date
+                    date = sdf.parse(String.valueOf(localTime));//get local date
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -662,7 +666,6 @@ startActivity(ash);
 
             }
         };
-
 
 
         listOfMessages.setAdapter(adapter);

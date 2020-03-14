@@ -24,7 +24,7 @@
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/bookmarkv"
+                android:id="@+id/postdelet"
                 android:layout_below="@+id/relLayout1">
 
             </ListView>

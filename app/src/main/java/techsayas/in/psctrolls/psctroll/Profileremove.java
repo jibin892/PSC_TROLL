@@ -1,6 +1,6 @@
 package techsayas.in.psctrolls.psctroll;
 
-public class Uploadedview {
+public class Profileremove {
 
     private String messageText;
     private String messageUser;
@@ -11,8 +11,9 @@ public class Uploadedview {
     private  String idd;
     private  long stamp;
     private  String s;
-
-    public Uploadedview(String messageText, String messageUser, String photo, String photo1, String s, String idd, long stamp) {
+    private  String bookmarkid;
+    private  String postid;
+    public Profileremove(String messageText, String messageUser, String photo, String photo1, String s, String idd, long stamp, String bookmarkid, String postid) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
@@ -23,13 +24,15 @@ this.photo1=photo1;
         this.s=s;
         this.idd=idd;
         this.stamp=stamp;
+        this.bookmarkid=bookmarkid;
+        this.postid=postid;
 
 
     }
 
 
 
-    public Uploadedview() {
+    public Profileremove() {
     }
     public String s()
     {
@@ -43,6 +46,10 @@ this.photo1=photo1;
     {
         return  stamp;
     }
+    public String getPostid()
+    {
+        return  postid;
+    }
 
     public String getPhoto()
 {
@@ -52,7 +59,10 @@ this.photo1=photo1;
     {
         return  photo1;
     }
-
+    public String getBookmarkid()
+    {
+        return  bookmarkid;
+    }
 
     public String getMessageText() {
         return messageText;

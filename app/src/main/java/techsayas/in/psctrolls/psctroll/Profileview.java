@@ -9,11 +9,11 @@ public class Profileview {
     private  String photo1;
     private  String photo;
     private  String idd;
-    private  String stamp;
+    private  long stamp;
     private  String s;
     private  String bookmarkid;
     private  String postid;
-    public Profileview(String messageText, String messageUser, String photo, String photo1, String s, String idd, String stamp, String bookmarkid,String postid) {
+    public Profileview(String messageText, String messageUser, String photo, String photo1, String s, String idd, long stamp, String bookmarkid,String postid) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
@@ -42,7 +42,7 @@ this.photo1=photo1;
     {
         return  idd;
     }
-    public String getStamp()
+    public long getStamp()
     {
         return  stamp;
     }

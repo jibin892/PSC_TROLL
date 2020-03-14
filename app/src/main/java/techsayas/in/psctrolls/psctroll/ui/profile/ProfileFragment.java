@@ -198,11 +198,13 @@ public class ProfileFragment extends Fragment {
 
 
 
+                String s=String.valueOf(model.getStamp());
+                s=s.substring(1);
                 Calendar cal = Calendar.getInstance();
                 TimeZone tz = cal.getTimeZone();//get your local time zone.
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
                 sdf.setTimeZone(tz);//set time zone.
-                String localTime = sdf.format(new Date(Long.parseLong(model.getStamp() )* 1000));
+                String localTime =sdf.format(new Date(Long.parseLong(String.valueOf(s))* 1000));
                 Date date = new Date();
                 try {
                     date = sdf.parse(localTime);//get local date
@@ -232,7 +234,7 @@ public class ProfileFragment extends Fragment {
                     //  return  "1 minute";
                     timeAgo="1 minute ago";
                 } else if (timeDIM >= 2 && timeDIM <= 44) {
-                    timeAgo = timeDIM + " minutes ago";
+                    timeAgo = Math.round(timeDIM) + " minutes ago";
                 } else if (timeDIM >= 45 && timeDIM <= 89) {
                     timeAgo = "1 hour ago";
                 } else if (timeDIM >= 90 && timeDIM <= 1439) {

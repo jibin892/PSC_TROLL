@@ -43,7 +43,7 @@
 
 
         <ListView
-            android:id="@+id/list_of_view1234"
+            android:id="@+id/mypostview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/relLayout1"

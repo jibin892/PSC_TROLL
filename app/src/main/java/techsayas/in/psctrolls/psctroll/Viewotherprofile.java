@@ -70,7 +70,7 @@ Intent aw;
                 //referencing the node where we want the database to store the data from our Object
                 mDatabaseReference=  FirebaseDatabase.getInstance().getReference("POST").orderByChild("id").equalTo(aw.getStringExtra("id"))) {
             @Override
-            protected void populateViewHolder(Viewotherprofile.other viewHolder, Otherptofilevisit model, int position) {
+            protected void populateViewHolder(Viewotherprofile.other viewHolder, final Otherptofilevisit model, int position) {
 
 
                 //  Picasso.with(getActivity()).load(model.getMoviePoster()).into(viewHolder.ivMoviePoster);
@@ -80,6 +80,20 @@ Intent aw;
                 //Crouton.makeText(Viewotherprofile.this,model.photo1, Style.INFO).show();
 
 
+                viewHolder.pics.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent a= new Intent(getApplicationContext(), Viewuploaded.class);
+                        a.putExtra("ab",model.photo1);
+                        a.putExtra("abc",model.getId());
+                        startActivity(a);
+
+
+
+
+                    }
+                });
 
 
             }

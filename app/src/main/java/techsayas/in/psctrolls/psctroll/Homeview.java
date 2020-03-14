@@ -9,13 +9,13 @@ public class Homeview {
     private  String photo1;
     private  String photo;
     private  String idd;
-    private  String stamp;
+    private  long stamp;
     private  String id;
     private  String email;
 
     private  String s;
     private  String postid;
-    public Homeview(String messageText, String messageUser, String photo, String photo1, String s,String idd,  String stamp,String postid,String id,String email) {
+    public Homeview(String messageText, String messageUser, String photo, String photo1, String s,String idd,  long stamp,String postid,String id,String email) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
@@ -48,7 +48,7 @@ this.photo1=photo1;
     {
         return  idd;
     }
-    public String getStamp()
+    public long getStamp()
     {
         return  stamp;
     }

@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.airbnb.lottie.L;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -131,7 +132,7 @@ public class NotificationsFragment extends Fragment {
                 //referencing the node where we want the database to store the data from our Object
                 mDatabaseReference=  FirebaseDatabase.getInstance().getReference("POST").orderByChild("id").equalTo(acct.getId())) {
             @Override
-            protected void populateViewHolder(MovieViewHolder viewHolder, Movie model, int position) {
+            protected void populateViewHolder(MovieViewHolder viewHolder, final Movie model, int position) {
 
 
                 //  Picasso.with(getActivity()).load(model.getMoviePoster()).into(viewHolder.ivMoviePoster);
@@ -139,13 +140,15 @@ public class NotificationsFragment extends Fragment {
 
 
 
-
+//Toast.makeText(getActivity(),model.getId(), Toast.LENGTH_LONG).show();
 
                viewHolder.ivMoviePoster.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
 
                        Intent a= new Intent(getActivity(), Viewuploaded.class);
+                       a.putExtra("ab",model.getPhoto1());
+                       a.putExtra("abc",model.getId());
                        startActivity(a);
 
 
