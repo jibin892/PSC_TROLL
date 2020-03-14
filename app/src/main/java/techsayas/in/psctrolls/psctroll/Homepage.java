@@ -62,7 +62,6 @@ public class Homepage extends AppCompatActivity {
         startActivity(intent);
         finish();
         System.exit(0);
-
     }
 
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,6 +21,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -41,6 +54,10 @@ Thread thread;
         signInButton = findViewById(R.id.sign_in_button);
         Animation top_curve_anim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.top_down);
        signInButton.startAnimation(top_curve_anim);
+
+
+
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -55,6 +72,7 @@ Thread thread;
             }
         });
     }
+
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -97,6 +115,7 @@ Thread thread;
             pDialog.setTitleText("Loading ...");
             pDialog.setCancelable(true);
             pDialog.show();
+
 startActivity(new Intent(Login.this,Homepage.class));
 pDialog.cancel();
 
@@ -107,6 +126,11 @@ pDialog.cancel();
             Toast.makeText(Login.this, "Failed", Toast.LENGTH_LONG).show();
         }
     }
+
+
+
+
+
 
     @Override
     protected void onStart() {
@@ -119,7 +143,7 @@ pDialog.cancel();
         }
        else{
 
-            Toast.makeText(Login.this, "Login", Toast.LENGTH_LONG).show();
+        //    Toast.makeText(Login.this, "Login", Toast.LENGTH_LONG).show();
 
 
         }
@@ -135,4 +159,5 @@ pDialog.cancel();
         System.exit(0);
 
     }
+
 }

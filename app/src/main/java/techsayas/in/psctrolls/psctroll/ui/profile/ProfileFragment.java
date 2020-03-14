@@ -131,7 +131,6 @@ public class ProfileFragment extends Fragment {
         emailTV = root.findViewById(R.id.email);
 //        idTV = root.findViewById(R.id.id);
         photo = root.findViewById(R.id.photos);
-        photo1 = root.findViewById(R.id.photos12);
         facebbok = root.findViewById(R.id.facebook);
         google = root.findViewById(R.id.google);
         instagram = root.findViewById(R.id.instagaram);

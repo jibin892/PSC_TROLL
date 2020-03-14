@@ -42,6 +42,7 @@ import techsayas.in.psctrolls.psctroll.Login;
 import techsayas.in.psctrolls.psctroll.Movie;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.Upload;
+import techsayas.in.psctrolls.psctroll.Viewuploaded;
 
 
 public class NotificationsFragment extends Fragment {
@@ -76,7 +77,6 @@ public class NotificationsFragment extends Fragment {
         emailTV = root.findViewById(R.id.email);
 //        idTV = root.findViewById(R.id.id);
         photo = root.findViewById(R.id.photos);
-        photo1 = root.findViewById(R.id.photos12);
         facebbok = root.findViewById(R.id.facebook);
         google = root.findViewById(R.id.google);
         instagram = root.findViewById(R.id.instagaram);
@@ -108,7 +108,7 @@ public class NotificationsFragment extends Fragment {
             nameTV.setText(personName);
             emailTV.setText(personEmail);
 //            idTV.setText("ID: "+personGivenName);
-            Picasso.get().load(personPhoto).into(photo1);
+          //  Picasso.get().load(personPhoto).into(photo1);
             Picasso.get().load(personPhoto).into(photo);
 
 
@@ -136,6 +136,28 @@ public class NotificationsFragment extends Fragment {
 
                 //  Picasso.with(getActivity()).load(model.getMoviePoster()).into(viewHolder.ivMoviePoster);
                 Picasso.get().load(model.photo1).resize(600, 600).centerCrop().into(viewHolder.ivMoviePoster);
+
+
+
+
+
+               viewHolder.ivMoviePoster.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+
+                       Intent a= new Intent(getActivity(), Viewuploaded.class);
+                       startActivity(a);
+
+
+
+
+                   }
+               });
+
+
+
+
+
             }
         };
 

@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -60,6 +62,9 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -328,7 +333,7 @@ public  static boolean isInFront;
 
         }
 
-      //  mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+      //mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
         return root;
     }
 
@@ -340,13 +345,13 @@ public  static boolean isInFront;
 
                 reference = FirebaseDatabase.getInstance().getReference().child("MSG")) {
             @Override
-            protected void populateView(View v, final ChatMessage model, int position) {
+            protected void populateView(View v, final ChatMessage model, final int position) {
                 // Get references to the views of message.xml
-                ImageView postimg = v.findViewById(R.id.postimg123);
-                TextView messageText = (TextView) v.findViewById(R.id.message_text);
+                final ImageView postimg = v.findViewById(R.id.postimg123);
+                final TextView messageText = (TextView) v.findViewById(R.id.message_text);
                 messageUser = (TextView) v.findViewById(R.id.message_user);
                 messageTime = (TextView) v.findViewById(R.id.message_time);
-                ImageView image_message_profile = v.findViewById(R.id.image_message_profile);
+                final ImageView image_message_profile = v.findViewById(R.id.image_message_profile);
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
@@ -387,7 +392,7 @@ public  static boolean isInFront;
                     //  return  "1 minute";
                     timeAgo="1 minute ago";
                 } else if (timeDIM >= 2 && timeDIM <= 44) {
-                    timeAgo = timeDIM + " minutes ago";
+                    timeAgo = (Math.round(timeDIM)) + " minutes ago";
                 } else if (timeDIM >= 45 && timeDIM <= 89) {
                     timeAgo = " 1 hour ago";
                 } else if (timeDIM >= 90 && timeDIM <= 1439) {
@@ -420,96 +425,102 @@ public  static boolean isInFront;
                 messageText.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-
-                        AlertDialog.Builder builder
-                                = new AlertDialog
-                                .Builder(getActivity());
-
-                        builder.setMessage("Do you want to delet ?");
-
-                        builder.setTitle("Alert !");
-
-                        builder.setCancelable(false);
+                        ChatMessage chatMessage = getItem(position);
+                        if (chatMessage.getId().equals(personId)) {
 
 
-                        builder
-                                .setPositiveButton(
-                                        "Yes",
-                                        new DialogInterface
-                                                .OnClickListener() {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                                            @Override
-                                            public void onClick(DialogInterface dialog,
-                                                                int which) {
+// add a list
+                            String[] animals = {"Delete for me","cancel", "Delete for every one"};
+                            builder.setItems(animals, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which) {
+                                        case 0: {
 
 
 
+//
+//                                          messageText.setVisibility(View.INVISIBLE);
+//
+//                                          messageTime.setVisibility(View.INVISIBLE);
+//                                          messageUser.setVisibility(View.INVISIBLE);
+//                                           postimg.setVisibility(View.INVISIBLE);
+//                                          image_message_profile.setVisibility(View.INVISIBLE);
+//
 
 
 
 
-                                                delet();
+
+                                        }break;
+
+                                        case 1:
+                                        {
+
+
+                                            if(model.getId()==personId){
+
+                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                                Query applesQuery = ref.child("MSG").orderByChild("idd").equalTo(model.getIdd());
+
+
+
+                                                applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                                            appleSnapshot.getRef().removeValue();
+                                                            //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+                                                        // Log.e(TAG, "onCancelled", databaseError.toException());
+                                                    }
+                                                });
+
                                             }
-                                        });
 
-                        builder
-                                .setNegativeButton(
-                                        "No",
-                                        new DialogInterface
-                                                .OnClickListener() {
+                                            else {
 
-                                            @Override
-                                            public void onClick(DialogInterface dialog,
-                                                                int which) {
-
-
-                                                dialog.cancel();
+                                                Toast.makeText(getActivity(),"no ",LENGTH_LONG).show();
                                             }
-                                        });
 
-// Create the Alert dialog
-                        AlertDialog alertDialog = builder.create();
 
-// Show the Alert Dialog box
-                        alertDialog.show();
+                                        }break;
 
+                                    }
+                                }
+                            });
+// create and show the alert dialog
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
+
+                        } else {
+
+                            messageText.clearFocus();
+
+
+                        }
+//generating view}
+
+
+
+
+
+
+
+//
 
                         return false;
                     }
 
-                    private void delet() {
 
-
-                       if(model.getId()==personId){
-
-                           DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                           Query applesQuery = ref.child("MSG").orderByChild("idd").equalTo(model.getIdd());
-
-
-
-                           applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                               @Override
-                               public void onDataChange(DataSnapshot dataSnapshot) {
-                                   for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
-                                       appleSnapshot.getRef().removeValue();
-                                       //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
-
-                                   }
-                               }
-
-                               @Override
-                               public void onCancelled(DatabaseError databaseError) {
-                                   // Log.e(TAG, "onCancelled", databaseError.toException());
-                               }
-                           });
-
-                       }
-
-                       else {
-
-                           Toast.makeText(getActivity(),"no ",LENGTH_LONG).show();
-                       }
-                    }
 
                 });
 
@@ -533,7 +544,7 @@ public  static boolean isInFront;
 
 //                        mShimmerViewContainer.stopShimmerAnimation();
 //                        mShimmerViewContainer.setVisibility(View.GONE);
-//                        //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+                        //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
                     }
 
                     @Override

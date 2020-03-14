@@ -3,8 +3,8 @@
     <string name="title_activity_homepage">Homepage</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">add</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="designed">Powerd by  techsaus.in</string>
+    <string name="title_notifications">bookmark</string>
+    <string name="designed">Powerd by  Techsays.in</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

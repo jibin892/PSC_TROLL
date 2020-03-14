@@ -70,6 +70,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import techsayas.in.psctrolls.psctroll.ui.notifications.NotificationsFragment;
 import techsayas.in.psctrolls.psctroll.ui.notifications.NotificationsViewModel;
 
@@ -206,7 +208,7 @@ public class Upload extends AppCompatActivity {
                                             progress.dismiss();
                                             progressDialog.dismiss();
                                             imgview.setImageDrawable(null);
-
+                                            Crouton.makeText(Upload.this,"Troll Uploaded For Admin Approval", Style.CONFIRM).show();
                                         }
 
                                         @Override

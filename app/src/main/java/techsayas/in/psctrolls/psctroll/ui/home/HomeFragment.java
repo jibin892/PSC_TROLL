@@ -105,6 +105,7 @@ public class HomeFragment extends Fragment {
 //    ImageView user;
 //    EditText somthing;
     ImageView  bookmark;
+    TextView comme;
     TextView textView;
     //ImageButton bookmark;
     DoubleTapLikeView mDoubleTapLikeView;
@@ -181,6 +182,9 @@ public class HomeFragment extends Fragment {
 //});
 
 
+
+
+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
@@ -207,12 +211,14 @@ public class HomeFragment extends Fragment {
                 //mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
                 textView=v.findViewById(R.id.yu);
                    bookmark=v.findViewById(R.id.bookmark);
+               comme = (TextView)v.findViewById(R.id.image_comments_link);
 
 
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
-              Picasso.get().load(model.getPhoto1()).into(postimg);
+             Picasso.get().load(model.getPhoto1()).into(postimg);
+
                //
                 Calendar cal = Calendar.getInstance();
                 TimeZone tz = cal.getTimeZone();//get your local time zone.
@@ -248,7 +254,7 @@ public class HomeFragment extends Fragment {
                   //  return  "1 minute";
                     timeAgo="1 minute ago";
                 } else if (timeDIM >= 2 && timeDIM <= 44) {
-                    timeAgo = timeDIM + " minutes ago";
+                    timeAgo = (Math.round(timeDIM)) + " minutes ago";
                 } else if (timeDIM >= 45 && timeDIM <= 89) {
                     timeAgo = "1 hour ago";
                 } else if (timeDIM >= 90 && timeDIM <= 1439) {
@@ -275,7 +281,25 @@ public class HomeFragment extends Fragment {
 
                 messageTime.setText(timeAgo);
 
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                Query applesQueryy = ref.child("COMMENT").orderByChild("postid").equalTo(model.getIdd());
 
+
+
+                applesQueryy.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                           //    Toast.makeText(getActivity(),"yes",LENGTH_LONG).show();
+comme.setText("ghfhgf");
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Log.e(TAG, "onCancelled", databaseError.toException());
+                    }
+                });
 bookmark.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {

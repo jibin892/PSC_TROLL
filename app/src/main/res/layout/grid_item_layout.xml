@@ -1,126 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-xmlns:shimmer="schemas.android.com/apk/res-auto"
-android:id="@+id/activity_main"
-android:layout_width="420dp"
-android:orientation="vertical"
-android:layout_height="match_parent"
-tools:ignore="NamespaceTypo">
-<com.facebook.shimmer.ShimmerFrameLayout
-    android:id="@+id/shimmer_view_container"
-    android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    shimmer:duration="800">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:shimmer="http://schemas.android.com/tools">
 
-    <!-- Adding 3 rows of placeholders -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:id="@+id/relLayout1">
+        <!--        <com.facebook.shimmer.ShimmerFrameLayout-->
+        <!--            android:id="@+id/shimmer_view_container"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:orientation="vertical"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            shimmer:duration="800">-->
 
-        <include layout="@layout/recipe_placeholder_item" />
+        <!--            &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;-->
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:orientation="vertical">-->
 
-        <include layout="@layout/recipe_placeholder_item" />
+        <!--                <include layout="@layout/recipe_placeholder_item" />-->
 
-        <include layout="@layout/recipe_placeholder_item" />
+        <!--                <include layout="@layout/recipe_placeholder_item" />-->
 
-        <include layout="@layout/recipe_placeholder_item" />
+        <!--                <include layout="@layout/recipe_placeholder_item" />-->
 
-    </LinearLayout>
+        <!--                <include layout="@layout/recipe_placeholder_item" />-->
 
-</com.facebook.shimmer.ShimmerFrameLayout>
+        <!--            </LinearLayout>-->
 
+        <!--        </com.facebook.shimmer.ShimmerFrameLayout>-->
 
-<ListView
-    android:id="@+id/list_of_messages"
-    android:layout_width="match_parent"
-    android:layout_height="651dp"
-    android:stackFromBottom="true"
-    android:transcriptMode="alwaysScroll"></ListView>
+    </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/relLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relLayout1"
+        android:layout_marginTop="-45dp"
+        android:layout_marginBottom="60dp">
 
-<RelativeLayout
-    android:id="@+id/relLayout3"
-    android:layout_width="370dp"
-    android:layout_height="73dp"
-    android:layout_alignParentBottom="true"
-    android:background="@drawable/whiteroundcorner">
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:clickable="true"
-        android:src="@drawable/send"
-        android:tint="@android:color/white"
-        app:fabSize="mini" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab6"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:clickable="true"
-        android:src="@drawable/send"
-        android:tint="@android:color/white"
-        app:fabSize="mini" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/cam"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="280dp"
-        android:clickable="true"
-        android:src="@drawable/photo"
-        android:tint="@android:color/white"
-        app:fabSize="mini" />
+        <ListView
+            android:id="@+id/list_of_messages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:stackFromBottom="true"
+            android:transcriptMode="alwaysScroll"></ListView>
 
 
-    <ImageView
-        android:id="@+id/imgmsg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/bg_parent_rounded_corner" />
+    </RelativeLayout>
 
-    <EditText
-        android:id="@+id/input"
-        android:layout_width="344dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="50dp"
-        android:background="@drawable/whiteroundcorner"
-        android:hint="enter your message..."
-        android:padding="2dp"
-        android:textSize="14sp" />
+    <RelativeLayout
+        android:id="@+id/relLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/whiteroundcorner">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
+            android:src="@drawable/send"
+            android:tint="@android:color/white"
+            app:fabSize="mini" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab6"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
+            android:src="@drawable/send"
+            android:tint="@android:color/white"
+            app:fabSize="mini" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/cam"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="280dp"
+            android:clickable="true"
+            android:src="@drawable/photo"
+            android:tint="@android:color/white"
+            app:fabSize="mini" />
+
+
+        <ImageView
+            android:id="@+id/imgmsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/whiteroundcorner" />
+
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="344dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/whiteroundcorner"
+            android:hint="enter your message..."
+            android:padding="2dp"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
-
-
-</LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-

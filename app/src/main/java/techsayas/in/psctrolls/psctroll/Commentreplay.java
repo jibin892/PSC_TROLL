@@ -358,7 +358,7 @@ Intent a;
                     //  return  "1 minute";
                     timeAgo="1 minute ago";
                 } else if (timeDIM >= 2 && timeDIM <= 44) {
-                    timeAgo = timeDIM + " minutes ago";
+                    timeAgo = (Math.round(timeDIM)) + " minutes ago";
                 } else if (timeDIM >= 45 && timeDIM <= 89) {
                     timeAgo = " hour ago";
                 } else if (timeDIM >= 90 && timeDIM <= 1439) {

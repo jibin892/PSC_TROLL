@@ -21,7 +21,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:id="@+id/userimg1"
+                    android:id="@+id/userimg11"
                     android:layout_marginTop="20dp"
                     app:civ_border_color="@color/black"
                     app:civ_border_width="0.5dp"
@@ -34,10 +34,10 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:text="mitch.tabian"
-                    android:layout_toRightOf="@+id/userimg1"
+                    android:layout_toRightOf="@+id/userimg11"
                     android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
-                    android:id="@+id/username"
+                    android:id="@+id/username11"
                     android:textColor="@color/black"
                     />
 
@@ -49,14 +49,14 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
-                    android:id="@+id/ivEllipses"/>
+                    android:id="@+id/ivEllipses11"/>
 
             </RelativeLayout>
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:id="@+id/post1"
+                android:id="@+id/post11"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 android:layout_below="@id/relLayout1"
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:id="@+id/relLayout2"
-                android:layout_below="@+id/post1"
+                android:layout_below="@+id/post11"
                 android:background="@color/white">
 
                 <RelativeLayout
@@ -79,14 +79,14 @@
                     <ImageView
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:id="@+id/image_heart_red"
+                        android:id="@+id/image_heart_red11"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="20dp"
                         android:src="@drawable/vector_heart_white"
                         android:visibility="invisible"/>
 
                     <ImageView
-                        android:id="@+id/image_heart"
+                        android:id="@+id/image_heart11"
                         android:layout_width="wrap_content"
                         android:layout_height="43dp"
                         android:layout_centerVertical="true"
@@ -97,7 +97,7 @@
                 </RelativeLayout>
 
                 <ImageView
-                    android:id="@+id/comment"
+                    android:id="@+id/comment11"
                     android:layout_width="wrap_content"
                     android:layout_height="43dp"
                     android:layout_centerVertical="true"
@@ -108,7 +108,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="43dp"
-                    android:id="@+id/bookmark"
+                    android:id="@+id/bookmark11"
                     android:layout_toRightOf="@+id/heartLayout"
                     android:layout_marginLeft="40dp"
                     android:src="@drawable/favi"
@@ -116,7 +116,7 @@
                     android:layout_centerVertical="true"/>
 
                 <TextView
-                    android:id="@+id/yu"
+                    android:id="@+id/yu11"
                     android:layout_width="81dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -142,7 +142,7 @@
                     android:text="Liked by Mitch, Tom, Mohammed and 30 others"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:id="@+id/userdis"/>
+                    android:id="@+id/userdis11"/>
 
 
 
@@ -163,7 +163,7 @@
                     android:textColor="@color/grey"
                     android:textSize="18sp"
                     android:layout_below="@+id/image_comments_link"
-                    android:id="@+id/uploadtime"
+                    android:id="@+id/uploadtime11"
                     android:layout_marginTop="15dp"/>
 
 

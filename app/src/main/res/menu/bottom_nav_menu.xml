@@ -18,7 +18,7 @@
 <!--    @string/title_dashboard-->
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/notification"
+        android:icon="@drawable/bookmark"
         android:title="@string/title_notifications" />
     <item
         android:id="@+id/navigation_notifications"
