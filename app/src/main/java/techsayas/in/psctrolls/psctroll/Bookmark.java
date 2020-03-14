@@ -17,7 +17,7 @@ public class Bookmark {
         this.messageUser = messageUser;
 this.photo1=photo1;
      this.photo=photo;
-
+//yuui7yu
         // Initialize to current time
        this. messageTime = messageTime;
         this.s=s;
