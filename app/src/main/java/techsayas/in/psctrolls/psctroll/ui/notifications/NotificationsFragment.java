@@ -121,7 +121,7 @@ public class NotificationsFragment extends Fragment {
             mRecyclerView.setHasFixedSize(true);
         }
         //using staggered grid pattern in recyclerview
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         //Say Hello to our new Firebase UI Element, i.e., FirebaseRecyclerAdapter
         final FirebaseRecyclerAdapter<Movie,MovieViewHolder> adapter = new FirebaseRecyclerAdapter<Movie, MovieViewHolder>(
@@ -135,7 +135,7 @@ public class NotificationsFragment extends Fragment {
 
 
                 //  Picasso.with(getActivity()).load(model.getMoviePoster()).into(viewHolder.ivMoviePoster);
-                Picasso.get().load(model.photo1).resize(600, 600).centerCrop().into(viewHolder.ivMoviePoster);
+                Picasso.get().load(model.photo1).resize(400, 400).centerCrop().into(viewHolder.ivMoviePoster);
 
 
 
