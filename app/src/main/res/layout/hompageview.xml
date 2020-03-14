@@ -82,7 +82,7 @@
                         android:id="@+id/image_heart_red"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="20dp"
-                        android:src="@drawable/vector_heart_white"
+                        android:src="@drawable/love"
                         android:visibility="invisible"/>
 
                     <ImageView

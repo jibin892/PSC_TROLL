@@ -129,7 +129,7 @@ public class NotificationsFragment extends Fragment {
                 R.layout.movie_board_item,
                 MovieViewHolder.class,
                 //referencing the node where we want the database to store the data from our Object
-                mDatabaseReference=  FirebaseDatabase.getInstance().getReference("POST").orderByChild("id").equalTo(acct.getId())        ) {
+                mDatabaseReference=  FirebaseDatabase.getInstance().getReference("POST").orderByChild("id").equalTo(acct.getId())) {
             @Override
             protected void populateViewHolder(MovieViewHolder viewHolder, Movie model, int position) {
 
@@ -259,7 +259,6 @@ public class NotificationsFragment extends Fragment {
         TextView tvMovieName;
         RatingBar ratingBar;
         ImageView ivMoviePoster;
-
         public MovieViewHolder(View v) {
             super(v);
             ivMoviePoster = (ImageView) v.findViewById(R.id.iv_movie_poster);

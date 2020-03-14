@@ -11,13 +11,13 @@ public class Homeview {
     private  String idd;
     private  String stamp;
     private  String s;
-
-    public Homeview(String messageText, String messageUser, String photo, String photo1, String s,String idd,  String stamp) {
+    private  String postid;
+    public Homeview(String messageText, String messageUser, String photo, String photo1, String s,String idd,  String stamp,String postid) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
      this.photo=photo;
-
+        this.postid=postid;
         // Initialize to current time
        this. messageTime = messageTime;
         this.s=s;
@@ -34,6 +34,10 @@ this.photo1=photo1;
     public String s()
     {
         return  s;
+    }
+    public  String getPostid()
+    {
+        return  postid;
     }
     public String getIdd()
     {

@@ -184,7 +184,7 @@ public class Upload extends AppCompatActivity {
                                     String image = taskSnapshot.getDownloadUrl().toString();
                                     //  Toast.makeText(Userchatimage.this, image, Toast.LENGTH_SHORT).show();
                                     progress = ProgressDialog.show(Upload.this, "Loading...",
-                                            "Plz Wait", true);
+                                            "Plz Wait",true);
                                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                                     DatabaseReference namesRef = rootRef.child("POSTADMIN").push();
                                     Map<String, Object> map = new HashMap<>();

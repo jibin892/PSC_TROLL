@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.brouding.doubletaplikeview.DoubleTapLikeView;
+import com.facebook.share.internal.LikeButton;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -53,6 +54,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -71,6 +73,8 @@ import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import techsayas.in.psctrolls.psctroll.ChatMessage;
 import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.Homeview;
@@ -92,7 +96,7 @@ public class HomeFragment extends Fragment {
     ImageView  download,share,ivEllipses;
     Uri personPhoto;
     SwipeRefreshLayout swipe;
-
+ImageView imgh,imgnh;
     GoogleSignInClient mGoogleSignInClient;
     String personName;
     String personId;
@@ -305,16 +309,16 @@ bookmark.setOnClickListener(new View.OnClickListener() {
     public void onClick(View v) {
 
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        Query applesQueryw = ref.child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("BOOKMARK");
+        Query applesQueryw = ref.orderByChild("postid").equalTo(model.getIdd());
 
         applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    if(dataSnapshot.child("postid").equals(model.getIdd())){
-                        Toast.makeText(getActivity(),"alrady exist",LENGTH_LONG).show();
-
+                    if (dataSnapshot.exists()) {
+                        Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
                     } else {
 
 
@@ -354,12 +358,11 @@ bookmark.setOnClickListener(new View.OnClickListener() {
                         });
 
 
-
-                        Toast.makeText(getActivity(),"no",LENGTH_LONG).show();
+                        Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
                     }
                 }
-                   // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
-                    //  bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
+                // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+                //  bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
 
 
 
@@ -677,6 +680,7 @@ startActivity(ash);
         long timeDistance = currentDate().getTime() - time;
         return Math.round((Math.abs(timeDistance) / 1000) / 60);
     }
+
 
             }
 

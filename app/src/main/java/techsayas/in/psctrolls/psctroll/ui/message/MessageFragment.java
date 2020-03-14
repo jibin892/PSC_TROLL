@@ -414,9 +414,7 @@ public  static boolean isInFront;
                 } else {
                     timeAgo = "about " + (Math.round(timeDIM / 525600)) + " years";
                 }
-
                 // return timeAgo + " ago";
-
                 messageTime.setText(timeAgo);
 
 
@@ -432,7 +430,7 @@ public  static boolean isInFront;
                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 // add a list
-                            String[] animals = {"Delete for me","cancel", "Delete for every one"};
+                            String[] animals = {"Delete For Everyone","Delete For Me", "Cancel"};
                             builder.setItems(animals, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -440,33 +438,10 @@ public  static boolean isInFront;
                                         case 0: {
 
 
-
-//
-//                                          messageText.setVisibility(View.INVISIBLE);
-//
-//                                          messageTime.setVisibility(View.INVISIBLE);
-//                                          messageUser.setVisibility(View.INVISIBLE);
-//                                           postimg.setVisibility(View.INVISIBLE);
-//                                          image_message_profile.setVisibility(View.INVISIBLE);
-//
-
-
-
-
-
-                                        }break;
-
-                                        case 1:
-                                        {
-
-
-                                            if(model.getId()==personId){
+                                            if (model.getId() == personId) {
 
                                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                                 Query applesQuery = ref.child("MSG").orderByChild("idd").equalTo(model.getIdd());
-
-
-
                                                 applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -483,12 +458,58 @@ public  static boolean isInFront;
                                                     }
                                                 });
 
+                                            } else {
+
+                                                Toast.makeText(getActivity(), "no ", LENGTH_LONG).show();
+                                            }
+                                        }
+                                        break;
+//
+//                                          messageText.setVisibility(View.INVISIBLE);
+//
+//                                          messageTime.setVisibility(View.INVISIBLE);
+//                                          messageUser.setVisibility(View.INVISIBLE);
+//                                           postimg.setVisibility(View.INVISIBLE);
+//                                          image_message_profile.setVisibility(View.INVISIBLE);
+//
+
+
+
+
+
+
+                                        case 1:
+                                        {
+
+                                            if(model.getId()==personId){
+
+                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                                final Query applesQuery = ref.child("MSG").orderByChild("idd").equalTo(model.getIdd());
+                                                applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                                            // appleSnapshot.getRef().removeValue();
+                                                            Toast.makeText(getActivity(), (CharSequence) appleSnapshot.getValue(),LENGTH_LONG).show();
+
+
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+                                                        // Log.e(TAG, "onCancelled", databaseError.toException());
+                                                    }
+                                                });
+
                                             }
 
                                             else {
 
                                                 Toast.makeText(getActivity(),"no ",LENGTH_LONG).show();
                                             }
+
+
 
 
                                         }break;

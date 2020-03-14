@@ -35,8 +35,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -61,6 +63,8 @@ import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.Profileview;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.ui.message.MessageViewModel;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 
 public class ProfileFragment extends Fragment {
@@ -142,7 +146,7 @@ public class ProfileFragment extends Fragment {
                 .build();
 
 
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
         if (acct != null) {
             String personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
@@ -176,6 +180,7 @@ public class ProfileFragment extends Fragment {
                 reference=  FirebaseDatabase.getInstance().getReference("BOOKMARK").orderByChild("id").equalTo(acct.getId())) {
             @Override
             protected void populateView(View v, final Profileview model, int position) {
+
                 // Get references to the views of message.xml
                 final ImageView postimg= v.findViewById(R.id.mypost);
                 final TextView messageText = (TextView)v.findViewById(R.id.mydis1);
@@ -268,7 +273,7 @@ public class ProfileFragment extends Fragment {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 // add a li
-                        String[] animals = {"Share", "Download"};
+                        String[] animals = {"Share", "Download","Remove Favourite"};
                         builder.setItems(animals, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -333,7 +338,28 @@ public class ProfileFragment extends Fragment {
 
                                     }break;
 
+                                    case 2:
+                                    {
+                                        Toast.makeText(getActivity(),model.getIdd(),LENGTH_LONG).show();
+                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                        Query applesQuery = ref.child("BOOKMARK").orderByChild("idd").equalTo(model.getIdd());
+                                        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                                    appleSnapshot.getRef().removeValue();
 
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                // Log.e(TAG, "onCancelled", databaseError.toException());
+                                            }
+                                        });
+
+
+                                    }
                                 }
                             }
                         });

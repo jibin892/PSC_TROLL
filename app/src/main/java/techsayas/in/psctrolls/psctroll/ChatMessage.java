@@ -18,6 +18,7 @@ public class ChatMessage {
     public ChatMessage(String messageText, String messageUser,String photo,String photo1,String s,String id,String idd, String stamp) {
         this.messageText = messageText;
         this.messageUser = messageUser;
+
 this.photo1=photo1;
      this.photo=photo;
 
@@ -34,6 +35,7 @@ this.photo1=photo1;
 
     public ChatMessage() {
     }
+
     public String s()
     {
         return  s;
