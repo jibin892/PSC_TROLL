@@ -26,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,8 +65,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -82,6 +85,7 @@ import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.Upload;
 import techsayas.in.psctrolls.psctroll.Userchatimage;
+import techsayas.in.psctrolls.psctroll.Viewotherprofile;
 import techsayas.in.psctrolls.psctroll.ui.message.MessageViewModel;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -144,6 +148,7 @@ ImageView imgh,imgnh;
             @Override
             public void run() {
 
+
                 adapter.notifyDataSetChanged();
                 listOfMessages.smoothScrollToPosition(0);
             }
@@ -157,7 +162,7 @@ ImageView imgh,imgnh;
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
         if (acct != null) {
             personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
@@ -199,6 +204,7 @@ ImageView imgh,imgnh;
                 reference =   FirebaseDatabase.getInstance().getReference().child("POST")) {
             @Override
             protected void populateView(View v, final Homeview model, int position) {
+
 
 
 
@@ -304,6 +310,28 @@ comme.setText("ghfhgf");
                         // Log.e(TAG, "onCancelled", databaseError.toException());
                     }
                 });
+
+
+                image_message_profile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+
+Intent aw= new Intent(getActivity(), Viewotherprofile.class);
+aw.putExtra("id",model.getId());
+aw.putExtra("photo",model.getPhoto());
+aw.putExtra("email",model.getEmail());
+aw.putExtra("name",model.getMessageUser());
+
+startActivity(aw);
+
+
+
+
+
+                    }
+                });
 bookmark.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
@@ -311,7 +339,7 @@ bookmark.setOnClickListener(new View.OnClickListener() {
 
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("BOOKMARK");
-        Query applesQueryw = ref.orderByChild("postid").equalTo(model.getIdd());
+        Query applesQueryw = ref.orderByChild("bookmarkid").equalTo(model.getIdd()+personId);
 
         applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -320,28 +348,27 @@ bookmark.setOnClickListener(new View.OnClickListener() {
                     if (dataSnapshot.exists()) {
                         Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
                     } else {
-
-
                         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                         DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
                         Map<String, Object> map = new HashMap<>();
                         map.put("Like", 1);
-                        map.put("photo", String.valueOf(personPhoto));
-                        map.put("messageUser", personName);
-                        map.put("email", personEmail);
+                        map.put("photo",model.getPhoto());
+                        map.put("messageUser", model.getMessageUser());
+                        map.put("email", model.getEmail());
                         map.put("id", personId);
                         map.put("photo1", model.getPhoto1());
                         map.put("user", model.getMessageUser());
                         String mGroupId = rootRef.push().getKey();
                         map.put("idd", mGroupId);
                         map.put("stamp", model.getStamp());
-                        map.put("postid", model.getIdd());
+                        map.put("bookmarkid", model.getIdd()+acct.getId());
+                        map.put("postid",model.getIdd());
                         String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
                         map.put("messageTime", currentTime);
                         namesRef.updateChildren(map);
                         rootRef.child("BOOKMARK");
 
-
+                       // bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.fav));
                         rootRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -635,6 +662,8 @@ startActivity(ash);
 
             }
         };
+
+
 
         listOfMessages.setAdapter(adapter);
 

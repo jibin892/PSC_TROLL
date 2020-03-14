@@ -10,9 +10,12 @@ public class Homeview {
     private  String photo;
     private  String idd;
     private  String stamp;
+    private  String id;
+    private  String email;
+
     private  String s;
     private  String postid;
-    public Homeview(String messageText, String messageUser, String photo, String photo1, String s,String idd,  String stamp,String postid) {
+    public Homeview(String messageText, String messageUser, String photo, String photo1, String s,String idd,  String stamp,String postid,String id,String email) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
@@ -23,6 +26,8 @@ this.photo1=photo1;
         this.s=s;
         this.idd=idd;
         this.stamp=stamp;
+        this.id=id;
+        this.email=email;
 
 
     }
@@ -46,6 +51,14 @@ this.photo1=photo1;
     public String getStamp()
     {
         return  stamp;
+    }
+    public String getId()
+    {
+        return  id;
+    }
+    public String getEmail()
+    {
+        return  email;
     }
 
     public String getPhoto()

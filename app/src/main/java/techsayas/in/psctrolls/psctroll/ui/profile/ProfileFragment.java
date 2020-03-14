@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.airbnb.lottie.L;
 import com.brouding.doubletaplikeview.DoubleTapLikeView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -58,6 +59,8 @@ import java.util.TimeZone;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.Profileview;
@@ -76,7 +79,6 @@ public class ProfileFragment extends Fragment {
     ImageView download,share,ivEllipses;
     Uri personPhoto;
     SwipeRefreshLayout swipe;
-
     String personName;
     String personId;
     String personEmail;
@@ -172,8 +174,6 @@ public class ProfileFragment extends Fragment {
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-
-
         adapter = new FirebaseListAdapter<Profileview>(getActivity(), Profileview.class,
                 R.layout.profileview,
 
@@ -195,7 +195,9 @@ public class ProfileFragment extends Fragment {
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
                 Picasso.get().load(model.getPhoto1()).into(postimg);
-                //
+
+
+
                 Calendar cal = Calendar.getInstance();
                 TimeZone tz = cal.getTimeZone();//get your local time zone.
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
@@ -340,7 +342,8 @@ public class ProfileFragment extends Fragment {
 
                                     case 2:
                                     {
-                                        Toast.makeText(getActivity(),model.getIdd(),LENGTH_LONG).show();
+
+                                        // Toast.makeText(getActivity(),model.getIdd(),LENGTH_LONG).show();
                                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                         Query applesQuery = ref.child("BOOKMARK").orderByChild("idd").equalTo(model.getIdd());
                                         applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -348,6 +351,7 @@ public class ProfileFragment extends Fragment {
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
                                                     appleSnapshot.getRef().removeValue();
+                                                    Crouton.makeText(getActivity(),"Troll Added As Removed", Style.ALERT).show();
 
                                                 }
                                             }
@@ -395,8 +399,8 @@ public class ProfileFragment extends Fragment {
                     public void onClick(View v) {
 
                         Intent ash=new Intent(getActivity(), Comment.class);
-                        ash.putExtra("a",model.getIdd());
-
+                        ash.putExtra("a",model.getPostid());
+//Toast.makeText(getActivity(),model.getPostid(), LENGTH_LONG).show();
                         startActivity(ash);
 
 
@@ -422,6 +426,24 @@ public class ProfileFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
 //                        mShimmerViewContainer.stopShimmerAnimation();
 //                        mShimmerViewContainer.setVisibility(View.GONE);
+                        if (dataSnapshot.exists()){
+
+                            Crouton.makeText(getActivity(),"YOUR FAVARITES", Style.CONFIRM).show();
+
+
+
+                        }
+
+                        else{
+
+
+                            Crouton.makeText(getActivity(),"NO ITEM FOUND", Style.ALERT).show();
+
+
+
+                        }
+
+
 
 
 

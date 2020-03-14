@@ -114,6 +114,7 @@ public class Comment extends AppCompatActivity {
 
 ash=getIntent();
 as=ash.getStringExtra("a");
+//Toast.makeText(getApplicationContext(),as,LENGTH_LONG).show();
         fab = (FloatingActionButton)findViewById(R.id.fab2);
         fab4 = (FloatingActionButton)findViewById(R.id.fab4);
 

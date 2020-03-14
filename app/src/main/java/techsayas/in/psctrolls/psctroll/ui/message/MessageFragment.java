@@ -80,12 +80,15 @@ import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import techsayas.in.psctrolls.psctroll.ChatMessage;
 import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.Homepage;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.Userchatimage;
+import techsayas.in.psctrolls.psctroll.Viewotherprofile;
 import techsayas.in.psctrolls.psctroll.Viewprofile;
 import techsayas.in.psctrolls.psctroll.ui.profile.ProfileViewModel;
 
@@ -566,6 +569,7 @@ public  static boolean isInFront;
 //                        mShimmerViewContainer.stopShimmerAnimation();
 //                        mShimmerViewContainer.setVisibility(View.GONE);
                         //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+
                     }
 
                     @Override
@@ -599,6 +603,11 @@ public  static boolean isInFront;
 
                 } else {
                     view = getActivity().getLayoutInflater().inflate(R.layout.item_in_message, viewGroup, false);
+//                    String timeStamps = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+//
+//                    if(chatMessage.getStamp()==timeStamps) {
+//                        Crouton.makeText(getActivity(), "name" + "\t" + chatMessage.getMessageUser() + "\t" + chatMessage.getMessageText(), Style.INFO).show();
+//                    }
                 }
 //generating view}
                 populateView(view, chatMessage, position);
