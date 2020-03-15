@@ -36,6 +36,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
@@ -50,7 +51,7 @@ import techsayas.in.psctrolls.psctroll.Upload;
 import techsayas.in.psctrolls.psctroll.Viewuploaded;
 
 
-public class NotificationsFragment extends Fragment implements ActionBottomDialogFragment.ItemClickListener {
+public class NotificationsFragment extends Fragment  implements View.OnClickListener {
     GoogleSignInClient mGoogleSignInClient;
     TextView sign_out;
     TextView nameTV;
@@ -63,7 +64,7 @@ public class NotificationsFragment extends Fragment implements ActionBottomDialo
     View root;
     BottomSheetBehavior behavior;
     RecyclerView recyclerView;
-
+    private BottomSheetDialog bottomSheetDialog;
     String personId;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     Query mDatabaseReference;
@@ -77,8 +78,22 @@ public class NotificationsFragment extends Fragment implements ActionBottomDialo
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        bottomSheetDialog = new BottomSheetDialog(getActivity());
+        View bottomSheetDialogView = getLayoutInflater().inflate(R.layout.di, null);
+        bottomSheetDialog.setContentView(bottomSheetDialogView);
+        View shareView = bottomSheetDialogView.findViewById(R.id.share);
+        View getLinkView = bottomSheetDialogView.findViewById(R.id.get_link);
+        View editNameView = bottomSheetDialogView.findViewById(R.id.edit_name);
+        View deleteView = bottomSheetDialogView.findViewById(R.id.delete);
+        shareView.setOnClickListener(this);
+        getLinkView.setOnClickListener(this);
+        editNameView.setOnClickListener(this);
+        deleteView.setOnClickListener(this);
 
-d=root.findViewById(R.id.imageView2);
+      //  Button button = root.findViewById(R.id.ma);
+
+        d.setOnClickListener(this);
+
         sign_out = root.findViewById(R.id.log_out);
         nameTV = root.findViewById(R.id.name);
         emailTV = root.findViewById(R.id.email);
@@ -114,10 +129,8 @@ d.setOnClickListener(new View.OnClickListener() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
         if (acct != null) {
             String personName = acct.getDisplayName();
@@ -132,8 +145,6 @@ d.setOnClickListener(new View.OnClickListener() {
 //            idTV.setText("ID: "+personGivenName);
           //  Picasso.get().load(personPhoto).into(photo1);
             Picasso.get().load(personPhoto).into(photo);
-
-
         }
         mRecyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
 
@@ -278,6 +289,8 @@ d.setOnClickListener(new View.OnClickListener() {
                 });
 
     }
+
+
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvMovieName;
@@ -290,10 +303,36 @@ d.setOnClickListener(new View.OnClickListener() {
         }
 
     }
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
 
-    @Override public void onItemClick(String item) {
-       // tvSelectedItem.setText("Selected action item is " + item);
+        switch (id) {
+
+            case R.id.imageView2:
+                bottomSheetDialog.show();
+                break;
+
+            case R.id.share:
+                Toast.makeText(getActivity(), "Share", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.get_link:
+                Toast.makeText(getActivity(), "Get link", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.edit_name:
+                Toast.makeText(getActivity(), "Edit name", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.delete:
+                Toast.makeText(getActivity(), "Delete collection", Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+
     }
+
 }
 
 
