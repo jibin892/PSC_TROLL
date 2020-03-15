@@ -101,7 +101,7 @@ public class Viewuploaded extends AppCompatActivity {
     DoubleTapLikeView mDoubleTapLikeView;
     Query reference;
     Query reference1;
-
+FirebaseDatabase  firebaseDatabase;
     private ShimmerFrameLayout mShimmerViewContainer;
     int j=0;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -172,8 +172,8 @@ String as=a.getStringExtra("abc");
 
         adapter = new FirebaseListAdapter<Uploadedview>(Viewuploaded.this, Uploadedview.class,
                 R.layout.myprofilepost,
-
-                reference =   FirebaseDatabase.getInstance().getReference("POST").orderByChild("id").equalTo(as)) {
+                reference =   FirebaseDatabase.getInstance().getReference("POST").orderByChild("id").equalTo(as))
+        {
             @Override
             protected void populateView(View v, final Uploadedview model, int position) {
 
