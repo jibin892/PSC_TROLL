@@ -3,6 +3,8 @@ package techsayas.in.psctrolls.psctroll.ui.home;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -90,10 +92,13 @@ import techsayas.in.psctrolls.psctroll.Userchatimage;
 import techsayas.in.psctrolls.psctroll.Viewotherprofile;
 import techsayas.in.psctrolls.psctroll.ui.message.MessageViewModel;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
 import static android.widget.Toast.LENGTH_LONG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class HomeFragment extends Fragment {
-
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
     FirebaseListAdapter<Homeview> adapter;
     FloatingActionButton fab,cam;
     SweetAlertDialog pDialog;
@@ -423,7 +428,7 @@ bookmark.setOnClickListener(new View.OnClickListener() {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 // add a li
-                        String[] animals = {"Share", "Download"};
+                        String[] animals = {"Share", "Download","Copt Link"};
                         builder.setItems(animals, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -488,6 +493,20 @@ bookmark.setOnClickListener(new View.OnClickListener() {
 
                                     }break;
 
+                                    case 2:{
+
+
+//
+//                                        myClipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+//                                        String text;
+//                                        text = edidata.getText().toString();
+//
+//                                        myClip = ClipData.newPlainText("text", text);
+//                                        myClipboard.setPrimaryClip(myClip);
+
+                                        Toast.makeText(getApplicationContext(), "Text Copied",Toast.LENGTH_SHORT).show();
+
+                                    }break;
 
                                 }
                             }

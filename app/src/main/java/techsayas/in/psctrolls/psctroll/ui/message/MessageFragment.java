@@ -556,6 +556,8 @@ public  static boolean isInFront;
                         Intent as = new Intent(getActivity(), Viewprofile.class);
                         as.putExtra("a", model.getMessageUser());
                         as.putExtra("b", model.getPhoto());
+                        as.putExtra("email", model.getEmail());
+                        as.putExtra("id", model.getId());
                         //as.putExtra("c", model.getMessageUser());
                         startActivity(as);
                     }
