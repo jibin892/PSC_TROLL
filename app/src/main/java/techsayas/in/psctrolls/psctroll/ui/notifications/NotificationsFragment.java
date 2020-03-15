@@ -57,7 +57,7 @@ public class NotificationsFragment extends Fragment implements ActionBottomDialo
     TextView emailTV;
     TextView idTV;
     ImageView photo, photo1;
-    ImageView facebbok, google, instagram;
+    ImageView facebbok, google, instagram,d;
     EditText write;
     GridView listOfMessages;
     View root;
@@ -78,7 +78,7 @@ public class NotificationsFragment extends Fragment implements ActionBottomDialo
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-
+d=root.findViewById(R.id.imageView2);
         sign_out = root.findViewById(R.id.log_out);
         nameTV = root.findViewById(R.id.name);
         emailTV = root.findViewById(R.id.email);
@@ -96,7 +96,15 @@ public class NotificationsFragment extends Fragment implements ActionBottomDialo
         instagram.startAnimation(center_reveal_anim);
 
 
-
+d.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        ActionBottomDialogFragment addPhotoBottomDialogFragment =
+                ActionBottomDialogFragment.newInstance();
+        addPhotoBottomDialogFragment.show(getActivity().getSupportFragmentManager(),
+                ActionBottomDialogFragment.TAG);
+    }
+});
 
 
 
@@ -282,13 +290,7 @@ public class NotificationsFragment extends Fragment implements ActionBottomDialo
         }
 
     }
-    public void showBottomSheet(View view) {
-        ActionBottomDialogFragment addPhotoBottomDialogFragment =
-                ActionBottomDialogFragment.newInstance();
-        addPhotoBottomDialogFragment.show(getActivity().getSupportFragmentManager(),
-                ActionBottomDialogFragment.TAG);
 
-    }
     @Override public void onItemClick(String item) {
        // tvSelectedItem.setText("Selected action item is " + item);
     }
