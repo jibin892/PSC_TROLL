@@ -173,14 +173,9 @@ String as=a.getStringExtra("abc");
         adapter = new FirebaseListAdapter<Uploadedview>(Viewuploaded.this, Uploadedview.class,
                 R.layout.myprofilepost,
 
-                reference =   FirebaseDatabase.getInstance().getReference("POST").orderByChild("id").equalTo(as)) {
+                reference =   FirebaseDatabase.getInstance().getReference("POST").orderByChild("id").equalTo(as).startAt(0).endAt(100).orderByChild("stamp").limitToLast(100)) {
             @Override
             protected void populateView(View v, final Uploadedview model, int position) {
-
-
-
-
-
                 // Get references to the views of message.xml
                 final ImageView postimg= v.findViewById(R.id.post12);
                 final TextView messageText = (TextView)v.findViewById(R.id.userdis12);
