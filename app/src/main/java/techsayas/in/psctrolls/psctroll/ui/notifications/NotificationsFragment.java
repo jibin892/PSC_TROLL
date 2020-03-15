@@ -91,7 +91,7 @@ public class NotificationsFragment extends Fragment  implements View.OnClickList
         deleteView.setOnClickListener(this);
 
       //  Button button = root.findViewById(R.id.ma);
-      
+
         d.setOnClickListener(this);
 
         sign_out = root.findViewById(R.id.log_out);
