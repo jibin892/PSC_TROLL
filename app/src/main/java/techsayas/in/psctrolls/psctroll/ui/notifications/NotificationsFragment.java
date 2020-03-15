@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -23,10 +24,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.airbnb.lottie.L;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -34,11 +35,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
+import techsayas.in.psctrolls.psctroll.ActionBottomDialogFragment;
 import techsayas.in.psctrolls.psctroll.Login;
 import techsayas.in.psctrolls.psctroll.Movie;
 import techsayas.in.psctrolls.psctroll.R;
@@ -46,7 +50,7 @@ import techsayas.in.psctrolls.psctroll.Upload;
 import techsayas.in.psctrolls.psctroll.Viewuploaded;
 
 
-public class NotificationsFragment extends Fragment {
+public class NotificationsFragment extends Fragment implements ActionBottomDialogFragment.ItemClickListener {
     GoogleSignInClient mGoogleSignInClient;
     TextView sign_out;
     TextView nameTV;
@@ -57,9 +61,12 @@ public class NotificationsFragment extends Fragment {
     EditText write;
     GridView listOfMessages;
     View root;
+    BottomSheetBehavior behavior;
+    RecyclerView recyclerView;
+
     String personId;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    Query mDatabaseReference ;
+    Query mDatabaseReference;
     private RecyclerView mRecyclerView;
     private StaggeredGridLayoutManager mLayoutManager;
     // FirebaseListAdapter<Homeview> adapter;
@@ -69,8 +76,7 @@ public class NotificationsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
-         root = inflater.inflate(R.layout.fragment_notifications, container, false);
-
+        root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
 
         sign_out = root.findViewById(R.id.log_out);
@@ -82,12 +88,19 @@ public class NotificationsFragment extends Fragment {
         google = root.findViewById(R.id.google);
         instagram = root.findViewById(R.id.instagaram);
         write = root.findViewById(R.id.write);
-       // listOfMessages = (ListView)root.findViewById(R.id.list_of_messages1);
+        // listOfMessages = (ListView)root.findViewById(R.id.list_of_messages1);
 
         Animation center_reveal_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.center_reveal_anim);
         facebbok.startAnimation(center_reveal_anim);
         google.startAnimation(center_reveal_anim);
         instagram.startAnimation(center_reveal_anim);
+
+
+
+
+
+
+
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -257,16 +270,30 @@ public class NotificationsFragment extends Fragment {
                 });
 
     }
-    public static class MovieViewHolder extends RecyclerView.ViewHolder{
+    public static class MovieViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvMovieName;
         RatingBar ratingBar;
         ImageView ivMoviePoster;
+
         public MovieViewHolder(View v) {
             super(v);
             ivMoviePoster = (ImageView) v.findViewById(R.id.iv_movie_poster);
         }
+
+    }
+    public void showBottomSheet(View view) {
+        ActionBottomDialogFragment addPhotoBottomDialogFragment =
+                ActionBottomDialogFragment.newInstance();
+        addPhotoBottomDialogFragment.show(getActivity().getSupportFragmentManager(),
+                ActionBottomDialogFragment.TAG);
+
+    }
+    @Override public void onItemClick(String item) {
+       // tvSelectedItem.setText("Selected action item is " + item);
     }
 }
+
+
 
 
