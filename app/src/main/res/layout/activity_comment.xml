@@ -43,7 +43,7 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:id="@+id/fab2"
-            android:layout_alignParentRight="true"
+            android:layout_marginLeft="350dp"
             android:clickable="true"
             android:src="@drawable/send"
             android:tint="@android:color/white"
@@ -53,8 +53,8 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:id="@+id/fab4"
-            android:layout_alignParentRight="true"
             android:clickable="true"
+            android:layout_marginLeft="350dp"
             android:src="@drawable/send"
             android:tint="@android:color/white"
             app:fabSize="mini"/>

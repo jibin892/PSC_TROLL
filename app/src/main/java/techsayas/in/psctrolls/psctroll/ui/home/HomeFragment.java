@@ -143,7 +143,7 @@ ImageView imgh,imgnh;
 
 //        user=root.findViewById(R.id.photos123);
 //        somthing=root.findViewById(R.id.write123);
-     //   mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+       mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
 
 
 
@@ -428,7 +428,7 @@ bookmark.setOnClickListener(new View.OnClickListener() {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 // add a li
-                        String[] animals = {"Share", "Download","Copt Link"};
+                        String[] animals = {"Share", "Download"};
                         builder.setItems(animals, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -493,20 +493,6 @@ bookmark.setOnClickListener(new View.OnClickListener() {
 
                                     }break;
 
-                                    case 2:{
-
-
-//
-//                                        myClipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-//                                        String text;
-//                                        text = edidata.getText().toString();
-//
-//                                        myClip = ClipData.newPlainText("text", text);
-//                                        myClipboard.setPrimaryClip(myClip);
-
-                                        Toast.makeText(getApplicationContext(), "Text Copied",Toast.LENGTH_SHORT).show();
-
-                                    }break;
 
                                 }
                             }
@@ -637,8 +623,19 @@ startActivity(ash);
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-//                        mShimmerViewContainer.stopShimmerAnimation();
-//                        mShimmerViewContainer.setVisibility(View.GONE);
+                       if(dataSnapshot.exists()){
+
+
+                           mShimmerViewContainer.stopShimmerAnimation();
+                           mShimmerViewContainer.setVisibility(View.GONE);
+                       }
+
+                       else{
+
+                           mShimmerViewContainer.stopShimmerAnimation();
+                           mShimmerViewContainer.setVisibility(View.GONE);
+
+                       }
 
 
 
@@ -694,18 +691,18 @@ startActivity(ash);
 
         return root;
     }
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mShimmerViewContainer.startShimmerAnimation();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        mShimmerViewContainer.stopShimmerAnimation();
-//        super.onPause();
-//
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerViewContainer.startShimmerAnimation();
+    }
+
+    @Override
+    public void onPause() {
+        mShimmerViewContainer.stopShimmerAnimation();
+        super.onPause();
+
+    }
 
     private void saveState(boolean isFavourite) {
         SharedPreferences aSharedPreferences = getActivity().getSharedPreferences(

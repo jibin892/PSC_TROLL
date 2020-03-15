@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="?attr/actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:shimmer="http://schemas.android.com/tools">
 
@@ -54,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:stackFromBottom="true"
+
             android:transcriptMode="alwaysScroll"></ListView>
 
 
@@ -63,17 +65,16 @@
         android:id="@+id/relLayout3"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginLeft="@dimen/padding_10"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
         android:background="@drawable/whiteroundcorner">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="350dp"
             android:clickable="true"
             android:src="@drawable/send"
             android:tint="@android:color/white"
@@ -83,10 +84,9 @@
             android:id="@+id/fab6"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentRight="true"
 
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="350dp"
             android:clickable="true"
             android:src="@drawable/send"
             android:tint="@android:color/white"
@@ -97,7 +97,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="280dp"
+            android:layout_marginLeft="300dp"
             android:clickable="true"
             android:src="@drawable/photo"
             android:tint="@android:color/white"

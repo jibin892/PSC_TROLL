@@ -567,10 +567,19 @@ public  static boolean isInFront;
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-//                        mShimmerViewContainer.stopShimmerAnimation();
-//                        mShimmerViewContainer.setVisibility(View.GONE);
-                        //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+//                        if(dataSnapshot.exists()){
+//
+//
+//                            mShimmerViewContainer.stopShimmerAnimation();
+//                            mShimmerViewContainer.setVisibility(View.GONE);
+//                        }
+//
+//                        else{
+//
+//                            mShimmerViewContainer.stopShimmerAnimation();
+//                            mShimmerViewContainer.setVisibility(View.GONE);
+//
+//                        }
 
                     }
 
