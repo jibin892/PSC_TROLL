@@ -118,6 +118,7 @@ public class HomeFragment extends Fragment {
     String personName;
     String personId;
     String personEmail;
+    ImageView  heart,postimg;
     private Uri filePath;
     FirebaseStorage storage;
     TextView messageTime;
@@ -125,7 +126,7 @@ public class HomeFragment extends Fragment {
     // request code
 //    ImageView user;
 //    EditText somthing;
-    ImageView  bookmark,heart;
+    ImageView  bookmark;
     TextView comme;
     TextView textView;
     //ImageButton bookmark;
@@ -216,9 +217,9 @@ public class HomeFragment extends Fragment {
 
 
                 // Get references to the views of message.xml
-                final ImageView postimg= v.findViewById(R.id.post1);
-                final ImageView  heart=v.findViewById(R.id.image_heart);
-                final TextView messageText = (TextView)v.findViewById(R.id.userdis);
+                  postimg= v.findViewById(R.id.post1);
+                   heart=v.findViewById(R.id.image_heart);
+                 TextView messageText = (TextView)v.findViewById(R.id.userdis);
                 TextView messageUser = (TextView)v.findViewById(R.id.username);
                 TextView  messageTime = (TextView)v.findViewById(R.id.uploadtime);
                 DoubleTapLikeView  mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
@@ -229,7 +230,7 @@ public class HomeFragment extends Fragment {
                 textView=v.findViewById(R.id.yu);
                 bookmark=v.findViewById(R.id.bookmark);
                 comme = (TextView)v.findViewById(R.id.image_comments_link);
-                 positio = listOfMessages.getPositionForView((View) v.getParent());
+
 
 
                 messageText.setText(model.getMessageText());
