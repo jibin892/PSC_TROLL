@@ -771,7 +771,7 @@ public class HomeFragment extends Fragment {
                         int total = 0,
                                 count = 0;
                         for (DataSnapshot child: dataSnapshot.getChildren()) {
-                            int rating = child.child("like").getValue(Integer.class);
+                            int rating = child.child("Like").getValue(Integer.class);
                             total = total + rating;
                             count = count + 1;
                         }
