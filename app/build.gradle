@@ -77,6 +77,7 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.3.1"
     implementation 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
     implementation 'com.github.shrikanth7698:Night-Mode-Button:V1.0'
+    implementation 'com.android.support:recyclerview-v7:29.0.2'
 
 
 

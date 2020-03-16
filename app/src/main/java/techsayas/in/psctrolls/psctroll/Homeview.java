@@ -15,7 +15,7 @@ public class Homeview {
 
     private  String s;
     private  String postid;
-    public Homeview(String messageText, String messageUser, String photo, String photo1, String s,String idd,  long stamp,String postid,String id,String email) {
+    public Homeview(String messageText, String messageUser, String photo) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
