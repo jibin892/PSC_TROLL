@@ -106,7 +106,7 @@ public class HomeFragment extends Fragment {
     FirebaseListAdapter<Homeview> adapter;
     FloatingActionButton fab,cam;
     SweetAlertDialog pDialog;
-
+     int positio=0;
 
     ListView listOfMessages;
     CircleImageView img;
@@ -224,12 +224,12 @@ public class HomeFragment extends Fragment {
                 DoubleTapLikeView  mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
                 ImageView comment = (ImageView) v.findViewById(R.id.comment);
                 ImageView ivEllipses=v.findViewById(R.id.ivEllipses);
-
                 ImageView image_message_profile=v.findViewById(R.id.userimg1);
                 //mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
                 textView=v.findViewById(R.id.yu);
                 bookmark=v.findViewById(R.id.bookmark);
                 comme = (TextView)v.findViewById(R.id.image_comments_link);
+                 positio = listOfMessages.getPositionForView((View) v.getParent());
 
 
                 messageText.setText(model.getMessageText());
@@ -354,15 +354,12 @@ public class HomeFragment extends Fragment {
 
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LIKE");
                         Query applesQueryw = ref.orderByChild("likeid").equalTo(model.getIdd()+personId);
-
                         applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-
                                 if (dataSnapshot.exists()) {
                                     Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
                                     heart.setImageResource(R.drawable.vector_heart_white);
-
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                     Query applesQuery = ref.child("LIKE").orderByChild("likeid").equalTo(model.getIdd()+personId);
                                     applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -371,8 +368,6 @@ public class HomeFragment extends Fragment {
                                             for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
                                                 appleSnapshot.getRef().removeValue();
                                                 //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
-
-
                                             }
                                         }
 
@@ -570,8 +565,10 @@ public class HomeFragment extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
                                 if (dataSnapshot.exists()) {
+                                    bookmark.setImageResource(R.drawable.bookok);
                                     Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
                                 } else {
+                                    bookmark.setImageResource(R.drawable.bookmarked);
                                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                                     DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
                                     Map<String, Object> map = new HashMap<>();
