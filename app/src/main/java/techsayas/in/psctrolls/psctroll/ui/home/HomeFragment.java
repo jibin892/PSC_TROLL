@@ -222,7 +222,7 @@ public class HomeFragment extends Fragment {
                  TextView messageText = (TextView)v.findViewById(R.id.userdis);
                 TextView messageUser = (TextView)v.findViewById(R.id.username);
                 TextView  messageTime = (TextView)v.findViewById(R.id.uploadtime);
-                  mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
+                DoubleTapLikeView  mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
                 ImageView comment = (ImageView) v.findViewById(R.id.comment);
                 ImageView ivEllipses=v.findViewById(R.id.ivEllipses);
                 ImageView image_message_profile=v.findViewById(R.id.userimg1);
@@ -371,6 +371,7 @@ public class HomeFragment extends Fragment {
                                                 //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
                                             }
                                         }
+
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
                                             // Log.e(TAG, "onCancelled", databaseError.toException());
@@ -378,7 +379,7 @@ public class HomeFragment extends Fragment {
                                     });
 
                                 } else {
-                                   // heart.setImageResource(R.drawable.heart);
+                                    heart.setImageResource(R.drawable.heart);
                                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                                     DatabaseReference namesRef = rootRef.child("LIKE").push();
                                     Map<String, Object> map = new HashMap<>();
@@ -481,7 +482,7 @@ public class HomeFragment extends Fragment {
                                     });
 
                                 } else {
-                                   // heart.setImageResource(R.drawable.heart);
+                                    heart.setImageResource(R.drawable.heart);
                                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                                     DatabaseReference namesRef = rootRef.child("LIKE").push();
                                     Map<String, Object> map = new HashMap<>();
@@ -764,24 +765,7 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-                DatabaseReference reff = FirebaseDatabase.getInstance().getReference();
-                reff.child("LIKE").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        int total = 0,
-                                count = 0;
-                        for (DataSnapshot child: dataSnapshot.getChildren()) {
-                            int rating = child.child("Like").getValue(Integer.class);
-                            total = total + rating;
-                            count = count + 1;
-                        }
-Toast.makeText(getActivity(),total,LENGTH_LONG).show();
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        throw databaseError.toException(); // don't ignore errors
-                    }
-                });
+
 //
 //                mDoubleTapLikeView.setOnTapListener(new DoubleTapLikeView.OnTapListener() {
 //                    @Override
