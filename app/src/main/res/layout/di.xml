@@ -16,7 +16,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:background="?attr/selectableItemBackground">
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -314,19 +314,19 @@ d.setOnClickListener(new View.OnClickListener() {
                 break;
 
             case R.id.share:
-                Toast.makeText(getActivity(), "Share", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getActivity(), "Share", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.get_link:
-                Toast.makeText(getActivity(), "Get link", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getActivity(), "Get link", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.edit_name:
-                Toast.makeText(getActivity(), "Edit name", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getActivity(), "Edit name", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.delete:
-                Toast.makeText(getActivity(), "Delete collection", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), "Delete collection", Toast.LENGTH_SHORT).show();
                 break;
 
         }

@@ -1,12 +1,14 @@
 package techsayas.in.psctrolls.psctroll.ui.home;
 
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -31,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -141,7 +144,7 @@ ImageView imgh,imgnh;
      //   mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
 
 
-
+EnableRuntimePermission();
 
 
         listOfMessages = (ListView) root.findViewById(R.id.list_of_view);
@@ -712,7 +715,41 @@ startActivity(ash);
         long timeDistance = currentDate().getTime() - time;
         return Math.round((Math.abs(timeDistance) / 1000) / 60);
     }
+    public void EnableRuntimePermission() {
 
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                Manifest.permission.CALL_PHONE)) {
+
+// Toast.makeText(Cpature_image.this,"CAMERA permission allows us to Access CAMERA app", Toast.LENGTH_LONG).show();
+
+        } else {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int RC, String per[], int[] PResult) {
+
+        switch (RC) {
+
+            case 1:
+
+                if (PResult.length > 0 && PResult[0] == PackageManager.PERMISSION_GRANTED) {
+
+// Toast.makeText(Cpature_image.this,"Permission Granted, Now your application can access CAMERA.", Toast.LENGTH_LONG).show();
+
+                } else {
+
+                    Toast.makeText(getActivity(), "Permission Canceled.", Toast.LENGTH_LONG).show();
+
+                }
+                break;
+        }
+    }
 
             }
 

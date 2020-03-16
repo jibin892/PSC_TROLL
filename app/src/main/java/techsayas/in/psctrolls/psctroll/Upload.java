@@ -55,6 +55,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.watermark.androidwm.WatermarkBuilder;
+import com.watermark.androidwm.bean.WatermarkImage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -142,6 +144,7 @@ public class Upload extends AppCompatActivity {
 
             nameTV.setText(personName);
             emailTV.setText(personEmail);
+
 //            idTV.setText("ID: "+personGivenName);
             // Picasso.get().load(personPhoto).into(photo1);
             Picasso.get().load(personPhoto).into(photo);
@@ -249,6 +252,19 @@ public class Upload extends AppCompatActivity {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imgview.setImageBitmap(bitmap);
+                WatermarkImage watermarkImage = new WatermarkImage(bitmap)
+                        .setImageAlpha(80)
+                        .setPositionX(Math.random())
+                        .setPositionY(Math.random())
+                        .setRotation(15)
+                        .setSize(0.1);
+
+                WatermarkBuilder
+                        .create(this, imgview)
+                        .loadWatermarkImage(watermarkImage)
+                        .setTileMode(true)
+                        .getWatermark()
+                        .setToImageView(imgview);
             }
             catch (IOException e)
             {
