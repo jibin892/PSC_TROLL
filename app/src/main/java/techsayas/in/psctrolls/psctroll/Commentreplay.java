@@ -316,7 +316,7 @@ Intent a;
                 ImageView postimg = v.findViewById(R.id.postimg123t1);
                 TextView messageText = (TextView) v.findViewById(R.id.message_textt1);
                 messageUser = (TextView) v.findViewById(R.id.message_usert1);
-                TextView replay = (TextView) v.findViewById(R.id.message_reply1);
+            //    TextView replay = (TextView) v.findViewById(R.id.message_reply1);
 
                 messageTime = (TextView) v.findViewById(R.id.message_timet1);
                 ImageView image_message_profile = v.findViewById(R.id.image_message_profilet1);
@@ -385,19 +385,7 @@ Intent a;
 
                 messageTime.setText(timeAgo);
 
-                replay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-
-                        Intent a = new Intent(getApplicationContext(), Commentreplay.class);
-                        a.putExtra("a", model.getMessageUser());
-                        a.putExtra("b", model.getPhoto());
-                        a.putExtra("c", model.getMessageTime());
-                        a.putExtra("d", model.getMessageText());
-                        startActivity(a);
-                    }
-                });
 
 
                 image_message_profile.setOnClickListener(new View.OnClickListener() {

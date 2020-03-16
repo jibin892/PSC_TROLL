@@ -14,7 +14,7 @@
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/add"
-        android:title="@string/title_notifications" />
+        android:title="ADD" />
 
     <item
         android:id="@+id/navigation_dashboard"

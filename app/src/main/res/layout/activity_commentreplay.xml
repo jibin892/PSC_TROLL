@@ -105,12 +105,24 @@
         android:layout_below="@+id/relLayout1"
         android:layout_marginBottom="60dp">
 
+<!--        <ListView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:id="@+id/list_of_messages3"-->
+<!--            android:transcriptMode="alwaysScroll"-->
+<!--            android:stackFromBottom="false"></ListView>-->
         <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/list_of_messages3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="16dp"
+            android:padding="10dp"
             android:transcriptMode="alwaysScroll"
-            android:stackFromBottom="false"></ListView>
+            android:stackFromBottom="true">
+
+        </ListView>
 
 
     </RelativeLayout>
