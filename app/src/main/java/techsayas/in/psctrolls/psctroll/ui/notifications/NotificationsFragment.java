@@ -43,9 +43,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import techsayas.in.psctrolls.psctroll.ActionBottomDialogFragment;
+import techsayas.in.psctrolls.psctroll.Bookmarkview;
 import techsayas.in.psctrolls.psctroll.Login;
 import techsayas.in.psctrolls.psctroll.Movie;
+import techsayas.in.psctrolls.psctroll.Mypost;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.Upload;
 import techsayas.in.psctrolls.psctroll.Viewuploaded;
@@ -58,7 +59,6 @@ public class NotificationsFragment extends Fragment  implements View.OnClickList
     TextView emailTV;
     TextView idTV;
     ImageView photo, photo1;
-    ImageView facebbok, google, instagram,d;
     EditText write;
     GridView listOfMessages;
     View root;
@@ -83,43 +83,37 @@ public class NotificationsFragment extends Fragment  implements View.OnClickList
         bottomSheetDialog.setContentView(bottomSheetDialogView);
         View shareView = bottomSheetDialogView.findViewById(R.id.share);
         View getLinkView = bottomSheetDialogView.findViewById(R.id.get_link);
-        View editNameView = bottomSheetDialogView.findViewById(R.id.edit_name);
+        View editNameView = bottomSheetDialogView.findViewById(R.id.bokkmarkpage);
         View deleteView = bottomSheetDialogView.findViewById(R.id.delete);
+
+
+        View facebook = bottomSheetDialogView.findViewById(R.id.facebook);
+
+        View instagaram = bottomSheetDialogView.findViewById(R.id.instagaram);
+
+        View twiterew = bottomSheetDialogView.findViewById(R.id.google);
+
         shareView.setOnClickListener(this);
         getLinkView.setOnClickListener(this);
         editNameView.setOnClickListener(this);
         deleteView.setOnClickListener(this);
+        facebook.setOnClickListener(this);
+        instagaram.setOnClickListener(this);
+        twiterew.setOnClickListener(this);
 
-      //  Button button = root.findViewById(R.id.ma);
+     ImageView d = root.findViewById(R.id.imageView2);
 
         d.setOnClickListener(this);
 
-        sign_out = root.findViewById(R.id.log_out);
+
         nameTV = root.findViewById(R.id.name);
         emailTV = root.findViewById(R.id.email);
 //        idTV = root.findViewById(R.id.id);
         photo = root.findViewById(R.id.photos);
-        facebbok = root.findViewById(R.id.facebook);
-        google = root.findViewById(R.id.google);
-        instagram = root.findViewById(R.id.instagaram);
-        write = root.findViewById(R.id.write);
+       // write = root.findViewById(R.id.write);
         // listOfMessages = (ListView)root.findViewById(R.id.list_of_messages1);
 
-        Animation center_reveal_anim = AnimationUtils.loadAnimation(getActivity(), R.anim.center_reveal_anim);
-        facebbok.startAnimation(center_reveal_anim);
-        google.startAnimation(center_reveal_anim);
-        instagram.startAnimation(center_reveal_anim);
 
-
-d.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        ActionBottomDialogFragment addPhotoBottomDialogFragment =
-                ActionBottomDialogFragment.newInstance();
-        addPhotoBottomDialogFragment.show(getActivity().getSupportFragmentManager(),
-                ActionBottomDialogFragment.TAG);
-    }
-});
 
 
 
@@ -198,81 +192,6 @@ d.setOnClickListener(new View.OnClickListener() {
 
         mRecyclerView.setAdapter(adapter);
 
-        write.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent a = new Intent(getActivity(), Upload.class);
-                startActivity(a);
-
-
-            }
-        });
-        facebbok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String facebookUrl = "https://www.facebook.com/techsayssoftwaresolutions/?modal=admin_todo_tour";
-                String facebookID = "1739755902960987";
-
-                try {
-                    int versionCode = getActivity().getPackageManager().getPackageInfo("com.facebook.katana", 0).versionCode;
-
-                    if (!facebookID.isEmpty()) {
-                        // open the Facebook app using facebookID (fb://profile/facebookID or fb://page/facebookID)
-                        Uri uri = Uri.parse("fb://page/" + facebookID);
-                        startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                    } else if (versionCode >= 3002850 && !facebookUrl.isEmpty()) {
-                        // open Facebook app using facebook url
-                        Uri uri = Uri.parse("fb://facewebmodal/f?href=" + facebookUrl);
-                        startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                    } else {
-                        // Facebook is not installed. Open the browser
-                        Uri uri = Uri.parse(facebookUrl);
-                        startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                    }
-                } catch (PackageManager.NameNotFoundException e) {
-                    // Facebook is not installed. Open the browser
-                    Uri uri = Uri.parse(facebookUrl);
-                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                }
-            }
-        });
-        instagram.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse("https://www.instagram.com/psctrolls/?hl=en");
-                Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
-
-                likeIng.setPackage("com.instagram.android");
-
-                try {
-                    startActivity(likeIng);
-                } catch (ActivityNotFoundException e) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://www.instagram.com/psctrolls/?hl=en")));
-                }
-            }
-        });
-
-        google.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/pscTrolls"));
-                startActivity(intent);
-            }
-        });
-//         Configure sign-in to request the user's ID, email address, and basic
-//
-
-        sign_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signOut();
-            }
-        });
-
-
         return root;
     }
 
@@ -293,9 +212,9 @@ d.setOnClickListener(new View.OnClickListener() {
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
 
+        public ImageView ivMoviePoster;
         TextView tvMovieName;
         RatingBar ratingBar;
-        ImageView ivMoviePoster;
 
         public MovieViewHolder(View v) {
             super(v);
@@ -318,18 +237,109 @@ d.setOnClickListener(new View.OnClickListener() {
                 break;
 
             case R.id.get_link:
-                Toast.makeText(getActivity(), "Get link", Toast.LENGTH_SHORT).show();
+
+                Intent ab=new Intent(getActivity(), Mypost.class);
+                startActivity(ab);
+
+
                 break;
 
-            case R.id.edit_name:
-                Toast.makeText(getActivity(), "Edit name", Toast.LENGTH_SHORT).show();
+            case R.id.bokkmarkpage:
+                Intent a=new Intent(getActivity(), Bookmarkview.class);
+                startActivity(a);
+              //  Toast.makeText(getActivity(), "Edit name", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.delete:
+
+                signOut();
+
+
+
                 Toast.makeText(getActivity(), "Delete collection", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.facebook:
+
+             faebook();
+
+                break;
+            case R.id.instagaram:
+
+                insta();
+
+                break;
+            case R.id.google:
+
+                goog();
+
                 break;
 
         }
+
+    }
+
+    private void goog() {
+
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/pscTrolls"));
+        startActivity(intent);
+
+
+    }
+
+    private void insta() {
+
+
+
+
+        Uri uri = Uri.parse("https://www.instagram.com/psctrolls/?hl=en");
+        Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+
+        likeIng.setPackage("com.instagram.android");
+
+        try {
+            startActivity(likeIng);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://www.instagram.com/psctrolls/?hl=en")));
+        }
+
+
+
+
+    }
+
+    private void faebook() {
+
+
+
+        String facebookUrl = "https://www.facebook.com/techsayssoftwaresolutions/?modal=admin_todo_tour";
+        String facebookID = "1739755902960987";
+
+        try {
+            int versionCode = getActivity().getPackageManager().getPackageInfo("com.facebook.katana", 0).versionCode;
+
+            if (!facebookID.isEmpty()) {
+                // open the Facebook app using facebookID (fb://profile/facebookID or fb://page/facebookID)
+                Uri uri = Uri.parse("fb://page/" + facebookID);
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else if (versionCode >= 3002850 && !facebookUrl.isEmpty()) {
+                // open Facebook app using facebook url
+                Uri uri = Uri.parse("fb://facewebmodal/f?href=" + facebookUrl);
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else {
+                // Facebook is not installed. Open the browser
+                Uri uri = Uri.parse(facebookUrl);
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            // Facebook is not installed. Open the browser
+            Uri uri = Uri.parse(facebookUrl);
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        }
+
+
+
 
     }
 

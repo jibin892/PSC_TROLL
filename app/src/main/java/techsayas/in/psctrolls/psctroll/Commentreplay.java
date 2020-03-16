@@ -493,6 +493,9 @@ Intent a;
             filePath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imagview.getLayoutParams().height = 700;
+                imagview.getLayoutParams().width = 900;
+                imagview.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imagview.setImageBitmap(bitmap);
             }
             catch (IOException e)

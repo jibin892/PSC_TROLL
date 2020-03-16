@@ -4,9 +4,60 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/a"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileToolBar">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/backArrow"
+                    android:src="@drawable/backarrow"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Profile"
+                    android:layout_toRightOf="@+id/backArrow"
+                    android:layout_marginRight="15dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tvNesxt" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:onClick="showBottomSheet"
+                    app:srcCompat="@drawable/draw" />
+            </RelativeLayout>
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+    </com.google.android.material.appbar.AppBarLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
         android:background="@color/white">
         <LinearLayout
             android:id="@+id/linLayout2"
@@ -33,24 +84,18 @@
                     app:civ_border_color="@color/black"
                     app:civ_border_width="0.5dp" />
 
-                <TextView
-                    android:id="@+id/log_out"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="200dp"
-                    android:textSize="15dp"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="10dp"
-                    android:text="LOGOUT" />
+<!--                <TextView-->
+<!--                    android:id="@+id/log_out"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="200dp"-->
+<!--                    android:textSize="15dp"-->
+<!--                    android:fontFamily="@font/roboto_bold"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="LOGOUT" />-->
 
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="showBottomSheet"
-                    app:srcCompat="@drawable/draw" />
+
 
 
             </LinearLayout>
@@ -78,88 +123,7 @@
 
                 android:textColor="@color/link_blue"
                 android:textSize="16sp" />
-            <TextView
-                android:layout_width="170dp"
-                android:layout_height="31dp"
-                android:fontFamily="@font/roboto_bold"
-                android:text="FOLLOW US"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="17dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:layout_width="291dp"
-                android:layout_height="45dp"
-                android:orientation="horizontal"
-                android:background="@color/white"
-                android:layout_gravity="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.547"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.608">
-
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/facebook"
-                    android:layout_width="72dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:src="@drawable/facebook" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/google"
-                    android:layout_width="69dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:src="@drawable/twitter" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/instagaram"
-                    android:layout_width="69dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:src="@drawable/instagram" />
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:layout_marginLeft="@dimen/_50sdp"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.542"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.776">
-
-                <EditText
-                    android:id="@+id/write"
-                    android:layout_width="274dp"
-                    android:layout_height="45dp"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginTop="29dp"
-                    android:background="@drawable/spin"
-                    android:focusable="false"
-
-                    android:fontFamily="@font/roboto_bold"
-                    android:hint=" Write Somthing"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="17dp" />
-            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

@@ -63,6 +63,7 @@ dependencies {
     implementation 'com.brouding:android-doubletaplikeview:0.2.0'
     implementation 'com.github.bumptech.glide:glide:4.2.0'
     implementation 'com.commit451:PhotoView:1.2.4'
+    implementation 'com.brouding:android-doubletaplikeview:0.2.0'
     implementation 'com.android.support:palette-v7:29.1.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.firebase:firebase-functions:16.1.0'
