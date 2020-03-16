@@ -13,12 +13,12 @@
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/bookmark"
+        android:icon="@drawable/add"
         android:title="@string/title_notifications" />
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/stars"
+        android:icon="@drawable/pscq1"
         android:title="Post" />
 
     <item

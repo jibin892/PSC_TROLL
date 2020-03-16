@@ -19,17 +19,39 @@
         android:id="@+id/relLayout2"
         android:layout_below="@+id/relLayout1"
         android:layout_marginBottom="60dp">
-
         <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/list_of_messages2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="16dp"
+            android:padding="10dp"
             android:transcriptMode="alwaysScroll"
-            android:stackFromBottom="false"></ListView>
+            android:stackFromBottom="true">
+
+        </ListView>
+
+<!--        <ListView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:id="@+id/list_of_messages2"-->
+<!--            android:transcriptMode="alwaysScroll"-->
+<!--            android:stackFromBottom="false"></ListView>-->
 
 
     </RelativeLayout>
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/imgcomment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/bg_parent_rounded_corner" />
 
+
+</RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -43,7 +65,7 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:id="@+id/fab2"
-            android:layout_alignParentRight="true"
+            android:layout_marginLeft="350dp"
             android:clickable="true"
             android:src="@drawable/send"
             android:tint="@android:color/white"
@@ -53,8 +75,8 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:id="@+id/fab4"
-            android:layout_alignParentRight="true"
             android:clickable="true"
+            android:layout_marginLeft="350dp"
             android:src="@drawable/send"
             android:tint="@android:color/white"
             app:fabSize="mini"/>
@@ -71,11 +93,7 @@
 
 
 
-        <ImageView
-            android:id="@+id/imgcomment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/bg_parent_rounded_corner" />
+
 
         <EditText
             android:id="@+id/input2"

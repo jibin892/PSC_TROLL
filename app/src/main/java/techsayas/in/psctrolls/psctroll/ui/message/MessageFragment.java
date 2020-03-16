@@ -83,6 +83,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import techsayas.in.psctrolls.psctroll.ChatMessage;
+import techsayas.in.psctrolls.psctroll.Chatimg;
 import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.Homepage;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
@@ -141,7 +142,7 @@ public  static boolean isInFront;
         fab.setVisibility(View.INVISIBLE);
         // fab.setEnabled(false);
         imgmsg = (ImageView) root.findViewById(R.id.imgmsg);
-
+        input = (EditText) root.findViewById(R.id.input);
         cam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,8 +152,11 @@ public  static boolean isInFront;
                 startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
             }
         });
+
+
+
         listOfMessages = (ListView) root.findViewById(R.id.list_of_messages);
-        input = (EditText) root.findViewById(R.id.input);
+
         input.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -185,11 +189,20 @@ public  static boolean isInFront;
             @Override
             public void onClick(View v) {
 
-                storage = FirebaseStorage.getInstance();
-                storageReference = storage.getReference();
+
 
 
                 if(filePath != null) {
+//                    Crouton.makeText(getActivity(),"Filed is Empty", Style.ALERT).show();
+//
+//
+//
+//                }
+//                else{
+                    storage = FirebaseStorage.getInstance();
+                    storageReference = storage.getReference();
+
+
                     final ProgressDialog progressDialog = new ProgressDialog(getActivity());
                     progressDialog.setTitle("Uploading...");
                     progressDialog.setCancelable(false);
@@ -556,6 +569,8 @@ public  static boolean isInFront;
                         Intent as = new Intent(getActivity(), Viewprofile.class);
                         as.putExtra("a", model.getMessageUser());
                         as.putExtra("b", model.getPhoto());
+                        as.putExtra("email", model.getEmail());
+                        as.putExtra("id", model.getId());
                         //as.putExtra("c", model.getMessageUser());
                         startActivity(as);
                     }
@@ -565,10 +580,19 @@ public  static boolean isInFront;
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-//                        mShimmerViewContainer.stopShimmerAnimation();
-//                        mShimmerViewContainer.setVisibility(View.GONE);
-                        //   Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+//                        if(dataSnapshot.exists()){
+//
+//
+//                            mShimmerViewContainer.stopShimmerAnimation();
+//                            mShimmerViewContainer.setVisibility(View.GONE);
+//                        }
+//
+//                        else{
+//
+//                            mShimmerViewContainer.stopShimmerAnimation();
+//                            mShimmerViewContainer.setVisibility(View.GONE);
+//
+//                        }
 
                     }
 
@@ -665,6 +689,8 @@ public  static boolean isInFront;
             filePath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+                imgmsg.getLayoutParams().height = 700;
+                imgmsg.getLayoutParams().width = 900;
                 imgmsg.setImageBitmap(bitmap);
             }
             catch (IOException e)

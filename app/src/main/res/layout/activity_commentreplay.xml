@@ -114,6 +114,19 @@
 
 
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+
+        <ImageView
+            android:id="@+id/imgcomment1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/bg_parent_rounded_corner" />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -155,12 +168,6 @@
             app:fabSize="mini"/>
 
 
-
-        <ImageView
-            android:id="@+id/imgcomment1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/bg_parent_rounded_corner" />
 
         <EditText
             android:id="@+id/input3"

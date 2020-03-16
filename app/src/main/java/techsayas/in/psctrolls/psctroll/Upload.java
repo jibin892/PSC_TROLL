@@ -199,6 +199,7 @@ public class Upload extends AppCompatActivity {
                                     map.put("photo1", image);
                                     String mGroupId = rootRef.push().getKey();
                                     map.put("idd", mGroupId);
+                                    map.put("specialid",mGroupId+personId);
                                     int timeStamp = (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
                                     map.put("stamp",Integer.parseInt(String.valueOf(-1*timeStamp)));
                                     String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());

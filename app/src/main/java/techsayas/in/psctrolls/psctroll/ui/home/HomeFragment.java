@@ -4,6 +4,8 @@ package techsayas.in.psctrolls.psctroll.ui.home;
 import android.Manifest;
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -76,6 +78,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -93,19 +96,24 @@ import techsayas.in.psctrolls.psctroll.Userchatimage;
 import techsayas.in.psctrolls.psctroll.Viewotherprofile;
 import techsayas.in.psctrolls.psctroll.ui.message.MessageViewModel;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
 import static android.widget.Toast.LENGTH_LONG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class HomeFragment extends Fragment {
-
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
     FirebaseListAdapter<Homeview> adapter;
     FloatingActionButton fab,cam;
     SweetAlertDialog pDialog;
+
+
     ListView listOfMessages;
     CircleImageView img;
     ImageView  download,share,ivEllipses;
     Uri personPhoto;
     SwipeRefreshLayout swipe;
-ImageView imgh,imgnh;
+    ImageView imgh,imgnh;
     GoogleSignInClient mGoogleSignInClient;
     String personName;
     String personId;
@@ -117,7 +125,7 @@ ImageView imgh,imgnh;
     // request code
 //    ImageView user;
 //    EditText somthing;
-    ImageView  bookmark;
+    ImageView  bookmark,heart;
     TextView comme;
     TextView textView;
     //ImageButton bookmark;
@@ -137,16 +145,9 @@ ImageView imgh,imgnh;
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-
-//        user=root.findViewById(R.id.photos123);
-//        somthing=root.findViewById(R.id.write123);
-     //   mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
-
-
-EnableRuntimePermission();
-
-
+        root = inflater.inflate(R.layout.fragment_home, container, false);
+        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+        EnableRuntimePermission();
         listOfMessages = (ListView) root.findViewById(R.id.list_of_view);
 
         listOfMessages.post(new Runnable() {
@@ -180,7 +181,7 @@ EnableRuntimePermission();
 //            emailTV.setText(personEmail);
 //           idTV.setText("ID: "+personGivenName);
             // Picasso.get().load(personPhoto).into(photo1);
-           // Picasso.get().load(personPhoto).into(user);
+            // Picasso.get().load(personPhoto).into(user);
 
 
         }
@@ -208,35 +209,37 @@ EnableRuntimePermission();
 
                 reference =   FirebaseDatabase.getInstance().getReference().child("POST").orderByChild("stamp").limitToLast(15)) {
             @Override
-            protected void populateView(View v, final Homeview model, int position) {
+            protected void populateView(View v, final Homeview model, final int position) {
 
 
 
 
 
                 // Get references to the views of message.xml
-               final ImageView postimg= v.findViewById(R.id.post1);
+                final ImageView postimg= v.findViewById(R.id.post1);
+                final ImageView  heart=v.findViewById(R.id.image_heart);
                 final TextView messageText = (TextView)v.findViewById(R.id.userdis);
                 TextView messageUser = (TextView)v.findViewById(R.id.username);
-               messageTime = (TextView)v.findViewById(R.id.uploadtime);
+                TextView  messageTime = (TextView)v.findViewById(R.id.uploadtime);
+                DoubleTapLikeView  mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
                 ImageView comment = (ImageView) v.findViewById(R.id.comment);
                 ImageView ivEllipses=v.findViewById(R.id.ivEllipses);
 
                 ImageView image_message_profile=v.findViewById(R.id.userimg1);
                 //mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
                 textView=v.findViewById(R.id.yu);
-                   bookmark=v.findViewById(R.id.bookmark);
-               comme = (TextView)v.findViewById(R.id.image_comments_link);
+                bookmark=v.findViewById(R.id.bookmark);
+                comme = (TextView)v.findViewById(R.id.image_comments_link);
 
 
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
-             Picasso.get().load(model.getPhoto1()).into(postimg);
+                Picasso.get().load(model.getPhoto1()).into(postimg);
 
-               //
-               String s=String.valueOf(model.getStamp());
-               s=s.substring(1);
+                //
+                String s=String.valueOf(model.getStamp());
+                s=s.substring(1);
                 Calendar cal = Calendar.getInstance();
                 TimeZone tz = cal.getTimeZone();//get your local time zone.
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
@@ -250,7 +253,7 @@ EnableRuntimePermission();
                 }
 
                 if(date == null) {
-                  //  return null;
+                    //  return null;
                 }
 
                 long time = date.getTime();
@@ -258,7 +261,7 @@ EnableRuntimePermission();
                 Date curDate = currentDate();
                 long now = curDate.getTime();
                 if (time > now || time <= 0) {
-                  //  return null;
+                    //  return null;
                 }
 
                 float timeDIM = getTimeDistanceInMinutes(time);
@@ -268,7 +271,7 @@ EnableRuntimePermission();
                 if (timeDIM == 0) {
                     timeAgo = "just now";
                 } else if (timeDIM == 1) {
-                  //  return  "1 minute";
+                    //  return  "1 minute";
                     timeAgo="1 minute ago";
                 } else if (timeDIM >= 2 && timeDIM <= 44) {
                     timeAgo = (Math.round(timeDIM)) + " minutes ago";
@@ -294,12 +297,12 @@ EnableRuntimePermission();
                     timeAgo = "about " + (Math.round(timeDIM / 525600)) + " years ago";
                 }
 
-               // return timeAgo + " ago";
+                // return timeAgo + " ago";
 
                 messageTime.setText(timeAgo);
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                Query applesQueryy = ref.child("COMMENT").orderByChild("postid").equalTo(model.getIdd());
+                final Query applesQueryy = ref.child("COMMENT").orderByChild("postid").equalTo(model.getIdd());
 
 
 
@@ -307,8 +310,8 @@ EnableRuntimePermission();
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                           //    Toast.makeText(getActivity(),"yes",LENGTH_LONG).show();
-comme.setText("ghfhgf");
+                        //    Toast.makeText(getActivity(),"yes",LENGTH_LONG).show();
+                        comme.setText("ghfhgf");
 
                     }
 
@@ -325,13 +328,13 @@ comme.setText("ghfhgf");
 
 
 
-Intent aw= new Intent(getActivity(), Viewotherprofile.class);
-aw.putExtra("id",model.getId());
-aw.putExtra("photo",model.getPhoto());
-aw.putExtra("email",model.getEmail());
-aw.putExtra("name",model.getMessageUser());
+                        Intent aw= new Intent(getActivity(), Viewotherprofile.class);
+                        aw.putExtra("id",model.getId());
+                        aw.putExtra("photo",model.getPhoto());
+                        aw.putExtra("email",model.getEmail());
+                        aw.putExtra("name",model.getMessageUser());
 
-startActivity(aw);
+                        startActivity(aw);
 
 
 
@@ -339,79 +342,293 @@ startActivity(aw);
 
                     }
                 });
-bookmark.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
+
+//        user=root.findViewById(R.id.photos123);
+//        somthing=root.findViewById(R.id.write123);
+
+               heart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
 
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("BOOKMARK");
-        Query applesQueryw = ref.orderByChild("bookmarkid").equalTo(model.getIdd()+personId);
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LIKE");
+                        Query applesQueryw = ref.orderByChild("likeid").equalTo(model.getIdd()+personId);
 
-        applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    if (dataSnapshot.exists()) {
-                        Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
-                    } else {
-                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("Like", 1);
-                        map.put("photo",model.getPhoto());
-                        map.put("messageUser", model.getMessageUser());
-                        map.put("email", model.getEmail());
-                        map.put("id", personId);
-                        map.put("photo1", model.getPhoto1());
-                        map.put("user", model.getMessageUser());
-                        String mGroupId = rootRef.push().getKey();
-                        map.put("idd", mGroupId);
-                        map.put("stamp", model.getStamp());
-                        map.put("bookmarkid", model.getIdd()+acct.getId());
-                        map.put("postid",model.getIdd());
-                        String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-                        map.put("messageTime", currentTime);
-                        namesRef.updateChildren(map);
-                        rootRef.child("BOOKMARK");
-
-                       // bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.fav));
-                        rootRef.addValueEventListener(new ValueEventListener() {
+                        applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                reference1 = FirebaseDatabase.getInstance().getReference().child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
+
+                                if (dataSnapshot.exists()) {
+                                    Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
+                                    heart.setImageResource(R.drawable.vector_heart_white);
+
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                    Query applesQuery = ref.child("LIKE").orderByChild("likeid").equalTo(model.getIdd()+personId);
+                                    applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                                appleSnapshot.getRef().removeValue();
+                                                //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            // Log.e(TAG, "onCancelled", databaseError.toException());
+                                        }
+                                    });
+
+                                } else {
+                                    heart.setImageResource(R.drawable.heart);
+                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                                    DatabaseReference namesRef = rootRef.child("LIKE").push();
+                                    Map<String, Object> map = new HashMap<>();
+                                    map.put("Like", 1);
+                                    map.put("likeid",model.getIdd()+personId);
+                                    map.put("photo",model.getPhoto());
+                                    map.put("messageUser", model.getMessageUser());
+                                    map.put("email", model.getEmail());
+                                    map.put("id", personId);
+                                    map.put("photo1", model.getPhoto1());
+                                    map.put("user", model.getMessageUser());
+                                    String mGroupId = rootRef.push().getKey();
+                                    map.put("idd", mGroupId);
+                                    map.put("stamp", model.getStamp());
+                                    map.put("bookmarkid", model.getIdd()+acct.getId());
+                                    map.put("postid",model.getIdd());
+                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+                                    map.put("messageTime", currentTime);
+                                    namesRef.updateChildren(map);
+                                    rootRef.child("LIKE");
+
+                                    // bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.fav));
+                                    rootRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            reference1 = FirebaseDatabase.getInstance().getReference().child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
 // Log.d(TAG, "This: "+dataSnapshot.getValue());
 ///Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
 
+                                            textView.setText("1");
+
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+
+                                    Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
+                                }
                             }
+                            // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+                            //  bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
+
+
+
+
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-
+                                // Log.e(TAG, "onCancelled", databaseError.toException());
                             }
+
                         });
 
 
-                        Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
+
+
                     }
-                }
-                // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
-                //  bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
+                });
+
+
+                mDoubleTapLikeView.setOnTapListener(new DoubleTapLikeView.OnTapListener() {
+                    @Override
+                    public void onDoubleTap(View view) {
+
+
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LIKE");
+                        Query applesQueryw = ref.orderByChild("likeid").equalTo(model.getIdd()+personId);
+
+                        applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                if (dataSnapshot.exists()) {
+                                    Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
+                                    heart.setImageResource(R.drawable.vector_heart_white);
+
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                    Query applesQuery = ref.child("LIKE").orderByChild("likeid").equalTo(model.getIdd()+personId);
+                                    applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                                appleSnapshot.getRef().removeValue();
+                                                //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            // Log.e(TAG, "onCancelled", databaseError.toException());
+                                        }
+                                    });
+
+                                } else {
+                                    heart.setImageResource(R.drawable.heart);
+                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                                    DatabaseReference namesRef = rootRef.child("LIKE").push();
+                                    Map<String, Object> map = new HashMap<>();
+                                    map.put("Like", 1);
+                                    map.put("likeid",model.getIdd()+personId);
+                                    map.put("photo",model.getPhoto());
+                                    map.put("messageUser", model.getMessageUser());
+                                    map.put("email", model.getEmail());
+                                    map.put("id", personId);
+                                    map.put("photo1", model.getPhoto1());
+                                    map.put("user", model.getMessageUser());
+                                    String mGroupId = rootRef.push().getKey();
+                                    map.put("idd", mGroupId);
+                                    map.put("stamp", model.getStamp());
+                                    map.put("bookmarkid", model.getIdd()+acct.getId());
+                                    map.put("postid",model.getIdd());
+                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+                                    map.put("messageTime", currentTime);
+                                    namesRef.updateChildren(map);
+                                    rootRef.child("LIKE");
+
+                                    // bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.fav));
+                                    rootRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            reference1 = FirebaseDatabase.getInstance().getReference().child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
+// Log.d(TAG, "This: "+dataSnapshot.getValue());
+///Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
+
+                                            textView.setText("1");
+
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+
+                                    Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
+                                }
+                            }
+                            // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+                            //  bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
 
 
 
 
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Log.e(TAG, "onCancelled", databaseError.toException());
-            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                // Log.e(TAG, "onCancelled", databaseError.toException());
+                            }
 
-        });
+                        });
 
 
-    }
-});
+
+
+                    }
+
+                    @Override
+                    public void onTap() {
+
+                    }
+                });
+                bookmark.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("BOOKMARK");
+                        Query applesQueryw = ref.orderByChild("bookmarkid").equalTo(model.getIdd()+personId);
+
+                        applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                if (dataSnapshot.exists()) {
+                                    Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
+                                } else {
+                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                                    DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
+                                    Map<String, Object> map = new HashMap<>();
+                                    map.put("Like", 1);
+                                    map.put("photo",model.getPhoto());
+                                    map.put("messageUser", model.getMessageUser());
+                                    map.put("email", model.getEmail());
+                                    map.put("id", personId);
+                                    map.put("photo1", model.getPhoto1());
+                                    map.put("user", model.getMessageUser());
+                                    String mGroupId = rootRef.push().getKey();
+                                    map.put("idd", mGroupId);
+                                    map.put("stamp", model.getStamp());
+                                    map.put("bookmarkid", model.getIdd()+acct.getId());
+                                    map.put("postid",model.getIdd());
+                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+                                    map.put("messageTime", currentTime);
+                                    namesRef.updateChildren(map);
+                                    rootRef.child("BOOKMARK");
+
+                                    // bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.fav));
+                                    rootRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            reference1 = FirebaseDatabase.getInstance().getReference().child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
+// Log.d(TAG, "This: "+dataSnapshot.getValue());
+///Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+
+                                    Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
+                                }
+                            }
+                            // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+                            //  bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
+
+
+
+
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                // Log.e(TAG, "onCancelled", databaseError.toException());
+                            }
+
+                        });
+
+
+                    }
+                });
 
 
 
@@ -530,18 +747,18 @@ bookmark.setOnClickListener(new View.OnClickListener() {
 
 
 
-comment.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
+                comment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-Intent ash=new Intent(getActivity(), Comment.class);
-ash.putExtra("a",model.getIdd());
+                        Intent ash=new Intent(getActivity(), Comment.class);
+                        ash.putExtra("a",model.getIdd());
 
-startActivity(ash);
+                        startActivity(ash);
 
 
-    }
-});
+                    }
+                });
 
                 postimg.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -621,8 +838,19 @@ startActivity(ash);
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-//                        mShimmerViewContainer.stopShimmerAnimation();
-//                        mShimmerViewContainer.setVisibility(View.GONE);
+                        if(dataSnapshot.exists()){
+
+
+                            mShimmerViewContainer.stopShimmerAnimation();
+                            mShimmerViewContainer.setVisibility(View.GONE);
+                        }
+
+                        else{
+
+                            mShimmerViewContainer.stopShimmerAnimation();
+                            mShimmerViewContainer.setVisibility(View.GONE);
+
+                        }
 
 
 
@@ -678,18 +906,18 @@ startActivity(ash);
 
         return root;
     }
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mShimmerViewContainer.startShimmerAnimation();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        mShimmerViewContainer.stopShimmerAnimation();
-//        super.onPause();
-//
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerViewContainer.startShimmerAnimation();
+    }
+
+    @Override
+    public void onPause() {
+        mShimmerViewContainer.stopShimmerAnimation();
+        super.onPause();
+
+    }
 
     private void saveState(boolean isFavourite) {
         SharedPreferences aSharedPreferences = getActivity().getSharedPreferences(
@@ -715,17 +943,18 @@ startActivity(ash);
         long timeDistance = currentDate().getTime() - time;
         return Math.round((Math.abs(timeDistance) / 1000) / 60);
     }
+
     public void EnableRuntimePermission() {
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                Manifest.permission.CALL_PHONE)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(Objects.requireNonNull(getActivity()),
+                Manifest.permission.CAMERA)) {
 
 // Toast.makeText(Cpature_image.this,"CAMERA permission allows us to Access CAMERA app", Toast.LENGTH_LONG).show();
 
         } else {
 
             ActivityCompat.requestPermissions(getActivity(), new String[]{
-                    Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
 
 
         }
@@ -736,7 +965,7 @@ startActivity(ash);
 
         switch (RC) {
 
-            case 1:
+            case 12:
 
                 if (PResult.length > 0 && PResult[0] == PackageManager.PERMISSION_GRANTED) {
 
@@ -744,14 +973,19 @@ startActivity(ash);
 
                 } else {
 
-                    Toast.makeText(getActivity(), "Permission Canceled.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Permission Canceled, Now your application cannot access CAMERA.", Toast.LENGTH_LONG).show();
 
                 }
                 break;
-        }
-    }
+        }}
 
-            }
+
+
+
+}
+
+
+
 
 
 

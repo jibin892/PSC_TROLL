@@ -70,7 +70,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import techsayas.in.psctrolls.psctroll.ui.message.MessageViewModel;
 
 import static android.widget.Toast.LENGTH_LONG;
-import static techsayas.in.psctrolls.psctroll.ui.home.HomeFragment.currentDate;
 
 public class Comment extends AppCompatActivity {
     FirebaseListAdapter<Commentview> adapter;
@@ -566,6 +565,9 @@ fab4.setOnClickListener(new View.OnClickListener() {
             filePath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imgview1.getLayoutParams().height = 700;
+                imgview1.getLayoutParams().width = 900;
+                imgview1.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imgview1.setImageBitmap(bitmap);
             }
             catch (IOException e)

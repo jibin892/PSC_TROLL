@@ -1,11 +1,9 @@
 package techsayas.in.psctrolls.psctroll;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,17 +14,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
-import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.brouding.doubletaplikeview.DoubleTapLikeView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -34,8 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,9 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -61,9 +49,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -92,6 +77,7 @@ public class Viewuploaded extends AppCompatActivity {
     StorageReference storageReference;
     // request code
 //    ImageView user;
+    ImageView chosee;
 //    EditText somthing;
     Intent a;
     ImageView  bookmark;
@@ -187,7 +173,7 @@ String as=a.getStringExtra("abc");
                 TextView messageUser = (TextView)v.findViewById(R.id.username12);
                 messageTime = (TextView)v.findViewById(R.id.uploadtime12);
                 ImageView comment = (ImageView) v.findViewById(R.id.comment12);
-                ImageView ivEllipses=v.findViewById(R.id.ivEllipses112);
+             chosee=v.findViewById(R.id.chosee12);
 
                 ImageView image_message_profile=v.findViewById(R.id.userimg12);
                 //mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
@@ -264,8 +250,13 @@ String as=a.getStringExtra("abc");
 
                 messageTime.setText(timeAgo);
 
+
+
+
+
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                 Query applesQueryy = ref.child("COMMENT").orderByChild("postid").equalTo(model.getIdd());
+
 
 
 
@@ -284,7 +275,120 @@ String as=a.getStringExtra("abc");
                     }
                 });
 
+chosee.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(Viewuploaded.this);
+// add a li
+        String[] animals = {"Share", "Download","Delet Post"};
+        builder.setItems(animals, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0: {
+
+                        Bitmap bm = ((android.graphics.drawable.BitmapDrawable) postimg.getDrawable()).getBitmap();
+                        try {
+                            java.io.File file = new java.io.File(getExternalCacheDir() + "/image.jpg");
+                            java.io.OutputStream out = new java.io.FileOutputStream(file);
+                            bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                            out.flush();
+                            out.close();
+                        } catch (Exception e) { e.toString(); }
+                        Intent iten = new Intent(android.content.Intent.ACTION_SEND);
+                        iten.setType("*/*");
+                        iten.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new java.io.File(getExternalCacheDir() + "/image.jpg")));
+                        iten.putExtra(android.content.Intent.EXTRA_TEXT, model.getMessageText());
+                        getApplicationContext().startActivity(Intent.createChooser(iten, "Share Troll"));
+
+
+
+
+
+                    }
+                    break;
+                    case 1:
+                    {
+
+                        BitmapDrawable draw = (BitmapDrawable) postimg.getDrawable();
+                        Bitmap bitmap = draw.getBitmap();
+
+
+                        File sdCard = Environment.getExternalStorageDirectory().getAbsoluteFile();
+                        File dir = new File(sdCard.getAbsolutePath() + "/Psctrolls");
+                        dir.mkdirs();
+                        String fileName = String.format("%d.jpg", System.currentTimeMillis());
+                        File outFile = new File(dir, fileName);
+                        FileOutputStream outStream = null;
+                        Toast.makeText(getApplicationContext(),"Troll Downloaded",Toast.LENGTH_LONG).show();
+                        try {
+                            outStream = new FileOutputStream(outFile);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                        try {
+                            outStream.flush();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            outStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                        intent.setData(Uri.fromFile(outFile));
+                        getApplicationContext().sendBroadcast(intent);
+
+
+
+                    }break;
+                    case 2:{
+
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                        Query applesQuery = ref.child("POST").orderByChild("specialid").equalTo(model.getIdd()+personId);
+                        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                    appleSnapshot.getRef().removeValue();
+                                    //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                // Log.e(TAG, "onCancelled", databaseError.toException());
+                            }
+                        });
+
+
+
+                    }break;
+
+                }
+            }
+        });
+// create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+});
 
                 bookmark.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -362,115 +466,6 @@ String as=a.getStringExtra("abc");
 
 
 
-                ivEllipses.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-
-
-
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-// add a li
-                        String[] animals = {"Share", "Download"};
-                        builder.setItems(animals, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case 0: {
-
-                                        Bitmap bm = ((android.graphics.drawable.BitmapDrawable) postimg.getDrawable()).getBitmap();
-                                        try {
-                                            java.io.File file = new java.io.File(getExternalCacheDir() + "/image.jpg");
-                                            java.io.OutputStream out = new java.io.FileOutputStream(file);
-                                            bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                                            out.flush();
-                                            out.close();
-                                        } catch (Exception e) { e.toString(); }
-                                        Intent iten = new Intent(android.content.Intent.ACTION_SEND);
-                                        iten.setType("*/*");
-                                        iten.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new java.io.File(getExternalCacheDir() + "/image.jpg")));
-                                        iten.putExtra(android.content.Intent.EXTRA_TEXT, model.getMessageText());
-                                        getApplicationContext().startActivity(Intent.createChooser(iten, "Share Troll"));
-
-
-
-
-
-                                    }
-                                    break;
-                                    case 1:
-                                    {
-
-                                        BitmapDrawable draw = (BitmapDrawable) postimg.getDrawable();
-                                        Bitmap bitmap = draw.getBitmap();
-
-
-                                        File sdCard = Environment.getExternalStorageDirectory().getAbsoluteFile();
-                                        File dir = new File(sdCard.getAbsolutePath() + "/Psctrolls");
-                                        dir.mkdirs();
-                                        String fileName = String.format("%d.jpg", System.currentTimeMillis());
-                                        File outFile = new File(dir, fileName);
-                                        FileOutputStream outStream = null;
-                                        Toast.makeText(getApplicationContext(),"Troll Downloaded",Toast.LENGTH_LONG).show();
-                                        try {
-                                            outStream = new FileOutputStream(outFile);
-                                        } catch (FileNotFoundException e) {
-                                            e.printStackTrace();
-                                        }
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                                        try {
-                                            outStream.flush();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        try {
-                                            outStream.close();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                                        intent.setData(Uri.fromFile(outFile));
-                                        getApplicationContext().sendBroadcast(intent);
-
-
-
-                                    }break;
-
-
-                                }
-                            }
-                        });
-// create and show the alert dialog
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    }
-                });
-
-
-               /* if(readState())
-                {
-                    bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.fav));
-                }
-                else
-                {
-                    bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
-                }*/
 
 
 

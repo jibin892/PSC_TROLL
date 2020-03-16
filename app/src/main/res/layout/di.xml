@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="224dp"
+    android:layout_height="434dp"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <LinearLayout
@@ -43,22 +43,22 @@
         android:background="?attr/selectableItemBackground">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+            android:layout_width="22dp"
+            android:layout_height="28dp"
+            android:background="@drawable/stars" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Get link"
+            android:text="MY POST"
             android:layout_marginLeft="16dp"
             android:textColor="@android:color/black"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/edit_name"
+        android:id="@+id/bokkmarkpage"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:clickable="true"
@@ -69,8 +69,9 @@
         android:background="?attr/selectableItemBackground">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="22dp"
+            android:layout_height="28dp"
+            android:background="@drawable/favi"
             />
 
         <TextView
@@ -78,7 +79,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_marginLeft="16dp"
-            android:text="Edit Name"
+            android:text="BOOKMARK"
             android:textColor="@android:color/black"/>
 
     </LinearLayout>
@@ -95,19 +96,78 @@
         android:background="?attr/selectableItemBackground">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-           />
+            android:layout_width="22dp"
+            android:layout_height="28dp"
+            android:background="@drawable/log" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Delete collection"
+            android:text="LOGOUT"
             android:layout_marginLeft="16dp"
 
             android:textColor="@android:color/black"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dhelete"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="?attr/selectableItemBackground">
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:text="FOLLOE US"
+            android:layout_marginLeft="16dp"
+
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/bokkmfarkpage"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="?attr/selectableItemBackground">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/facebook"
+            android:layout_width="75dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/facebook" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/instagaram"
+            android:layout_width="75dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/instagram" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/google"
+            android:layout_width="75dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/twitter" />
+    </LinearLayout>
+
 
 </LinearLayout>
