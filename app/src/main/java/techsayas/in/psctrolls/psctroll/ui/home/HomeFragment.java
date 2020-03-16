@@ -753,7 +753,7 @@ public class HomeFragment extends Fragment {
                         ash.putExtra("a",model.getIdd());
 
                         startActivity(ash);
-
+//l
 
                     }
                 });
