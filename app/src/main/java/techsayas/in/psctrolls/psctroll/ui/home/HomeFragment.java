@@ -565,10 +565,10 @@ public class HomeFragment extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
                                 if (dataSnapshot.exists()) {
-                                    bookmark.setImageResource(R.drawable.bookok);
+                                  //  bookmark.setImageResource(R.drawable.bookok);
                                     Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
                                 } else {
-                                    bookmark.setImageResource(R.drawable.bookmarked);
+                                  //  bookmark.setImageResource(R.drawable.bookmarked);
                                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                                     DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
                                     Map<String, Object> map = new HashMap<>();
