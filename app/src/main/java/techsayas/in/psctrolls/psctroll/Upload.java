@@ -253,19 +253,7 @@ public class Upload extends AppCompatActivity {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imgview.setImageBitmap(bitmap);
-                WatermarkImage watermarkImage = new WatermarkImage(bitmap)
-                        .setImageAlpha(80)
-                        .setPositionX(Math.random())
-                        .setPositionY(Math.random())
-                        .setRotation(15)
-                        .setSize(0.1);
 
-                WatermarkBuilder
-                        .create(this, imgview)
-                        .loadWatermarkImage(watermarkImage)
-                        .setTileMode(true)
-                        .getWatermark()
-                        .setToImageView(imgview);
             }
             catch (IOException e)
             {

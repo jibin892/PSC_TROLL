@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Mypost"></activity>
+        <activity android:name=".Psc_notification"></activity>
+        <activity android:name=".Mypost" />
         <activity android:name=".Bookmarkview" />
         <activity android:name=".Viewotherprofile" />
         <activity android:name=".Viewuploaded" />
