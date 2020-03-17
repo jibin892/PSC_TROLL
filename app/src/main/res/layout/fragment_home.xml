@@ -42,7 +42,6 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/homeimagev"
-                    android:background="@drawable/spin"
                     android:gravity="center_vertical"
                     android:padding="6dp"
                     android:textColor="@color/black"
