@@ -12,10 +12,11 @@ public class Homeview {
     private  long stamp;
     private  String id;
     private  String email;
+    private  String likes;
 
     private  String s;
     private  String postid;
-    public Homeview(String messageText, String messageUser, String photo) {
+    public Homeview(String messageText, String messageUser, String photo,String likes) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 this.photo1=photo1;
@@ -28,6 +29,7 @@ this.photo1=photo1;
         this.stamp=stamp;
         this.id=id;
         this.email=email;
+        this.likes=likes;
 
 
     }
@@ -40,6 +42,11 @@ this.photo1=photo1;
     {
         return  s;
     }
+    public String getLikes()
+    {
+        return  likes;
+    }
+
     public  String getPostid()
     {
         return  postid;

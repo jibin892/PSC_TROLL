@@ -106,8 +106,9 @@ public class HomeFragment extends Fragment {
     FirebaseListAdapter<Homeview> adapter;
     FloatingActionButton fab,cam;
     SweetAlertDialog pDialog;
+    int count=0;
      int positio=0;
-
+    String ac;
     ListView listOfMessages;
     CircleImageView img;
     ImageView  download,share,ivEllipses;
@@ -238,6 +239,31 @@ public class HomeFragment extends Fragment {
                 Picasso.get().load(model.getPhoto()).into(image_message_profile);
                 Picasso.get().load(model.getPhoto1()).into(postimg);
 
+                DatabaseReference refr = FirebaseDatabase.getInstance().getReference();
+               refr.child("LIKE").orderByChild("postid").equalTo(model.getIdd()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        int total = 0,
+                                count = 0;
+                        for (DataSnapshot child: dataSnapshot.getChildren()) {
+                            int rating = child.child("Like").getValue(Integer.class);
+                            total = total + rating;
+                            count = count + 1;
+                        }
+                       textView.setText(String.valueOf(total));
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        throw databaseError.toException(); // don't ignore errors
+                    }
+                });
+
+
+
+
+
+
+
                 //
                 String s=String.valueOf(model.getStamp());
                 s=s.substring(1);
@@ -310,9 +336,14 @@ public class HomeFragment extends Fragment {
                 applesQueryy.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            String userName = String.valueOf(data.child("messageText").getValue());
+                            Toast.makeText(getActivity(),userName,LENGTH_LONG).show();
+                            comme.setText(userName);
+                        }
 
-                        //    Toast.makeText(getActivity(),"yes",LENGTH_LONG).show();
-                        comme.setText("ghfhgf");
+                        //
+
 
                     }
 
@@ -394,7 +425,6 @@ public class HomeFragment extends Fragment {
                                     String mGroupId = rootRef.push().getKey();
                                     map.put("idd", mGroupId);
                                     map.put("stamp", model.getStamp());
-                                    map.put("bookmarkid", model.getIdd()+acct.getId());
                                     map.put("postid",model.getIdd());
                                     String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
                                     map.put("messageTime", currentTime);
@@ -409,7 +439,7 @@ public class HomeFragment extends Fragment {
 // Log.d(TAG, "This: "+dataSnapshot.getValue());
 ///Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
 
-                                            textView.setText("1");
+                                          //  textView.setText("1");
 
 
 
@@ -450,18 +480,14 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onDoubleTap(View view) {
 
-
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LIKE");
                         Query applesQueryw = ref.orderByChild("likeid").equalTo(model.getIdd()+personId);
-
                         applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-
                                 if (dataSnapshot.exists()) {
                                     Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
                                     heart.setImageResource(R.drawable.vector_heart_white);
-
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                     Query applesQuery = ref.child("LIKE").orderByChild("likeid").equalTo(model.getIdd()+personId);
                                     applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -470,8 +496,6 @@ public class HomeFragment extends Fragment {
                                             for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
                                                 appleSnapshot.getRef().removeValue();
                                                 //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
-
-
                                             }
                                         }
 
@@ -497,7 +521,6 @@ public class HomeFragment extends Fragment {
                                     String mGroupId = rootRef.push().getKey();
                                     map.put("idd", mGroupId);
                                     map.put("stamp", model.getStamp());
-                                    map.put("bookmarkid", model.getIdd()+acct.getId());
                                     map.put("postid",model.getIdd());
                                     String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
                                     map.put("messageTime", currentTime);
@@ -511,8 +534,6 @@ public class HomeFragment extends Fragment {
                                             reference1 = FirebaseDatabase.getInstance().getReference().child("BOOKMARK").orderByChild("postid").equalTo(model.getIdd());
 // Log.d(TAG, "This: "+dataSnapshot.getValue());
 ///Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
-
-                                            textView.setText("1");
 
 
 
@@ -573,7 +594,7 @@ public class HomeFragment extends Fragment {
                                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                                     DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
                                     Map<String, Object> map = new HashMap<>();
-                                    map.put("Like", 1);
+                                    map.put("Like", "1");
                                     map.put("photo",model.getPhoto());
                                     map.put("messageUser", model.getMessageUser());
                                     map.put("email", model.getEmail());

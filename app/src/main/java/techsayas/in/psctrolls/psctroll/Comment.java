@@ -420,101 +420,101 @@ fab4.setOnClickListener(new View.OnClickListener() {
                 messageTime.setText(timeAgo);
 
 
-                like1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-
-
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LIKE");
-                        Query applesQueryw = ref.orderByChild("likeid").equalTo(model.getIdd()+personId);
-                        applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    like1.setImageResource(R.drawable.vector_heart_white);
-                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                                    Query applesQuery = ref.child("LIKECOMMENT").orderByChild("likeid").equalTo(model.getIdd()+model.getStamp());
-                                    applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
-                                                appleSnapshot.getRef().removeValue();
-                                                //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-                                            // Log.e(TAG, "onCancelled", databaseError.toException());
-                                        }
-                                    });
-
-                                } else {
-                                    like1.setImageResource(R.drawable.heart);
-                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                                    DatabaseReference namesRef = rootRef.child("LIKECOMMENT").push();
-                                    Map<String, Object> map = new HashMap<>();
-                                    map.put("Like", 1);
-                                    map.put("likeid",model.getIdd()+personId);
-                                    map.put("photo",model.getPhoto());
-                                    map.put("messageUser", model.getMessageUser());
-
-                                    map.put("id", personId);
-                                    map.put("photo1", model.getPhoto1());
-                                    map.put("user", model.getMessageUser());
-                                    String mGroupId = rootRef.push().getKey();
-                                    map.put("idd", mGroupId);
-                                    map.put("stamp", model.getStamp());
-                                    map.put("bookmarkid", model.getIdd()+model.getStamp());
-                                    map.put("postid",model.getIdd());
-                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-                                    map.put("messageTime", currentTime);
-                                    namesRef.updateChildren(map);
-                                    rootRef.child("LIKECOMMENT");
-
-                                    // bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.fav));
-                                    rootRef.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-// Log.d(TAG, "This: "+dataSnapshot.getValue());
-///Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
-
-
-
-
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-
-
-                                }
-                            }
-                            // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
-                            //  bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
-
-
-
-
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                // Log.e(TAG, "onCancelled", databaseError.toException());
-                            }
-
-                        });
-
-
-
-
-
-                    }
-                });
+//                like1.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//
+//
+//                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LIKE");
+//                        Query applesQueryw = ref.orderByChild("likeid").equalTo(model.getIdd()+personId);
+//                        applesQueryw.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                if (dataSnapshot.exists()) {
+//                                    like1.setImageResource(R.drawable.vector_heart_white);
+//                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+//                                    Query applesQuery = ref.child("LIKECOMMENT").orderByChild("likeid").equalTo(model.getIdd()+model.getStamp());
+//                                    applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                        @Override
+//                                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                                            for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+//                                                appleSnapshot.getRef().removeValue();
+//                                                //    Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+//                                            }
+//                                        }
+//
+//                                        @Override
+//                                        public void onCancelled(DatabaseError databaseError) {
+//                                            // Log.e(TAG, "onCancelled", databaseError.toException());
+//                                        }
+//                                    });
+//
+//                                } else {
+//                                    like1.setImageResource(R.drawable.heart);
+//                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+//                                    DatabaseReference namesRef = rootRef.child("LIKECOMMENT").push();
+//                                    Map<String, Object> map = new HashMap<>();
+//                                    map.put("Like", 1);
+//                                    map.put("likeid",model.getIdd()+personId);
+//                                    map.put("photo",model.getPhoto());
+//                                    map.put("messageUser", model.getMessageUser());
+//
+//                                    map.put("id", personId);
+//                                    map.put("photo1", model.getPhoto1());
+//                                    map.put("user", model.getMessageUser());
+//                                    String mGroupId = rootRef.push().getKey();
+//                                    map.put("idd", mGroupId);
+//                                    map.put("stamp", model.getStamp());
+//                                    map.put("bookmarkid", model.getIdd()+model.getStamp());
+//                                    map.put("postid",model.getIdd());
+//                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+//                                    map.put("messageTime", currentTime);
+//                                    namesRef.updateChildren(map);
+//                                    rootRef.child("LIKECOMMENT");
+//
+//                                    // bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.fav));
+//                                    rootRef.addValueEventListener(new ValueEventListener() {
+//                                        @Override
+//                                        public void onDataChange(DataSnapshot dataSnapshot) {
+//// Log.d(TAG, "This: "+dataSnapshot.getValue());
+/////Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
+//
+//
+//
+//
+//
+//                                        }
+//
+//                                        @Override
+//                                        public void onCancelled(DatabaseError databaseError) {
+//
+//                                        }
+//                                    });
+//
+//
+//                                }
+//                            }
+//                            // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
+//                            //  bookmark.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.favi));
+//
+//
+//
+//
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//                                // Log.e(TAG, "onCancelled", databaseError.toException());
+//                            }
+//
+//                        });
+//
+//
+//
+//
+//
+//                    }
+//                });
 
 //                if(readState())
 //                {
