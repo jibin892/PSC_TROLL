@@ -718,6 +718,7 @@ public class HomeFragment extends Fragment {
                                             e.printStackTrace();
                                         }
                                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                                        addWaterMark(bitmap);
                                         try {
                                             outStream.flush();
                                         } catch (IOException e) {
@@ -1008,7 +1009,18 @@ public class HomeFragment extends Fragment {
         }}
 
 
+    private Bitmap addWaterMark(Bitmap src) {
+        int w = src.getWidth();
+        int h = src.getHeight();
+        Bitmap result = Bitmap.createBitmap(w, h, src.getConfig());
+        Canvas canvas = new Canvas(result);
+        canvas.drawBitmap(src, 0, 0, null);
 
+        Bitmap waterMark = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.psc);
+        canvas.drawBitmap(waterMark, 0, 0, null);
+
+        return result;
+    }
 
 }
 
