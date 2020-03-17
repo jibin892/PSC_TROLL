@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text=" Post"
                 android:layout_alignParentRight="true"
-                android:textSize="20sp"
+                android:layout_marginRight="10dp"                android:textSize="20sp"
                 android:textColor="@color/grey"
                 android:layout_centerVertical="true"
                 android:id="@+id/post" />

@@ -344,7 +344,7 @@ fab4.setOnClickListener(new View.OnClickListener() {
                 messageUser = (TextView) v.findViewById(R.id.message_usert);
                  replay = (TextView) v.findViewById(R.id.message_reply);
 
-                  final ImageView   like1 = (ImageView) v.findViewById(R.id.message_like);
+                  final TextView   like1 = (TextView) v.findViewById(R.id.message_like);
                     //  like = (ImageView) v.findViewById(R.id.commentlikett);
 
                 messageTime = (TextView) v.findViewById(R.id.message_timet);

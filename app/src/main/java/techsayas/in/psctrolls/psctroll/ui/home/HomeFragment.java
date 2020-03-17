@@ -328,30 +328,30 @@ public class HomeFragment extends Fragment {
 
                 messageTime.setText(timeAgo);
 
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                final Query applesQueryy = ref.child("COMMENT").orderByChild("postid").equalTo(model.getIdd());
-
-
-
-                applesQueryy.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            String userName = String.valueOf(data.child("messageText").getValue());
-                            Toast.makeText(getActivity(),userName,LENGTH_LONG).show();
-                            comme.setText(userName);
-                        }
-
-                        //
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // Log.e(TAG, "onCancelled", databaseError.toException());
-                    }
-                });
+//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+//                final Query applesQueryy = ref.child("COMMENT").orderByChild("postid").equalTo(model.getIdd());
+//
+//
+//
+//                applesQueryy.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+//                            String userName = String.valueOf(data.child("messageText").getValue());
+//                            Toast.makeText(getActivity(),userName,LENGTH_LONG).show();
+//                            comme.setText(userName);
+//                        }
+//
+//                        //
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//                        // Log.e(TAG, "onCancelled", databaseError.toException());
+//                    }
+//                });
 
 
                 image_message_profile.setOnClickListener(new View.OnClickListener() {
