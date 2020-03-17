@@ -35,7 +35,11 @@ public class Homepage extends AppCompatActivity {
             setContentView(R.layout.activity_homepage);
         }
 
-
+        InitApplication.getInstance().setIsNightModeEnabled(true);
+        Intent intent = getIntent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        startActivity(intent);
 
         // setContentView(R.layout.activity_homepage);
         BottomNavigationView navView = findViewById(R.id.nav_view);

@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="BOOKMARK"
+            android:text="NIGHT MODE"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
