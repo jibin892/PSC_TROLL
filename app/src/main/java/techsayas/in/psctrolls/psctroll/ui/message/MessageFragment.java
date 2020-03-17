@@ -46,6 +46,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -82,11 +83,14 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import techsayas.in.psctrolls.psctroll.Bookmarkview;
 import techsayas.in.psctrolls.psctroll.ChatMessage;
 import techsayas.in.psctrolls.psctroll.Chatimg;
 import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.Homepage;
+import techsayas.in.psctrolls.psctroll.Mypost;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
+import techsayas.in.psctrolls.psctroll.Psc_notification;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.Userchatimage;
 import techsayas.in.psctrolls.psctroll.Viewotherprofile;
@@ -97,7 +101,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.facebook.share.internal.DeviceShareDialogFragment.TAG;
 
-public class MessageFragment extends Fragment {
+public class MessageFragment extends Fragment implements View.OnClickListener {
     FirebaseListAdapter<ChatMessage> adapter;
     FloatingActionButton fab,fab6, cam;
     SweetAlertDialog pDialog;
@@ -118,7 +122,9 @@ public class MessageFragment extends Fragment {
     StorageReference storageReference;
     // request code
     ProgressDialog progress;
-ImageView imgmsg;
+    private BottomSheetDialog bottomSheetDialog;
+
+    ImageView imgmsg;
     TextView messageTime;
     DatabaseReference reference;
     DatabaseReference a;
@@ -134,24 +140,36 @@ public  static boolean isInFront;
         messageViewModel =
                 ViewModelProviders.of(this).get(MessageViewModel.class);
         root = inflater.inflate(R.layout.fragment_message, container, false);
+        bottomSheetDialog = new BottomSheetDialog(getActivity());
+        View bottomSheetDialogView = getLayoutInflater().inflate(R.layout.chosepic, null);
+        bottomSheetDialog.setContentView(bottomSheetDialogView);
+        View camera  = bottomSheetDialogView.findViewById(R.id.camarass1);
+        View galarys = bottomSheetDialogView.findViewById(R.id.gal);
+        camera.setOnClickListener(this);
+        galarys.setOnClickListener(this);
+
 
         fab6 = (FloatingActionButton) root.findViewById(R.id.fab6);
 
         fab = (FloatingActionButton) root.findViewById(R.id.fab);
         cam = (FloatingActionButton) root.findViewById(R.id.cam);
+        cam.setOnClickListener(this);
         fab.setVisibility(View.INVISIBLE);
         // fab.setEnabled(false);
         imgmsg = (ImageView) root.findViewById(R.id.imgmsg);
         input = (EditText) root.findViewById(R.id.input);
-        cam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
-            }
-        });
+
+
+
+//        cam.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////
+//                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
+//            }
+//        });
 
 
 
@@ -698,7 +716,32 @@ public  static boolean isInFront;
                 e.printStackTrace();
             }
         }}
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
 
+        switch (id) {
+
+            case R.id.cam:
+                bottomSheetDialog.show();
+                break;
+
+            case R.id.camarass1:
+                Intent abb=new Intent(getActivity(), Psc_notification.class);
+                startActivity(abb);
+                break;
+
+            case R.id.gal:
+
+                Intent ab=new Intent(getActivity(), Mypost.class);
+                startActivity(ab);
+
+
+                break;
+
+        }
+
+    }
     }
 
 
