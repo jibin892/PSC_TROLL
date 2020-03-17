@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment {
     FloatingActionButton fab,cam;
     SweetAlertDialog pDialog;
     int count=0;
-     int positio=0;
+    int positio=0;
     String ac;
     ListView listOfMessages;
     CircleImageView img;
@@ -123,7 +123,7 @@ public class HomeFragment extends Fragment {
     String personName;
     String personId;
     String personEmail;
-    ImageView  heart,postimg;
+    ImageView  heart,postimg,homeimagev;
     private Uri filePath;
     FirebaseStorage storage;
     TextView messageTime;
@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment {
         mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
         EnableRuntimePermission();
         listOfMessages = (ListView) root.findViewById(R.id.list_of_view);
-
+        homeimagev=root.findViewById(R.id.homeimagev);
         listOfMessages.post(new Runnable() {
             @Override
             public void run() {
@@ -186,7 +186,7 @@ public class HomeFragment extends Fragment {
 //            nameTV.setText(personName);
 //            emailTV.setText(personEmail);
 //           idTV.setText("ID: "+personGivenName);
-            // Picasso.get().load(personPhoto).into(photo1);
+            Picasso.get().load(personPhoto).into(homeimagev);
             // Picasso.get().load(personPhoto).into(user);
 
 
@@ -222,9 +222,9 @@ public class HomeFragment extends Fragment {
 
 
                 // Get references to the views of message.xml
-                  postimg= v.findViewById(R.id.post1);
-                   heart=v.findViewById(R.id.image_heart);
-                 TextView messageText = (TextView)v.findViewById(R.id.userdis);
+                postimg= v.findViewById(R.id.post1);
+                heart=v.findViewById(R.id.image_heart);
+                TextView messageText = (TextView)v.findViewById(R.id.userdis);
                 TextView messageUser = (TextView)v.findViewById(R.id.username);
                 TextView  messageTime = (TextView)v.findViewById(R.id.uploadtime);
                 DoubleTapLikeView  mDoubleTapLikeView = v.findViewById(R.id.layout_double_tap_like);
@@ -244,7 +244,7 @@ public class HomeFragment extends Fragment {
                 Picasso.get().load(model.getPhoto1()).into(postimg);
 
                 DatabaseReference refr = FirebaseDatabase.getInstance().getReference();
-               refr.child("LIKE").orderByChild("postid").equalTo(model.getIdd()).addValueEventListener(new ValueEventListener() {
+                refr.child("LIKE").orderByChild("postid").equalTo(model.getIdd()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         int total = 0,
@@ -254,7 +254,7 @@ public class HomeFragment extends Fragment {
                             total = total + rating;
                             count = count + 1;
                         }
-                       textView.setText(String.valueOf(formatValue(Double.parseDouble(String.valueOf(total))))+"Likes");
+                        textView.setText(total+"Likes");
 
                     }
                     @Override
@@ -343,7 +343,7 @@ public class HomeFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             String userName = String.valueOf(data.child("messageText").getValue());
-                           // Toast.makeText(getActivity(),userName,LENGTH_LONG).show();
+                            // Toast.makeText(getActivity(),userName,LENGTH_LONG).show();
                             comme.setText(userName);
                         }
 
@@ -383,7 +383,7 @@ public class HomeFragment extends Fragment {
 //        user=root.findViewById(R.id.photos123);
 //        somthing=root.findViewById(R.id.write123);
 
-               heart.setOnClickListener(new View.OnClickListener() {
+                heart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -444,7 +444,7 @@ public class HomeFragment extends Fragment {
 // Log.d(TAG, "This: "+dataSnapshot.getValue());
 ///Toast.makeText(getActivity(), String.valueOf(dataSnapshot.getValue()),Toast.LENGTH_LONG).show();
 
-                                          //  textView.setText("1");
+                                            //  textView.setText("1");
 
 
 
@@ -457,7 +457,7 @@ public class HomeFragment extends Fragment {
                                     });
 
 
-                                   // Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
+                                    // Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
                                 }
                             }
                             // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
@@ -491,7 +491,7 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
-                                 //   Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
+                                    //   Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
                                     heart.setImageResource(R.drawable.vector_heart_white);
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                     Query applesQuery = ref.child("LIKE").orderByChild("likeid").equalTo(model.getIdd()+personId);
@@ -551,7 +551,7 @@ public class HomeFragment extends Fragment {
                                     });
 
 
-                                   // Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
+                                    // Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
                                 }
                             }
                             // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
@@ -592,10 +592,10 @@ public class HomeFragment extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
                                 if (dataSnapshot.exists()) {
-                                  //  bookmark.setImageResource(R.drawable.bookok);
+                                    //  bookmark.setImageResource(R.drawable.bookok);
                                     Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
                                 } else {
-                                  //  bookmark.setImageResource(R.drawable.bookmarked);
+                                    //  bookmark.setImageResource(R.drawable.bookmarked);
                                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                                     DatabaseReference namesRef = rootRef.child("BOOKMARK").push();
                                     Map<String, Object> map = new HashMap<>();
@@ -1025,7 +1025,7 @@ public class HomeFragment extends Fragment {
 
         return result;
     }
-    public static String formatValue(double value) {
+   /* public static String formatValue(double value) {
         int power;
         String suffix = " kmbt";
         String formattedNumber = "";
@@ -1036,7 +1036,7 @@ public class HomeFragment extends Fragment {
         formattedNumber=formatter.format(value);
         formattedNumber = formattedNumber + suffix.charAt(power/3);
         return formattedNumber.length()>4 ?  formattedNumber.replaceAll("\\.[0-9]+", "") : formattedNumber;
-    }
+    }*/
 
 }
 

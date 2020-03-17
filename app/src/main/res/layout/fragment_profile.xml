@@ -175,12 +175,13 @@
                     android:layout_marginTop="35dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:id="@+id/selectimg"
                         android:layout_width="48dp"
                         android:layout_height="50dp"
                         android:layout_marginLeft="25dp"
-                        android:background="@drawable/image"
+                        android:background="@drawable/camerashulter"
+                        android:backgroundTint="#2979FF"
                         android:focusable="false"
                         android:fontFamily="@font/roboto_light"
                         android:padding="10dp"

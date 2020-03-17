@@ -5,10 +5,73 @@
     android:layout_marginBottom="?attr/actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:shimmer="http://schemas.android.com/tools">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/sd"
+        android:background="@color/white"
+        >
 
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileToolBar">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/ivCloseShare"
+                    android:src="@drawable/pscc"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivCloseShare"
+                    android:id="@+id/tobarausernmae"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:text="Gallery"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical">
+
+
+                </TextView>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="string_next"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:textSize="20sp"
+                    android:src="@drawable/newview"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tvNext"
+                    />
+
+
+
+
+            </RelativeLayout>
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+    </com.google.android.material.appbar.AppBarLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/sd"
         android:id="@+id/relLayout1">
         <!--        <com.facebook.shimmer.ShimmerFrameLayout-->
         <!--            android:id="@+id/shimmer_view_container"-->
@@ -99,18 +162,18 @@
             android:tint="@android:color/white"
             app:fabSize="mini" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab6"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="@dimen/padding_10"
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/fab6"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginRight="@dimen/padding_10"-->
 
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:clickable="true"
-            android:src="@drawable/send"
-            android:tint="@android:color/white"
-            app:fabSize="mini" />
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:clickable="true"-->
+<!--            android:src="@drawable/send"-->
+<!--            android:tint="@android:color/white"-->
+<!--            app:fabSize="mini" />-->
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/cam"

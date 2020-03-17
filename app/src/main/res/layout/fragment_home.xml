@@ -5,36 +5,95 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:shimmer="http://schemas.android.com/tools"
     android:layout_marginTop="@dimen/padding_10"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
 
 
-<!--            <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                android:id="@+id/photos123"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="47dp"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginLeft="@dimen/padding_10"-->
-<!--                android:layout_marginTop="20dp" />-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        >
 
-<!--            <EditText-->
-<!--                android:id="@+id/write123"-->
-<!--                android:layout_width="269dp"-->
-<!--                android:layout_height="47dp"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:background="@drawable/spin"-->
-<!--                android:focusable="false"-->
-<!--                android:fontFamily="@font/roboto_bold"-->
-<!--                android:hint=" Write Somthing"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="17dp" />-->
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileToolBar">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/homeimagev"
+                    android:src="@drawable/pscc"/>
+
+
+                <TextView
+                    android:id="@+id/spinnerDirectory"
+                    android:layout_width="246dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/homeimagev"
+                    android:background="@drawable/spin"
+                    android:gravity="center_vertical"
+                    android:padding="6dp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp">
+
+
+                </TextView>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/serch"
+                    android:layout_marginRight="55dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/link_blue"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tvNext1"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/newview"
+                    android:layout_marginRight="15dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/link_blue"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tvNext"
+                    />
+
+
+
+
+            </RelativeLayout>
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="732dp"
         android:layout_gravity="center"
+
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +114,7 @@
             <include layout="@layout/recipe_placeholder_item" />
 
             <include layout="@layout/recipe_placeholder_item" />
+
             <include layout="@layout/recipe_placeholder_item" />
 
             <include layout="@layout/recipe_placeholder_item" />

@@ -46,6 +46,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -82,12 +83,16 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import techsayas.in.psctrolls.psctroll.Bookmarkview;
 import techsayas.in.psctrolls.psctroll.ChatMessage;
 import techsayas.in.psctrolls.psctroll.Chatimg;
 import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.Homepage;
+import techsayas.in.psctrolls.psctroll.Mypost;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
+import techsayas.in.psctrolls.psctroll.Psc_notification;
 import techsayas.in.psctrolls.psctroll.R;
+import techsayas.in.psctrolls.psctroll.Upload;
 import techsayas.in.psctrolls.psctroll.Userchatimage;
 import techsayas.in.psctrolls.psctroll.Viewotherprofile;
 import techsayas.in.psctrolls.psctroll.Viewprofile;
@@ -97,7 +102,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.facebook.share.internal.DeviceShareDialogFragment.TAG;
 
-public class MessageFragment extends Fragment {
+public class MessageFragment extends Fragment implements View.OnClickListener {
     FirebaseListAdapter<ChatMessage> adapter;
     FloatingActionButton fab,fab6, cam;
     SweetAlertDialog pDialog;
@@ -118,8 +123,10 @@ public class MessageFragment extends Fragment {
     StorageReference storageReference;
     // request code
     ProgressDialog progress;
-ImageView imgmsg;
-    TextView messageTime;
+    private BottomSheetDialog bottomSheetDialog;
+
+    ImageView imgmsg,ivCloseShare;
+    TextView messageTime,tobarausernmae;
     DatabaseReference reference;
     DatabaseReference a;
     TextView messageUser;
@@ -134,24 +141,35 @@ public  static boolean isInFront;
         messageViewModel =
                 ViewModelProviders.of(this).get(MessageViewModel.class);
         root = inflater.inflate(R.layout.fragment_message, container, false);
+        bottomSheetDialog = new BottomSheetDialog(getActivity());
+        View bottomSheetDialogView = getLayoutInflater().inflate(R.layout.chosepic, null);
+        bottomSheetDialog.setContentView(bottomSheetDialogView);
+        View camera  = bottomSheetDialogView.findViewById(R.id.camarass1);
+        View galarys = bottomSheetDialogView.findViewById(R.id.gal);
+        camera.setOnClickListener(this);
+        galarys.setOnClickListener(this);
+        ivCloseShare = (ImageView) root.findViewById(R.id.ivCloseShare);
+        tobarausernmae = (TextView) root.findViewById(R.id.tobarausernmae);
 
-        fab6 = (FloatingActionButton) root.findViewById(R.id.fab6);
+
+        //fab6 = (FloatingActionButton) root.findViewById(R.id.fab6);
 
         fab = (FloatingActionButton) root.findViewById(R.id.fab);
         cam = (FloatingActionButton) root.findViewById(R.id.cam);
+        cam.setOnClickListener(this);
         fab.setVisibility(View.INVISIBLE);
         // fab.setEnabled(false);
         imgmsg = (ImageView) root.findViewById(R.id.imgmsg);
         input = (EditText) root.findViewById(R.id.input);
-        cam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+
+
+//        cam.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
-            }
-        });
+//            }
+//        });
 
 
 
@@ -164,11 +182,11 @@ public  static boolean isInFront;
 
                 if (s.toString().trim().length() == 0) {
                     fab.setVisibility(View.INVISIBLE);
-                    fab6.setVisibility(View.VISIBLE);
+                  //  fab6.setVisibility(View.VISIBLE);
 
                 } else {
                     fab.setVisibility(View.VISIBLE);
-                    fab6.setVisibility(View.INVISIBLE);
+                   // fab6.setVisibility(View.INVISIBLE);
 
                 }
             }
@@ -185,92 +203,92 @@ public  static boolean isInFront;
             }
         });
 
-        fab6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-
-                if(filePath != null) {
-//                    Crouton.makeText(getActivity(),"Filed is Empty", Style.ALERT).show();
+//        fab6.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //
 //
+//
+//
+//                if(filePath != null) {
+////                    Crouton.makeText(getActivity(),"Filed is Empty", Style.ALERT).show();
+////
+////
+////
+////                }
+////                else{
+//                    storage = FirebaseStorage.getInstance();
+//                    storageReference = storage.getReference();
+//
+//
+//                    final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+//                    progressDialog.setTitle("Uploading...");
+//                    progressDialog.setCancelable(false);
+//                    progressDialog.show();
+//
+//                    StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+//
+//                    ref.putFile(filePath)
+//                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                                @Override
+//                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                                    String image = taskSnapshot.getDownloadUrl().toString();
+//                                    //  Toast.makeText(Userchatimage.this, image, Toast.LENGTH_SHORT).show();
+//                                    progress = ProgressDialog.show(getActivity(), "Loading...",
+//                                            "Plz Wait", true);
+//                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+//                                    DatabaseReference namesRef = rootRef.child("MSG").push();
+//                                    Map<String, Object> map = new HashMap<>();
+//                                    map.put("photo1", image);
+//                                    map.put("photo", String.valueOf(personPhoto));
+//                                    map.put("messageUser", personName);
+//                                    map.put("email", personEmail);
+//                                    map.put("id", personId);
+//                                    String mGroupId = rootRef.push().getKey();
+//                                    map.put("idd", mGroupId);
+//                                    String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+//                                    map.put("stamp", timeStamp);
+//                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+//                                    map.put("messageTime", currentTime);
+//                                    namesRef.updateChildren(map);
+//                                    rootRef.child("MSG");
+//                                    rootRef.addValueEventListener(new ValueEventListener() {
+//                                        @Override
+//                                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                                            progress.dismiss();
+//                                            progressDialog.dismiss();
+//                                            imgmsg.setImageDrawable(null);
+//
+//                                        }
+//
+//                                        @Override
+//                                        public void onCancelled(DatabaseError databaseError) {
+//
+//                                        }
+//                                    });
+//                                }
+//                            })
+//                            .addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    progressDialog.dismiss();
+//                                    Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            })
+//                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                                @Override
+//                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+//                                            .getTotalByteCount());
+//                                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
+//                                }
+//                            });
 //
 //                }
-//                else{
-                    storage = FirebaseStorage.getInstance();
-                    storageReference = storage.getReference();
-
-
-                    final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                    progressDialog.setTitle("Uploading...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
-
-                    StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
-
-                    ref.putFile(filePath)
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    String image = taskSnapshot.getDownloadUrl().toString();
-                                    //  Toast.makeText(Userchatimage.this, image, Toast.LENGTH_SHORT).show();
-                                    progress = ProgressDialog.show(getActivity(), "Loading...",
-                                            "Plz Wait", true);
-                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                                    DatabaseReference namesRef = rootRef.child("MSG").push();
-                                    Map<String, Object> map = new HashMap<>();
-                                    map.put("photo1", image);
-                                    map.put("photo", String.valueOf(personPhoto));
-                                    map.put("messageUser", personName);
-                                    map.put("email", personEmail);
-                                    map.put("id", personId);
-                                    String mGroupId = rootRef.push().getKey();
-                                    map.put("idd", mGroupId);
-                                    String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
-                                    map.put("stamp", timeStamp);
-                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-                                    map.put("messageTime", currentTime);
-                                    namesRef.updateChildren(map);
-                                    rootRef.child("MSG");
-                                    rootRef.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            progress.dismiss();
-                                            progressDialog.dismiss();
-                                            imgmsg.setImageDrawable(null);
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-                                            .getTotalByteCount());
-                                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                                }
-                            });
-
-                }
-
-
-            }
-        });
+//
+//
+//            }
+//        });
         //   img=root.findViewById(R.id.img);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -346,6 +364,8 @@ public  static boolean isInFront;
             personEmail = acct.getEmail();
             personId = acct.getId();
             personPhoto = acct.getPhotoUrl();
+            Picasso.get().load(personPhoto).into(ivCloseShare);
+            tobarausernmae.setText(personName);
 
         }
 
@@ -681,24 +701,88 @@ public  static boolean isInFront;
         long timeDistance = currentDate().getTime() - time;
         return Math.round((Math.abs(timeDistance) / 1000) / 60);
     }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        switch (id) {
+
+            case R.id.cam:
+                bottomSheetDialog.show();
+                break;
+
+            case R.id.camarass1:
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 0);
+
+
+
+
+                break;
+
+            case R.id.gal:
+
+
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto , 1);
+
+
+                break;
+
+        }
+
+    }
+
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
-            filePath = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
-                imgmsg.getLayoutParams().height = 700;
-                imgmsg.getLayoutParams().width = 900;
-                imgmsg.setImageBitmap(bitmap);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }}
+        switch(requestCode) {
+            case 0:
+                if(requestCode == 0 && resultCode == RESULT_OK
+                        && data != null && data.getData() != null ){
 
+
+                    filePath = data.getData();
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+//                        Intent as=new Intent(getActivity(), Upload.class);
+//                        as.putExtra("a",bitmap);
+
+                       // startActivity(as);
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+                break;
+            case 1:
+                if(requestCode == 1 && resultCode == RESULT_OK
+                        && data != null && data.getData() != null ){
+
+
+                    filePath = data.getData();
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+//                        Intent as=new Intent(getActivity(), Upload.class);
+//                        as.putExtra("a",bitmap);
+//
+//                        startActivity(as);
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                }
+                break;
+        }
+    }
     }
 
 

@@ -10,8 +10,10 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/white"
+            android:layout_height="60dp"
+            android:background="@drawable/whiteroundcorner"
+            android:backgroundTint="@color/white"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.542"
             app:layout_constraintLeft_toLeftOf="parent"

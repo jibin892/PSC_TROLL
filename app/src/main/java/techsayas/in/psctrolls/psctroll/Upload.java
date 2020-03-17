@@ -105,12 +105,13 @@ public class Upload extends AppCompatActivity {
     private String selectedPath;
     MediaController mediac;
     private NotificationsViewModel notificationsViewModel;
-
+Intent as;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
       //  sign_out = root.findViewById(R.id.log_out);
+        as=getIntent();
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -125,7 +126,9 @@ public class Upload extends AppCompatActivity {
         video = findViewById(R.id.vdio);
         post = findViewById(R.id.post);
 
-
+        String ad=as.getStringExtra("a");
+        Toast.makeText(getApplicationContext(),ad,Toast.LENGTH_LONG).show();
+    //    imgview.setImageURI(Uri.parse(ad));
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();

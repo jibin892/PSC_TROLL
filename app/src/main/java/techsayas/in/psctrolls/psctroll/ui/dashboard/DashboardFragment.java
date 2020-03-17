@@ -87,7 +87,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
     private BottomSheetDialog bottomSheetDialog;
     View root;
-
+ImageView tvNext;
     private DashboardViewModel dashboardViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -106,6 +106,10 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         getLinkView.setOnClickListener(this);
         editNameView.setOnClickListener(this);
         deleteView.setOnClickListener(this);
+        tvNext=root.findViewById(R.id.tvNext);
+
+        tvNext.setOnClickListener(this);
+
         return root;
     }
 
