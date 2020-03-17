@@ -38,7 +38,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
-                    android:src="@drawable/psc" />
+                    android:src="@drawable/pscc" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
