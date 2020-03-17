@@ -92,6 +92,7 @@ import techsayas.in.psctrolls.psctroll.Mypost;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.Psc_notification;
 import techsayas.in.psctrolls.psctroll.R;
+import techsayas.in.psctrolls.psctroll.Upload;
 import techsayas.in.psctrolls.psctroll.Userchatimage;
 import techsayas.in.psctrolls.psctroll.Viewotherprofile;
 import techsayas.in.psctrolls.psctroll.Viewprofile;
@@ -149,7 +150,7 @@ public  static boolean isInFront;
         galarys.setOnClickListener(this);
 
 
-        fab6 = (FloatingActionButton) root.findViewById(R.id.fab6);
+        //fab6 = (FloatingActionButton) root.findViewById(R.id.fab6);
 
         fab = (FloatingActionButton) root.findViewById(R.id.fab);
         cam = (FloatingActionButton) root.findViewById(R.id.cam);
@@ -164,10 +165,7 @@ public  static boolean isInFront;
 //        cam.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-////
-//                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
+//
 //            }
 //        });
 
@@ -182,11 +180,11 @@ public  static boolean isInFront;
 
                 if (s.toString().trim().length() == 0) {
                     fab.setVisibility(View.INVISIBLE);
-                    fab6.setVisibility(View.VISIBLE);
+                  //  fab6.setVisibility(View.VISIBLE);
 
                 } else {
                     fab.setVisibility(View.VISIBLE);
-                    fab6.setVisibility(View.INVISIBLE);
+                   // fab6.setVisibility(View.INVISIBLE);
 
                 }
             }
@@ -203,92 +201,92 @@ public  static boolean isInFront;
             }
         });
 
-        fab6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-
-                if(filePath != null) {
-//                    Crouton.makeText(getActivity(),"Filed is Empty", Style.ALERT).show();
+//        fab6.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //
 //
+//
+//
+//                if(filePath != null) {
+////                    Crouton.makeText(getActivity(),"Filed is Empty", Style.ALERT).show();
+////
+////
+////
+////                }
+////                else{
+//                    storage = FirebaseStorage.getInstance();
+//                    storageReference = storage.getReference();
+//
+//
+//                    final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+//                    progressDialog.setTitle("Uploading...");
+//                    progressDialog.setCancelable(false);
+//                    progressDialog.show();
+//
+//                    StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+//
+//                    ref.putFile(filePath)
+//                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                                @Override
+//                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                                    String image = taskSnapshot.getDownloadUrl().toString();
+//                                    //  Toast.makeText(Userchatimage.this, image, Toast.LENGTH_SHORT).show();
+//                                    progress = ProgressDialog.show(getActivity(), "Loading...",
+//                                            "Plz Wait", true);
+//                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+//                                    DatabaseReference namesRef = rootRef.child("MSG").push();
+//                                    Map<String, Object> map = new HashMap<>();
+//                                    map.put("photo1", image);
+//                                    map.put("photo", String.valueOf(personPhoto));
+//                                    map.put("messageUser", personName);
+//                                    map.put("email", personEmail);
+//                                    map.put("id", personId);
+//                                    String mGroupId = rootRef.push().getKey();
+//                                    map.put("idd", mGroupId);
+//                                    String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+//                                    map.put("stamp", timeStamp);
+//                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+//                                    map.put("messageTime", currentTime);
+//                                    namesRef.updateChildren(map);
+//                                    rootRef.child("MSG");
+//                                    rootRef.addValueEventListener(new ValueEventListener() {
+//                                        @Override
+//                                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                                            progress.dismiss();
+//                                            progressDialog.dismiss();
+//                                            imgmsg.setImageDrawable(null);
+//
+//                                        }
+//
+//                                        @Override
+//                                        public void onCancelled(DatabaseError databaseError) {
+//
+//                                        }
+//                                    });
+//                                }
+//                            })
+//                            .addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    progressDialog.dismiss();
+//                                    Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            })
+//                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                                @Override
+//                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+//                                            .getTotalByteCount());
+//                                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
+//                                }
+//                            });
 //
 //                }
-//                else{
-                    storage = FirebaseStorage.getInstance();
-                    storageReference = storage.getReference();
-
-
-                    final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                    progressDialog.setTitle("Uploading...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
-
-                    StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
-
-                    ref.putFile(filePath)
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    String image = taskSnapshot.getDownloadUrl().toString();
-                                    //  Toast.makeText(Userchatimage.this, image, Toast.LENGTH_SHORT).show();
-                                    progress = ProgressDialog.show(getActivity(), "Loading...",
-                                            "Plz Wait", true);
-                                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                                    DatabaseReference namesRef = rootRef.child("MSG").push();
-                                    Map<String, Object> map = new HashMap<>();
-                                    map.put("photo1", image);
-                                    map.put("photo", String.valueOf(personPhoto));
-                                    map.put("messageUser", personName);
-                                    map.put("email", personEmail);
-                                    map.put("id", personId);
-                                    String mGroupId = rootRef.push().getKey();
-                                    map.put("idd", mGroupId);
-                                    String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
-                                    map.put("stamp", timeStamp);
-                                    String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-                                    map.put("messageTime", currentTime);
-                                    namesRef.updateChildren(map);
-                                    rootRef.child("MSG");
-                                    rootRef.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            progress.dismiss();
-                                            progressDialog.dismiss();
-                                            imgmsg.setImageDrawable(null);
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-                                            .getTotalByteCount());
-                                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                                }
-                            });
-
-                }
-
-
-            }
-        });
+//
+//
+//            }
+//        });
         //   img=root.findViewById(R.id.img);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -699,23 +697,7 @@ public  static boolean isInFront;
         long timeDistance = currentDate().getTime() - time;
         return Math.round((Math.abs(timeDistance) / 1000) / 60);
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
-            filePath = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
-                imgmsg.getLayoutParams().height = 700;
-                imgmsg.getLayoutParams().width = 900;
-                imgmsg.setImageBitmap(bitmap);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }}
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -727,20 +709,54 @@ public  static boolean isInFront;
                 break;
 
             case R.id.camarass1:
-                Intent abb=new Intent(getActivity(), Psc_notification.class);
-                startActivity(abb);
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 0);
+
+
+
+
                 break;
 
             case R.id.gal:
 
-                Intent ab=new Intent(getActivity(), Mypost.class);
-                startActivity(ab);
+
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto , 1);
 
 
                 break;
 
         }
 
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch(requestCode) {
+            case 0:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    Intent as=new Intent(getActivity(), Upload.class);
+                    as.putExtra("a",selectedImage);
+
+                    startActivity(as);
+                   // imageview.setImageURI(selectedImage);
+
+
+                }
+
+                break;
+            case 1:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    Intent as=new Intent(getActivity(), Upload.class);
+                    as.putExtra("a",selectedImage);
+                    startActivity(as);
+
+
+                }
+                break;
+        }
     }
     }
 
