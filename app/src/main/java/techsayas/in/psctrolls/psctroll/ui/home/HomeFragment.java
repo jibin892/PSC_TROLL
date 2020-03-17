@@ -340,7 +340,7 @@ public class HomeFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             String userName = String.valueOf(data.child("messageText").getValue());
-                            Toast.makeText(getActivity(),userName,LENGTH_LONG).show();
+                           // Toast.makeText(getActivity(),userName,LENGTH_LONG).show();
                             comme.setText(userName);
                         }
 
@@ -392,7 +392,7 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
-                                    Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
+                                    //Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
                                     heart.setImageResource(R.drawable.vector_heart_white);
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                     Query applesQuery = ref.child("LIKE").orderByChild("likeid").equalTo(model.getIdd()+personId);
@@ -454,7 +454,7 @@ public class HomeFragment extends Fragment {
                                     });
 
 
-                                    Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
+                                   // Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
                                 }
                             }
                             // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
@@ -488,7 +488,7 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
-                                    Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
+                                 //   Crouton.makeText(getActivity(),"Troll Already Added As Favourite",Style.INFO).show();
                                     heart.setImageResource(R.drawable.vector_heart_white);
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                     Query applesQuery = ref.child("LIKE").orderByChild("likeid").equalTo(model.getIdd()+personId);
@@ -548,7 +548,7 @@ public class HomeFragment extends Fragment {
                                     });
 
 
-                                    Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
+                                   // Crouton.makeText(getActivity(),"Troll Added As Favourite",Style.CONFIRM).show();
                                 }
                             }
                             // Toast.makeText(getActivity(),"jghfg",LENGTH_LONG).show();
@@ -717,7 +717,7 @@ public class HomeFragment extends Fragment {
                                         } catch (FileNotFoundException e) {
                                             e.printStackTrace();
                                         }
-                                        addWaterMark(bitmap);
+
                                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
 
                                         try {
