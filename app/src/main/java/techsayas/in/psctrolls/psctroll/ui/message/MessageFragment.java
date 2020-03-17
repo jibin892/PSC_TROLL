@@ -88,6 +88,7 @@ import techsayas.in.psctrolls.psctroll.ChatMessage;
 import techsayas.in.psctrolls.psctroll.Chatimg;
 import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.Homepage;
+import techsayas.in.psctrolls.psctroll.Messageimagesent;
 import techsayas.in.psctrolls.psctroll.Mypost;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.Psc_notification;
@@ -96,13 +97,14 @@ import techsayas.in.psctrolls.psctroll.Upload;
 import techsayas.in.psctrolls.psctroll.Userchatimage;
 import techsayas.in.psctrolls.psctroll.Viewotherprofile;
 import techsayas.in.psctrolls.psctroll.Viewprofile;
+import techsayas.in.psctrolls.psctroll.Viewuploaded;
 import techsayas.in.psctrolls.psctroll.ui.profile.ProfileViewModel;
 
 import static android.app.Activity.RESULT_OK;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.facebook.share.internal.DeviceShareDialogFragment.TAG;
 
-public class MessageFragment extends Fragment implements View.OnClickListener {
+public class MessageFragment extends Fragment {
     FirebaseListAdapter<ChatMessage> adapter;
     FloatingActionButton fab,fab6, cam;
     SweetAlertDialog pDialog;
@@ -141,13 +143,7 @@ public  static boolean isInFront;
         messageViewModel =
                 ViewModelProviders.of(this).get(MessageViewModel.class);
         root = inflater.inflate(R.layout.fragment_message, container, false);
-        bottomSheetDialog = new BottomSheetDialog(getActivity());
-        View bottomSheetDialogView = getLayoutInflater().inflate(R.layout.chosepic, null);
-        bottomSheetDialog.setContentView(bottomSheetDialogView);
-        View camera  = bottomSheetDialogView.findViewById(R.id.camarass1);
-        View galarys = bottomSheetDialogView.findViewById(R.id.gal);
-        camera.setOnClickListener(this);
-        galarys.setOnClickListener(this);
+
         ivCloseShare = (ImageView) root.findViewById(R.id.ivCloseShare);
         tobarausernmae = (TextView) root.findViewById(R.id.tobarausernmae);
 
@@ -156,7 +152,7 @@ public  static boolean isInFront;
 
         fab = (FloatingActionButton) root.findViewById(R.id.fab);
         cam = (FloatingActionButton) root.findViewById(R.id.cam);
-        cam.setOnClickListener(this);
+
         fab.setVisibility(View.INVISIBLE);
         // fab.setEnabled(false);
         imgmsg = (ImageView) root.findViewById(R.id.imgmsg);
@@ -164,12 +160,18 @@ public  static boolean isInFront;
 
 
 
-//        cam.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+       cam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent a= new Intent(getActivity(), Messageimagesent.class);
+                startActivity(a);
+
+
+
+
+            }
+        });
 
 
 
@@ -702,38 +704,7 @@ public  static boolean isInFront;
         return Math.round((Math.abs(timeDistance) / 1000) / 60);
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
 
-        switch (id) {
-
-            case R.id.cam:
-                bottomSheetDialog.show();
-                break;
-
-            case R.id.camarass1:
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, 0);
-
-
-
-
-                break;
-
-            case R.id.gal:
-
-
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , 1);
-
-
-                break;
-
-        }
-
-    }
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

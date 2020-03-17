@@ -122,7 +122,7 @@ ImageView tvNext;
             case R.id.tvNext:
                 bottomSheetDialog.show();
                 break;
-            case R.id.share:
+            case R.id.pscvideo:
 startActivity(new Intent(getActivity(), Youtube_main.class));
                 break;
             case R.id.get_link:
