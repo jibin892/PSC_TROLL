@@ -10,14 +10,14 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/a"
+        android:id="@+id/af"
         android:background="@color/white"
         tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/profileToolBar">
+            android:id="@+id/profileTodolBar">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -28,15 +28,15 @@
                     android:layout_height="30dp"
                     android:layout_marginEnd="20dp"
                     android:layout_centerVertical="true"
-                    android:id="@+id/backArrow"
+                    android:id="@+id/backAdrrow"
                     android:src="@drawable/backarrow"/>
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" Profile"
-                    android:layout_toRightOf="@+id/backArrow"
+                    android:text=" VIEW"
+                    android:layout_toRightOf="@+id/backAdrrow"
                     android:layout_marginRight="15dp"
                     android:textSize="20sp"
                     android:textColor="@color/black"
@@ -44,12 +44,12 @@
                     android:id="@+id/tvNesxt" />
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/acdht"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
-                    android:onClick="showBottomSheet"
+                    android:onClick="showBottomSheet12"
                     app:srcCompat="@drawable/draw" />
             </RelativeLayout>
 
