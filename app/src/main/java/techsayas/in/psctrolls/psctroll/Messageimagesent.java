@@ -249,7 +249,7 @@ public class Messageimagesent extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.camarass1:
-                
+
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, PICK_IMAGE_REQUEST);
 
