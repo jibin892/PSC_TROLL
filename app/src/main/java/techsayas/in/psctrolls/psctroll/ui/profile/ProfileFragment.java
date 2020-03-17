@@ -1,6 +1,8 @@
 package techsayas.in.psctrolls.psctroll.ui.profile;
 
 import android.Manifest;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -11,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -57,6 +61,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.shrikanthravi.library.NightModeButton;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -88,6 +93,7 @@ import techsayas.in.psctrolls.psctroll.ui.notifications.NotificationsViewModel;
 
 import static android.app.Activity.RESULT_OK;
 import static android.widget.Toast.LENGTH_LONG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -112,10 +118,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     ProgressDialog progress;
     Uri personPhoto;
     String personName;
+    RelativeLayout relativeLayout;
     String personId;
     String ser;
     private BottomSheetDialog bottomSheetDialog;
-
+    NightModeButton nightModeButton;
     private String selectedPath;
     MediaController mediac;
     private NotificationsViewModel notificationsViewModel;
@@ -134,7 +141,26 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         View camera  = bottomSheetDialogView.findViewById(R.id.chosecamarass1);
         View galarys = bottomSheetDialogView.findViewById(R.id.chosegal);
         camera.setOnClickListener(this);
+        relativeLayout = root.findViewById(R.id.mm);
         galarys.setOnClickListener(this);
+        final int colorFrom = getResources().getColor(R.color.white);
+        final int colorTo = getResources().getColor(R.color.black);
+        nightModeButton = root.findViewById(R.id.nightModeButton);
+        nightModeButton.setOnSwitchListener(new NightModeButton.OnSwitchListener() {
+            @Override
+            public void onSwitchListener(boolean isNight) {
+                if(isNight){
+                    animateBackground(colorFrom,colorTo);
+                    animateStatusActionBar(getResources().getColor(R.color.colorPrimary),colorTo);
+                    Toast.makeText(getApplicationContext(),"Night Mode On",Toast.LENGTH_SHORT).show();
+                }else {
+                    animateBackground(colorTo,colorFrom);
+                    animateStatusActionBar(colorTo,getResources().getColor(R.color.colorPrimary));
+                    Toast.makeText(getApplicationContext(),"Night Mode Off",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -332,7 +358,37 @@ else {
 
         }
     }
+    public void animateBackground(int colorFrom,int colorTo){
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(250); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                relativeLayout.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
     }
+
+    public void animateStatusActionBar(int colorFrom,int colorTo){
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(250); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                getActivity().getWindow().setStatusBarColor((int) animator.getAnimatedValue());
+              //  getActivity().getSupportActionBar().setBackgroundDrawable(new ColorDrawable((int) animator.getAnimatedValue()));
+            }
+
+        });
+        colorAnimation.start();
+    }
+
+
+}
 
 
 
