@@ -717,8 +717,9 @@ public class HomeFragment extends Fragment {
                                         } catch (FileNotFoundException e) {
                                             e.printStackTrace();
                                         }
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
                                         addWaterMark(bitmap);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+
                                         try {
                                             outStream.flush();
                                         } catch (IOException e) {
