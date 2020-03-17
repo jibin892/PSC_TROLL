@@ -69,7 +69,7 @@
             android:layout_height="66dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
-            android:src="@drawable/psc"
+            android:src="@drawable/pscc"
             app:civ_border_color="@color/black"
             app:civ_border_width="0.5dp" />
 

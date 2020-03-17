@@ -1017,7 +1017,7 @@ public class HomeFragment extends Fragment {
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(src, 0, 0, null);
 
-        Bitmap waterMark = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.psc);
+        Bitmap waterMark = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.pscc);
         canvas.drawBitmap(waterMark, 0, 0, null);
 
         return result;
