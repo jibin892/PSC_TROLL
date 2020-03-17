@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/pscq1"
+        android:icon="@drawable/book"
         android:title="Category" />
 
     <item

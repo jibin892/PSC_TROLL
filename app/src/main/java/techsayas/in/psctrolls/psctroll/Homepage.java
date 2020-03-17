@@ -1,9 +1,12 @@
 package techsayas.in.psctrolls.psctroll;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,6 +20,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.ArrayList;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class Homepage extends AppCompatActivity {
     boolean b;
@@ -35,7 +41,7 @@ public class Homepage extends AppCompatActivity {
             setContentView(R.layout.activity_homepage);
         }
 
-
+        checkInternet();
 
         // setContentView(R.layout.activity_homepage);
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -51,7 +57,22 @@ public class Homepage extends AppCompatActivity {
 
         // NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+//
+//        if(NetworkUtils.isNetworkConnected(this)){
+//          //  Crouton.makeText(Homepage.this,"Conected", Style.CONFIRM).show();
+//
+//        }
+//        else{
+//
+//            Crouton.makeText(Homepage.this,"No Internet", Style.ALERT).show();
+//
+//
+//        }
 
+
+    }
+
+    private void checkInternet() {
 
 
 
