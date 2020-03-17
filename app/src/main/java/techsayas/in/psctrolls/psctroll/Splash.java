@@ -2,68 +2,44 @@ package techsayas.in.psctrolls.psctroll;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class Splash extends AppCompatActivity {
-
-    private ProgressBar mProgressBar;
-    private int progressStatus = 0;
-
-    private Handler handler = new Handler();
+    ImageView top_curve;
+    private static int SPLASH_TIME_OUT = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-    }
+        top_curve = findViewById(R.id.top_curve2);
+        Animation top_curve_anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_down);
+        top_curve.startAnimation(top_curve_anim);
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        startloading();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        startloading();
-
-    }
-
-    private void startloading() {
-        // Start long running operation in a background thread
-        new Thread(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
             public void run() {
-                while (progressStatus < 100) {
-                    progressStatus += 4;
-                    // Update the progress bar and display the
-                    //current value in the text view
-                    handler.post(new Runnable() {
-                        public void run() {
-                            mProgressBar.setProgress(progressStatus);
-                            if (progressStatus == 100) {
-                                Intent i = new Intent(Splash.this, Login.class);
-                                startActivity(i);
-
-                            }
-                        }
-                    });
-                    try {
-                        // Sleep for 200 milliseconds.
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
+                Intent i = new Intent(Splash.this, Login.class);
+                startActivity(i);
+                finish();
             }
-        }).start();
+        }, SPLASH_TIME_OUT);
     }
-}
+    }
+
 
