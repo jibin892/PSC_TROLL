@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -93,6 +94,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import techsayas.in.psctrolls.psctroll.ChatMessage;
 import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.Homeview;
+import techsayas.in.psctrolls.psctroll.InitApplication;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.Upload;
@@ -152,10 +154,16 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
+        if (InitApplication.getInstance().isNightModeEnabled()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
         EnableRuntimePermission();
         listOfMessages = (ListView) root.findViewById(R.id.list_of_view);
         homeimagev=root.findViewById(R.id.homeimagev);
+
         listOfMessages.post(new Runnable() {
             @Override
             public void run() {
