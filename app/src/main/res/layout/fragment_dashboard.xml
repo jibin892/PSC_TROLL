@@ -10,14 +10,13 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/af"
         android:background="@color/white"
         tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/profileTodolBar">
+            android:id="@+id/profileToolBar">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -28,29 +27,37 @@
                     android:layout_height="30dp"
                     android:layout_marginEnd="20dp"
                     android:layout_centerVertical="true"
-                    android:id="@+id/backAdrrow"
+                    android:id="@+id/ivCloseShare"
                     android:src="@drawable/backarrow"/>
-
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" VIEW"
-                    android:layout_toRightOf="@+id/backAdrrow"
-                    android:layout_marginRight="15dp"
+                    android:layout_toRightOf="@+id/ivCloseShare"
+                    android:id="@+id/spinnerDirectory"
                     android:textSize="20sp"
                     android:textColor="@color/black"
+                    android:text="View"
                     android:layout_centerVertical="true"
-                    android:id="@+id/tvNesxt" />
+                    android:gravity="center_vertical">
+
+
+                </TextView>
 
                 <ImageView
-                    android:id="@+id/acdht"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:id="@+id/tvNext"
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:onClick="showBottomSheet12"
-                    app:srcCompat="@drawable/draw" />
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    app:srcCompat="@drawable/draw"
+                    android:textColor="@color/link_blue"
+                    android:textSize="20sp" />
+
+
+
+
             </RelativeLayout>
 
 
@@ -59,6 +66,7 @@
 
 
     </com.google.android.material.appbar.AppBarLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
