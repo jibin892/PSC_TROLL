@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -694,7 +696,14 @@ public class HomeFragment extends Fragment {
 
                                         BitmapDrawable draw = (BitmapDrawable) postimg.getDrawable();
                                         Bitmap bitmap = draw.getBitmap();
+                                        int w = bitmap.getWidth();
+                                        int h = bitmap.getHeight();
+                                        Bitmap result = Bitmap.createBitmap(w, h,bitmap.getConfig());
+                                        Canvas canvas = new Canvas(result);
+                                        canvas.drawBitmap(bitmap, 0, 0, null);
 
+                                        Bitmap waterMark = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.logo);
+                                        canvas.drawBitmap(waterMark, 0, 0, null);
 
                                         File sdCard = Environment.getExternalStorageDirectory().getAbsoluteFile();
                                         File dir = new File(sdCard.getAbsolutePath() + "/Psctrolls");
