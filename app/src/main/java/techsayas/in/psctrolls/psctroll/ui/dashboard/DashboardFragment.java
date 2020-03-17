@@ -38,6 +38,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -67,20 +68,23 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import techsayas.in.psctrolls.psctroll.Bookmark;
+import techsayas.in.psctrolls.psctroll.Bookmarkview;
 import techsayas.in.psctrolls.psctroll.Comment;
 import techsayas.in.psctrolls.psctroll.Homeview;
+import techsayas.in.psctrolls.psctroll.Mypost;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.Profileremove;
 import techsayas.in.psctrolls.psctroll.Profileview;
+import techsayas.in.psctrolls.psctroll.Psc_notification;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.ui.message.MessageViewModel;
 
 import static android.widget.Toast.LENGTH_LONG;
 
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements View.OnClickListener {
 
-
+    private BottomSheetDialog bottomSheetDialog;
     View root;
 
     private DashboardViewModel dashboardViewModel;
@@ -89,11 +93,59 @@ public class DashboardFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         dashboardViewModel =
                 ViewModelProviders.of(this).get(DashboardViewModel.class);
-     root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
-     return root;
+        root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        bottomSheetDialog = new BottomSheetDialog(getActivity());
+        View bottomSheetDialogView = getLayoutInflater().inflate(R.layout.dii, null);
+        bottomSheetDialog.setContentView(bottomSheetDialogView);
+        View shareView = bottomSheetDialogView.findViewById(R.id.quiz);
+        View getLinkView = bottomSheetDialogView.findViewById(R.id.pscvideo);
+        View editNameView = bottomSheetDialogView.findViewById(R.id.bookmarkok);
+        View deleteView = bottomSheetDialogView.findViewById(R.id.delete);
+        shareView.setOnClickListener(this);
+        getLinkView.setOnClickListener(this);
+        editNameView.setOnClickListener(this);
+        deleteView.setOnClickListener(this);
+        return root;
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        switch (id) {
+
+            case R.id.tvNext:
+                bottomSheetDialog.show();
+                break;
+            case R.id.share:
+
+                break;
+            case R.id.get_link:
+
+                break;
+            case R.id.bokkmarkpage:
+
+                //  Toast.makeText(getActivity(), "Edit name", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.delete:
+
+
+               // Toast.makeText(getActivity(), "Delete collection", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.facebook:
+
+
+                break;
+            case R.id.instagaram:
+
+
+                break;
+            case R.id.google:
+
+
+                break;
+        }
+    }
 }
 
 
