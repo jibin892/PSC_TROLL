@@ -125,8 +125,8 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
     ProgressDialog progress;
     private BottomSheetDialog bottomSheetDialog;
 
-    ImageView imgmsg;
-    TextView messageTime;
+    ImageView imgmsg,ivCloseShare;
+    TextView messageTime,tobarausernmae;
     DatabaseReference reference;
     DatabaseReference a;
     TextView messageUser;
@@ -148,6 +148,8 @@ public  static boolean isInFront;
         View galarys = bottomSheetDialogView.findViewById(R.id.gal);
         camera.setOnClickListener(this);
         galarys.setOnClickListener(this);
+        ivCloseShare = (ImageView) root.findViewById(R.id.ivCloseShare);
+        tobarausernmae = (TextView) root.findViewById(R.id.tobarausernmae);
 
 
         //fab6 = (FloatingActionButton) root.findViewById(R.id.fab6);
@@ -362,6 +364,8 @@ public  static boolean isInFront;
             personEmail = acct.getEmail();
             personId = acct.getId();
             personPhoto = acct.getPhotoUrl();
+            Picasso.get().load(personPhoto).into(ivCloseShare);
+            tobarausernmae.setText(personName);
 
         }
 
@@ -730,29 +734,50 @@ public  static boolean isInFront;
         }
 
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case 0:
-                if(resultCode == RESULT_OK){
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    Intent as=new Intent(getActivity(), Upload.class);
-                    as.putExtra("a",selectedImage);
+                if(requestCode == 0 && resultCode == RESULT_OK
+                        && data != null && data.getData() != null ){
 
-                    startActivity(as);
-                   // imageview.setImageURI(selectedImage);
+
+                    filePath = data.getData();
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+//                        Intent as=new Intent(getActivity(), Upload.class);
+//                        as.putExtra("a",bitmap);
+
+                       // startActivity(as);
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
 
 
                 }
 
                 break;
             case 1:
-                if(resultCode == RESULT_OK){
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    Intent as=new Intent(getActivity(), Upload.class);
-                    as.putExtra("a",selectedImage);
-                    startActivity(as);
+                if(requestCode == 1 && resultCode == RESULT_OK
+                        && data != null && data.getData() != null ){
 
+
+                    filePath = data.getData();
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+//                        Intent as=new Intent(getActivity(), Upload.class);
+//                        as.putExtra("a",bitmap);
+//
+//                        startActivity(as);
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
 
                 }
                 break;

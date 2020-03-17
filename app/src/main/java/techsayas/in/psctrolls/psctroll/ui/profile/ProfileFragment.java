@@ -1,5 +1,6 @@
 package techsayas.in.psctrolls.psctroll.ui.profile;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -11,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -41,6 +44,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
@@ -86,12 +90,13 @@ import static android.app.Activity.RESULT_OK;
 import static android.widget.Toast.LENGTH_LONG;
 
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements View.OnClickListener {
     GoogleSignInClient mGoogleSignInClient;
     TextView sign_out;
     TextView nameTV;
     TextView emailTV;
-    TextView idTV,galary,video,post;
+    TextView idTV,video,post;
+    ImageView galary;
     ImageView photo,imgview;
     ImageView facebbok,google,instagram;
     EditText write,caption;
@@ -109,6 +114,8 @@ public class ProfileFragment extends Fragment {
     String personName;
     String personId;
     String ser;
+    private BottomSheetDialog bottomSheetDialog;
+
     private String selectedPath;
     MediaController mediac;
     private NotificationsViewModel notificationsViewModel;
@@ -121,6 +128,13 @@ public class ProfileFragment extends Fragment {
                 ViewModelProviders.of(this).get(ProfileViewModel.class);
  root = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        bottomSheetDialog = new BottomSheetDialog(getActivity());
+        View bottomSheetDialogView = getLayoutInflater().inflate(R.layout.chosepicpost, null);
+        bottomSheetDialog.setContentView(bottomSheetDialogView);
+        View camera  = bottomSheetDialogView.findViewById(R.id.chosecamarass1);
+        View galarys = bottomSheetDialogView.findViewById(R.id.chosegal);
+        camera.setOnClickListener(this);
+        galarys.setOnClickListener(this);
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -130,6 +144,8 @@ public class ProfileFragment extends Fragment {
         photo = root.findViewById(R.id.photos2);
        // write =root. findViewById(R.id.text1);
         galary =root. findViewById(R.id.selectimg);
+        galary.setOnClickListener(this);
+
         imgview =root. findViewById(R.id.img);
         caption =root. findViewById(R.id.text1);
         video = root.findViewById(R.id.vdio);
@@ -163,15 +179,15 @@ public class ProfileFragment extends Fragment {
 
 
 
-        galary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
-
-            }
-        });
+//        galary.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
+//
+//            }
+//        });
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,7 +295,44 @@ else {
             }
         }
     }
-}
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        switch (id) {
+
+            case R.id.selectimg:
+                bottomSheetDialog.show();
+                break;
+
+            case R.id.chosecamarass1:
+                if (getActivity().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, PICK_IMAGE_REQUEST);
+                }
+                else
+                {
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, PICK_IMAGE_REQUEST);
+                }
+
+
+                break;
+
+            case R.id.chosegal:
+
+
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
+
+
+                break;
+
+        }
+    }
+    }
 
 
 
