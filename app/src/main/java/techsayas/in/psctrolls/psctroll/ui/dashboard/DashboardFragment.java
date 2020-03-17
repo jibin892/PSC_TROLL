@@ -77,6 +77,7 @@ import techsayas.in.psctrolls.psctroll.Profileremove;
 import techsayas.in.psctrolls.psctroll.Profileview;
 import techsayas.in.psctrolls.psctroll.Psc_notification;
 import techsayas.in.psctrolls.psctroll.R;
+import techsayas.in.psctrolls.psctroll.Youtube_main;
 import techsayas.in.psctrolls.psctroll.ui.message.MessageViewModel;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -118,7 +119,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
                 bottomSheetDialog.show();
                 break;
             case R.id.share:
-
+startActivity(new Intent(getActivity(), Youtube_main.class));
                 break;
             case R.id.get_link:
 
