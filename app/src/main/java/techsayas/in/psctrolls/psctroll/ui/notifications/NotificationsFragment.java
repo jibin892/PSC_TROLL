@@ -47,6 +47,7 @@ import techsayas.in.psctrolls.psctroll.Bookmarkview;
 import techsayas.in.psctrolls.psctroll.Login;
 import techsayas.in.psctrolls.psctroll.Movie;
 import techsayas.in.psctrolls.psctroll.Mypost;
+import techsayas.in.psctrolls.psctroll.Psc_notification;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.Upload;
 import techsayas.in.psctrolls.psctroll.Viewuploaded;
@@ -233,7 +234,8 @@ public class NotificationsFragment extends Fragment  implements View.OnClickList
                 break;
 
             case R.id.share:
-                Toast.makeText(getActivity(), "Share", Toast.LENGTH_SHORT).show();
+                Intent abb=new Intent(getActivity(), Psc_notification.class);
+                startActivity(abb);
                 break;
 
             case R.id.get_link:
