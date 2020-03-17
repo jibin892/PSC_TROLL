@@ -23,6 +23,7 @@
             app:srcCompat="@drawable/not" />
 
         <TextView
+            android:id="@+id/quiz"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -49,6 +50,7 @@
             android:background="@drawable/stars" />
 
         <TextView
+            android:id="@+id/pscvideo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -76,12 +78,13 @@
             />
 
         <TextView
+            android:id="@+id/bookmarkok"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_marginLeft="16dp"
             android:text="BOOKMARK"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
