@@ -330,30 +330,30 @@ public class HomeFragment extends Fragment {
 
                 messageTime.setText(timeAgo);
 
-//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-//                final Query applesQueryy = ref.child("COMMENT").orderByChild("postid").equalTo(model.getIdd());
-//
-//
-//
-//                applesQueryy.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-//                            String userName = String.valueOf(data.child("messageText").getValue());
-//                            Toast.makeText(getActivity(),userName,LENGTH_LONG).show();
-//                            comme.setText(userName);
-//                        }
-//
-//                        //
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//                        // Log.e(TAG, "onCancelled", databaseError.toException());
-//                    }
-//                });
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                final Query applesQueryy = ref.child("COMMENT").orderByChild("postid").equalTo(model.getIdd());
+
+
+
+                applesQueryy.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            String userName = String.valueOf(data.child("messageText").getValue());
+                            Toast.makeText(getActivity(),userName,LENGTH_LONG).show();
+                            comme.setText(userName);
+                        }
+
+                        //
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Log.e(TAG, "onCancelled", databaseError.toException());
+                    }
+                });
 
 
                 image_message_profile.setOnClickListener(new View.OnClickListener() {
@@ -696,14 +696,14 @@ public class HomeFragment extends Fragment {
 
                                         BitmapDrawable draw = (BitmapDrawable) postimg.getDrawable();
                                         Bitmap bitmap = draw.getBitmap();
-                                        int w = bitmap.getWidth();
+                                       /* int w = bitmap.getWidth();
                                         int h = bitmap.getHeight();
                                         Bitmap result = Bitmap.createBitmap(w, h,bitmap.getConfig());
                                         Canvas canvas = new Canvas(result);
                                         canvas.drawBitmap(bitmap, 0, 0, null);
 
                                         Bitmap waterMark = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.logo);
-                                        canvas.drawBitmap(waterMark, 0, 0, null);
+                                        canvas.drawBitmap(waterMark, 0, 0, null);*/
 
                                         File sdCard = Environment.getExternalStorageDirectory().getAbsoluteFile();
                                         File dir = new File(sdCard.getAbsolutePath() + "/Psctrolls");
