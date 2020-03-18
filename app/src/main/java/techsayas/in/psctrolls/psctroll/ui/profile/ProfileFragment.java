@@ -64,6 +64,7 @@ import com.google.firebase.storage.UploadTask;
 import com.shrikanthravi.library.NightModeButton;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -84,6 +85,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import techsayas.in.psctrolls.psctroll.Comment;
+import techsayas.in.psctrolls.psctroll.Messageimagesent;
 import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.Profileview;
 import techsayas.in.psctrolls.psctroll.R;
@@ -141,25 +143,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         View camera  = bottomSheetDialogView.findViewById(R.id.chosecamarass1);
         View galarys = bottomSheetDialogView.findViewById(R.id.chosegal);
         camera.setOnClickListener(this);
-        relativeLayout = root.findViewById(R.id.mm);
         galarys.setOnClickListener(this);
-        final int colorFrom = getResources().getColor(R.color.white);
-        final int colorTo = getResources().getColor(R.color.black);
-        nightModeButton = root.findViewById(R.id.nightModeButton);
-        nightModeButton.setOnSwitchListener(new NightModeButton.OnSwitchListener() {
-            @Override
-            public void onSwitchListener(boolean isNight) {
-                if(isNight){
-                    animateBackground(colorFrom,colorTo);
-                    animateStatusActionBar(getResources().getColor(R.color.colorPrimary),colorTo);
-                    Toast.makeText(getApplicationContext(),"Night Mode On",Toast.LENGTH_SHORT).show();
-                }else {
-                    animateBackground(colorTo,colorFrom);
-                    animateStatusActionBar(colorTo,getResources().getColor(R.color.colorPrimary));
-                    Toast.makeText(getApplicationContext(),"Night Mode Off",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
 
         storage = FirebaseStorage.getInstance();
@@ -295,30 +279,56 @@ else {
                                     }
                                 });
                     }
+                    else {
+                        Crouton.makeText(getActivity(), "Select An Image ", Style.ALERT).show();
+                    }
                 }
 
             }
         });
         return root;
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
-            filePath = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
-                imgview.getLayoutParams().height = 900;
-                imgview.getLayoutParams().width = 1200;
-                imgview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imgview.setImageBitmap(bitmap);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch(requestCode) {
+            case 0:
+                if(resultCode == RESULT_OK){
+
+                  /* filePath = imageReturnedIntent.getData();
+                   File finalFile = new File(getRealPathFromURI(filePath));*/
+
+
+                    bitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
+                    filePath=  getImageUri(getActivity(), bitmap);
+                 //   Toast.makeText(Messageimagesent.this,String.valueOf(filePath), Toast.LENGTH_LONG).show();
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                    imgview.getLayoutParams().height = 900;
+                    imgview.getLayoutParams().width = 1200;
+                    imgview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    imgview.setImageBitmap(bitmap);
+
+                }
+
+                break;
+            case 1:
+                if(resultCode == RESULT_OK){
+                    filePath = imageReturnedIntent.getData();
+                    //Toast.makeText(getActivity(),String.valueOf(filePath), Toast.LENGTH_LONG).show();
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+                        imgview.getLayoutParams().height = 900;
+                        imgview.getLayoutParams().width = 1200;
+                        imgview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        imgview.setImageBitmap(bitmap);
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                }
+                break;
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -335,12 +345,12 @@ else {
             case R.id.chosecamarass1:
                 if (getActivity().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
                 {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, PICK_IMAGE_REQUEST);
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
                 }
                 else
                 {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, PICK_IMAGE_REQUEST);
+                    startActivityForResult(cameraIntent, 0);
                 }
 
 
@@ -351,42 +361,20 @@ else {
 
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
+                startActivityForResult(pickPhoto , 1);
 
 
                 break;
 
         }
     }
-    public void animateBackground(int colorFrom,int colorTo){
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(250); // milliseconds
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                relativeLayout.setBackgroundColor((int) animator.getAnimatedValue());
-            }
-
-        });
-        colorAnimation.start();
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
-
-    public void animateStatusActionBar(int colorFrom,int colorTo){
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(250); // milliseconds
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                getActivity().getWindow().setStatusBarColor((int) animator.getAnimatedValue());
-              //  getActivity().getSupportActionBar().setBackgroundDrawable(new ColorDrawable((int) animator.getAnimatedValue()));
-            }
-
-        });
-        colorAnimation.start();
-    }
-
 
 }
 

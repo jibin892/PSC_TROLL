@@ -17,5 +17,8 @@
     <string name="action_upload">Upload</string>
     <string name="action_copy">Copy</string>
     <string name="action_print">Print</string>
+    <string name="title_activity_quiz">Quiz</string>
+    <string name="tab_text_1">QUIZ</string>
+    <string name="tab_text_2">RESULT</string>
 
 </resources>

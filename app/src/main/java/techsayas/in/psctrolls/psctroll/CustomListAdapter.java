@@ -43,12 +43,13 @@ public class CustomListAdapter extends BaseAdapter {
         if (this.imageLoader == null) {
             this.imageLoader = AppController.getInstance().getImageLoader();
         }
-        NetworkImageView networkImageView = (NetworkImageView) convertView.findViewById(R.id.video_image);
+        NetworkImageView networkImageView = (NetworkImageView) convertView.findViewById(R.id.imagev);
         final TextView imgtitle = (TextView) convertView.findViewById(R.id.video_title);
-        final TextView imgdesc = (TextView) convertView.findViewById(R.id.video_descriptio);
-        final TextView tvURL=(TextView)convertView.findViewById(R.id.tv_url);
-        final  TextView tvVideoID=(TextView)convertView.findViewById(R.id.tv_videoId);
-        ((LinearLayout) convertView.findViewById(R.id.asser)).setOnClickListener(new View.OnClickListener() {
+        final TextView imgdesc = (TextView) convertView.findViewById(R.id.video_description);
+       // final TextView tvURL=(TextView)convertView.findViewById(R.id.tv_url);
+        final  TextView tvVideoID=(TextView)convertView.findViewById(R.id.video_descriptio);
+        tvVideoID.setVisibility(View.INVISIBLE);
+        (convertView.findViewById(R.id.asser)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(view.getContext(),Activity_details.class);
