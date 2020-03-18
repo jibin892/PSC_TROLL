@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/artboardmdpi"
     android:contentDescription="For more ui/ux visit www.materialuiux.com"
     android:orientation="vertical"
     tools:ignore="HardcodedText">
@@ -12,21 +12,6 @@
 
 
 
-    <ImageView
-        android:id="@+id/top_curve2"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="-50dp"
-        android:layout_marginLeft="-50dp"
-        android:layout_marginEnd="-50dp"
-        android:layout_marginRight="-50dp"
-        android:src="@drawable/top_shape"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,37 +20,40 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-<TextView
-    android:layout_marginTop="300dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="PSC trolls"
-    android:textSize="30dp"
-    android:textColor="#7CDD16">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="300dp"
+            android:text="PSC trolls"
+            android:textColor="#00ACC1"
+            android:textSize="30dp">
 
-</TextView>
+        </TextView>
+
         <ProgressBar
-            android:layout_marginTop="150dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginTop="150dp"
             android:indeterminate="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="502dp" />
 
         <TextView
-            android:layout_marginTop="100dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
             android:text="Powered by Techsays"
-            android:textSize="15dp"
-            android:textColor="#72756F">
+            android:textColor="#039BE5"
+            android:textSize="15dp">
 
         </TextView>
     </LinearLayout>
