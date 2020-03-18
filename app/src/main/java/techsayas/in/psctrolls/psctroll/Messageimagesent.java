@@ -248,6 +248,9 @@ public class Messageimagesent extends AppCompatActivity implements View.OnClickL
                    bitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                   imgview.getLayoutParams().height = 900;
+                   imgview.getLayoutParams().width = 1200;
+                   imgview.setScaleType(ImageView.ScaleType.CENTER_CROP);
                    imgview.setImageBitmap(bitmap);
                }
 
