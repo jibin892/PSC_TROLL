@@ -67,6 +67,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+
 import techsayas.in.psctrolls.psctroll.Bookmark;
 import techsayas.in.psctrolls.psctroll.Bookmarkview;
 import techsayas.in.psctrolls.psctroll.Comment;
@@ -76,6 +77,7 @@ import techsayas.in.psctrolls.psctroll.PhotoFullPopupWindow;
 import techsayas.in.psctrolls.psctroll.Profileremove;
 import techsayas.in.psctrolls.psctroll.Profileview;
 import techsayas.in.psctrolls.psctroll.Psc_notification;
+import techsayas.in.psctrolls.psctroll.Quiz;
 import techsayas.in.psctrolls.psctroll.R;
 import techsayas.in.psctrolls.psctroll.Youtube_main;
 import techsayas.in.psctrolls.psctroll.ui.message.MessageViewModel;
@@ -98,9 +100,9 @@ ImageView tvNext;
         bottomSheetDialog = new BottomSheetDialog(getActivity());
         View bottomSheetDialogView = getLayoutInflater().inflate(R.layout.dii, null);
         bottomSheetDialog.setContentView(bottomSheetDialogView);
-        View shareView = bottomSheetDialogView.findViewById(R.id.quiz);
+        View shareView = bottomSheetDialogView.findViewById(R.id.quiz1);
         View getLinkView = bottomSheetDialogView.findViewById(R.id.pscvideo);
-        View editNameView = bottomSheetDialogView.findViewById(R.id.bookmarkok);
+        View editNameView = bottomSheetDialogView.findViewById(R.id.bokkmarkpage1);
         View deleteView = bottomSheetDialogView.findViewById(R.id.delete);
         shareView.setOnClickListener(this);
         getLinkView.setOnClickListener(this);
@@ -125,10 +127,11 @@ ImageView tvNext;
             case R.id.pscvideo:
 startActivity(new Intent(getActivity(), Youtube_main.class));
                 break;
-            case R.id.get_link:
+            case R.id.quiz1:
+                startActivity(new Intent(getActivity(), Quiz.class));
 
                 break;
-            case R.id.bokkmarkpage:
+            case R.id.name:
 
                 //  Toast.makeText(getActivity(), "Edit name", Toast.LENGTH_SHORT).show();
                 break;

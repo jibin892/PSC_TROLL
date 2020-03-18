@@ -27,9 +27,9 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        top_curve = findViewById(R.id.top_curve2);
-        Animation top_curve_anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_down);
-        top_curve.startAnimation(top_curve_anim);
+//        top_curve = findViewById(R.id.top_curve2);
+//        Animation top_curve_anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_down);
+//        top_curve.startAnimation(top_curve_anim);
 
         new Handler().postDelayed(new Runnable() {
             @Override

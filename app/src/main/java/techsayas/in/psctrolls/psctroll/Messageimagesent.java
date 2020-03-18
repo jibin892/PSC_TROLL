@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.airbnb.lottie.L;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,6 +42,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -213,11 +218,16 @@ public class Messageimagesent extends AppCompatActivity implements View.OnClickL
                                     progressDialog.setMessage("Uploaded " + (int) progress + "%");
                                 }
                             });
-                }}
+                }
+                else
+                {
+                    Crouton.makeText(Messageimagesent.this, "Select An Image", Style.ALERT).show();
+                }
+            }
         });
 
     }
-    @Override
+   /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
@@ -236,30 +246,68 @@ public class Messageimagesent extends AppCompatActivity implements View.OnClickL
                 e.printStackTrace();
             }
         }
-    }
+    }*/
+   protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+       super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+       switch(requestCode) {
+           case 0:
+               if(resultCode == RESULT_OK){
+
+                  /* filePath = imageReturnedIntent.getData();
+                   File finalFile = new File(getRealPathFromURI(filePath));*/
+
+
+                   bitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
+                 filePath=  getImageUri(getApplicationContext(), bitmap);
+                   Toast.makeText(Messageimagesent.this,String.valueOf(filePath), Toast.LENGTH_LONG).show();
+                   ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                     bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                   imgview.getLayoutParams().height = 900;
+                   imgview.getLayoutParams().width = 1200;
+                   imgview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                   imgview.setImageBitmap(bitmap);
+
+               }
+
+               break;
+           case 1:
+               if(resultCode == RESULT_OK){
+                   filePath = imageReturnedIntent.getData();
+                   Toast.makeText(Messageimagesent.this,String.valueOf(filePath), Toast.LENGTH_LONG).show();
+
+                   try {
+                       bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                       imgview.getLayoutParams().height = 900;
+                       imgview.getLayoutParams().width = 1200;
+                       imgview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                       imgview.setImageBitmap(bitmap);
+                   }
+                   catch (IOException e)
+                   {
+                       e.printStackTrace();
+                   }
+
+               }
+               break;
+       }
+   }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
 
         switch (id) {
-
             case R.id.selectimg11:
                 bottomSheetDialog.show();
                 break;
-
             case R.id.camarass1:
-
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, PICK_IMAGE_REQUEST);
-
-
+                startActivityForResult(cameraIntent, 0);
                 break;
-
             case R.id.gal:
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
+                startActivityForResult(pickPhoto , 1);
 
 
 
@@ -269,6 +317,25 @@ public class Messageimagesent extends AppCompatActivity implements View.OnClickL
         }
 
 
+    }
+    public String getRealPathFromURI(Uri uri) {
+        String path = "";
+        if (getContentResolver() != null) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                path = cursor.getString(idx);
+                cursor.close();
+            }
+        }
+        return path;
+    }
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 }
 
