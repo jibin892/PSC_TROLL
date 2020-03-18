@@ -1,8 +1,12 @@
 package techsayas.in.psctrolls.psctroll;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,6 +21,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.ArrayList;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class Homepage extends AppCompatActivity {
     boolean b;
@@ -55,9 +62,43 @@ public class Homepage extends AppCompatActivity {
 
 
 
-
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            changeTextStatus(true);
+        } else {
+            changeTextStatus(false);
+        }
     }
 
+    public void changeTextStatus(boolean isConnected) {
+
+        // Change status according to boolean value
+        if (isConnected) {
+            Crouton.makeText(Homepage.this,"Connected", Style.CONFIRM).show();
+        } else {
+            Crouton.makeText(Homepage.this," NOT Connected", Style.ALERT).show();
+        }
+    }
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        MyApplication.activityPaused();// On Pause notify the Application
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        MyApplication.activityResumed();// On Resume notify the Application
+    }
+    @Override
+    protected void onRestart() {
+
+        super.onRestart();
+        MyApplication.activityRestart();// On Resume notify the Application
+    }
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);

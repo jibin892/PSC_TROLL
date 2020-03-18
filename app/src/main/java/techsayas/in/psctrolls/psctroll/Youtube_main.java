@@ -1,6 +1,8 @@
 package techsayas.in.psctrolls.psctroll;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -16,13 +18,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class Youtube_main extends AppCompatActivity {
     ListView lvVideo;
     ArrayList<VideoDetails> videoDetailsArrayList;
     CustomListAdapter customListAdapter;
     String searchName;
+    SweetAlertDialog pDialog;
     String TAG="ChannelActivity";
-    String URL="https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCvXkgY3HnKheZEMnkFT0udw=25&key=AIzaSyBhP7WxodDCNMUTvCiwtkU8GuIuwWKPe5o";
+    String URL="https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCvXkgY3HnKheZEMnkFT0udw&maxResults=25&key=AIzaSyDA8fs-QqFJ_jW3NconZb_UoIOMMs0wU3M";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +36,11 @@ public class Youtube_main extends AppCompatActivity {
         lvVideo=(ListView)findViewById(R.id.videoList);
         videoDetailsArrayList=new ArrayList<>();
         customListAdapter=new CustomListAdapter(Youtube_main.this,videoDetailsArrayList);
+        pDialog = new SweetAlertDialog(Youtube_main.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText(" Tutorials are Loading ...");
+        pDialog.setCancelable(true);
+        pDialog.show();
         showVideo();
     }
     private void showVideo() {
@@ -37,6 +48,7 @@ public class Youtube_main extends AppCompatActivity {
         StringRequest stringRequest=new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                pDialog.cancel();
                 try {
                     JSONObject jsonObject=new JSONObject(response);
                     JSONArray jsonArray=jsonObject.getJSONArray("items");

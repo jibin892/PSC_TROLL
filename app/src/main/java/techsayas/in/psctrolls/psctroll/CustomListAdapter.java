@@ -51,7 +51,7 @@ public class CustomListAdapter extends BaseAdapter {
         ((LinearLayout) convertView.findViewById(R.id.asser)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(view.getContext(), Youtube_main.class);
+                Intent intent=new Intent(view.getContext(),Activity_details.class);
                 intent.putExtra("videoId",tvVideoID.getText().toString());
                 view.getContext().startActivity(intent);
             }
