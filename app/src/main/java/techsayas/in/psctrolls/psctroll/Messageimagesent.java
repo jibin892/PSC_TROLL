@@ -39,6 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -217,7 +218,7 @@ public class Messageimagesent extends AppCompatActivity implements View.OnClickL
         });
 
     }
-    @Override
+   /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
@@ -236,7 +237,29 @@ public class Messageimagesent extends AppCompatActivity implements View.OnClickL
                 e.printStackTrace();
             }
         }
-    }
+    }*/
+   protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+       super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+       switch(requestCode) {
+           case 0:
+               if(resultCode == RESULT_OK){
+
+                   Uri selectedImage = imageReturnedIntent.getData();
+                   bitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
+                   ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                   bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                   imgview.setImageBitmap(bitmap);
+               }
+
+               break;
+           case 1:
+               if(resultCode == RESULT_OK){
+                   Uri selectedImage = imageReturnedIntent.getData();
+                   imgview.setImageURI(selectedImage);
+               }
+               break;
+       }
+   }
 
     @Override
     public void onClick(View v) {
@@ -251,7 +274,7 @@ public class Messageimagesent extends AppCompatActivity implements View.OnClickL
             case R.id.camarass1:
 
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, PICK_IMAGE_REQUEST);
+                startActivityForResult(cameraIntent, 0);
 
 
                 break;
@@ -259,7 +282,7 @@ public class Messageimagesent extends AppCompatActivity implements View.OnClickL
             case R.id.gal:
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , PICK_IMAGE_REQUEST);
+                startActivityForResult(pickPhoto , 1);
 
 
 

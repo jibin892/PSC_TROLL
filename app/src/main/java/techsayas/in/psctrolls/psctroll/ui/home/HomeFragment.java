@@ -154,7 +154,7 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
-        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
+       // mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container);
         EnableRuntimePermission();
         listOfMessages = (ListView) root.findViewById(R.id.list_of_view);
         homeimagev=root.findViewById(R.id.homeimagev);
@@ -874,19 +874,19 @@ public class HomeFragment extends Fragment {
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()){
-
-
-                            mShimmerViewContainer.stopShimmerAnimation();
-                            mShimmerViewContainer.setVisibility(View.GONE);
-                        }
-
-                        else{
-
-                            mShimmerViewContainer.stopShimmerAnimation();
-                            mShimmerViewContainer.setVisibility(View.GONE);
-
-                        }
+//                        if(dataSnapshot.exists()){
+//
+//
+//                            mShimmerViewContainer.stopShimmerAnimation();
+//                            mShimmerViewContainer.setVisibility(View.GONE);
+//                        }
+//
+//                        else{
+//
+//                            mShimmerViewContainer.stopShimmerAnimation();
+//                            mShimmerViewContainer.setVisibility(View.GONE);
+//
+//                        }
 
 
 
@@ -942,18 +942,18 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        mShimmerViewContainer.startShimmerAnimation();
-    }
-
-    @Override
-    public void onPause() {
-        mShimmerViewContainer.stopShimmerAnimation();
-        super.onPause();
-
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mShimmerViewContainer.startShimmerAnimation();
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        mShimmerViewContainer.stopShimmerAnimation();
+//        super.onPause();
+//
+//    }
 
     private void saveState(boolean isFavourite) {
         SharedPreferences aSharedPreferences = getActivity().getSharedPreferences(
