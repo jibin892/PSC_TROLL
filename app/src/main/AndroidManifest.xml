@@ -35,6 +35,8 @@
         <activity android:name=".Bookmarkview" />
         <activity android:name=".Viewotherprofile" />
         <activity android:name=".Viewuploaded" />
+        <activity android:name=".Tests"/>
+
         <activity android:name=".Commentreplay" />
         <activity
             android:name=".Comment"
